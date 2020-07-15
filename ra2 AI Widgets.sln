@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA2AI_Editor", "editor\RA2AI_Editor.csproj", "{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87A00B77-91DF-4ECE-B7AC-371A9977061F}
+	EndGlobalSection
+EndGlobal

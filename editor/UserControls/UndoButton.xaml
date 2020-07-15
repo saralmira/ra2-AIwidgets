@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="RA2AI_Editor.UserControls.UndoButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA2AI_Editor.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="50">
+    <Border BorderThickness="0" BorderBrush="Transparent" CornerRadius="3">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#EFEFEF"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid x:Name="grid" Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btn" Grid.Column="0" Background="Transparent" Style="{StaticResource UndoStyle}"/>
+            <Rectangle Grid.Column="1" Fill="#E0E0E0" Stroke="#E0E0E0" Width="1" Margin="0 1 0 1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+            <ToggleButton Grid.Column="2" Background="Transparent" Template="{StaticResource SplitToggleStyle}">
+
+            </ToggleButton>
+        </Grid>
+    </Border>
+</UserControl>
