@@ -1,0 +1,28 @@
+﻿<Application x:Class="RA2AI_Editor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RA2AI_Editor"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="en.xaml"/>
+                <ResourceDictionary Source="zh-CN.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/TabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ProgressBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/Treeview.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/DataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ListViewStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ScrollViewer.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/Calendar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/RadioButtonStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/DataTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/TextBox.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/GridBorder.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

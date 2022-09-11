@@ -1,0 +1,147 @@
+﻿<Window x:Class="IniMerger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IniMerger"
+        mc:Ignorable="d"
+        Title="RA2 Ini合并工具" Height="300" Width="600" MinHeight="300" MinWidth="600" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" AllowDrop="True" DragEnter="File_DragEnter" DragDrop.Drop="File_Drop">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="imae_grid" Grid.Column="0">
+                    <Image x:Name="ini_image" Margin="5" MouseEnter="Ini_image_MouseEnter" MouseLeave="Ini_image_MouseLeave" MouseLeftButtonUp="Ini_image_MouseLeftButtonUp" MouseLeftButtonDown="Ini_image_MouseLeftButtonDown"/>
+                </Grid>
+                <TextBox x:Name="ini_target_tb" ToolTip="{StaticResource tip_target}" TextChanged="Ini_target_tb_TextChanged" AllowDrop="True" PreviewDragOver="TB_PreviewDragOver" PreviewDrop="File_Drop" Grid.Column="1" VerticalScrollBarVisibility="Auto" AcceptsReturn="False" AcceptsTab="False" TextWrapping="Wrap"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="2" Grid.Row="0" BorderBrush="AliceBlue" AllowDrop="True" DragEnter="File_DragEnter" Drop="Ini_src_list_Drop">
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                        <ScrollViewer.Content>
+                            <StackPanel x:Name="ini_src_list" ToolTip="{StaticResource tip_source}" Orientation="Vertical" AllowDrop="True" DragEnter="File_DragEnter" Drop="Ini_src_list_Drop"
+                                CanVerticallyScroll="True" Background="#00FFFFFF" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                            </StackPanel>
+                        </ScrollViewer.Content>
+                    </ScrollViewer>
+                </Border>
+                
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Click="SourceClear_Click" Content="{StaticResource str_clearall}"/>
+                </Grid>
+                
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="2" Grid.Row="1" BorderBrush="LightBlue">
+                <TextBlock Grid.Row="1" Text="{StaticResource setting}" TextWrapping="NoWrap" TextAlignment="Center"/>
+            </Border>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <RadioButton x:Name="rb_rules" Grid.Row="0" Content="{StaticResource rules}"/>
+                    <RadioButton x:Name="rb_art" Grid.Row="1" Content="{StaticResource art}"/>
+                    <RadioButton x:Name="rb_ai" Grid.Row="2" Content="{StaticResource ai}"/>
+                    <RadioButton x:Name="rb_sound" Grid.Row="3" Content="{StaticResource sound}"/>
+                    <RadioButton x:Name="rb_theme" Grid.Row="4" Content="{StaticResource theme}"/>
+                    <RadioButton x:Name="rb_eva" Grid.Row="5" Content="{StaticResource eva}"/>
+                    <RadioButton x:Name="rb_other" Grid.Row="6" Content="{StaticResource other}" IsChecked="True"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="1" Content="{StaticResource str_analyse}" Click="Analyse_Click"/>
+                <Border BorderThickness="2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7" BorderBrush="LightBlue">
+                    <TextBlock Text="{StaticResource str_merge}" TextWrapping="NoWrap" TextAlignment="Center"/>
+                </Border>
+
+                <Button x:Name="btn_inter" ToolTip="{StaticResource tip_intersection}" Grid.Column="1" Grid.Row="5" Content="{StaticResource str_bool_intersection}" Click="Merge_Click"/>
+                <Button x:Name="btn_merge" ToolTip="{StaticResource tip_merge}" Grid.Column="3" Grid.Row="5" Content="{StaticResource str_bool_merge}" Click="Merge_Click"/>
+                <Button x:Name="btn_cover" ToolTip="{StaticResource tip_cover}" Grid.Column="5" Grid.Row="5" Content="{StaticResource str_bool_cover}" Click="Merge_Click"/>
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="2" Grid.Row="1" BorderBrush="LightBlue">
+                <TextBlock Text="{StaticResource str_result}" TextWrapping="NoWrap" TextAlignment="Center"/>
+            </Border>
+            <local:UserList x:Name="result_list" Grid.Row="2">
+                
+            </local:UserList>
+            
+        </Grid>
+        
+    </Grid>
+</Window>

@@ -1,0 +1,367 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RA2AI_Editor.Styles"
+                    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+                    x:Class="RA2AI_Editor.Styles.TextBox">
+
+    <Style x:Key="TextBoxFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="0" BorderThickness="1" CornerRadius="1" BorderBrush="#AA3778FF">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#3778FF"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="InformationTextStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="#505050"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="BackBorder" SnapsToDevicePixels="true" BorderThickness="{TemplateBinding BorderThickness}" Background="{x:Null}" BorderBrush="#C9C9C9">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#E0E0E0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ReadOnlyTextStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="BorderBrush" Value="LightBlue"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="False"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+    </Style>
+
+    <Style x:Key="TextBoxMetroStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="0.5,0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="BackBorder" SnapsToDevicePixels="true" BorderThickness="{TemplateBinding BorderThickness}" Background="{x:Null}" BorderBrush="{x:Null}">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="BackBorder" Value="{x:Null}"/>
+                            <Setter Property="Foreground" Value="#CCFFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="BackBorder" Value="#70FFFFFF"/>
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#70FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Background" TargetName="BackBorder" Value="#A0FFFFFF"/>
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#50000000"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="TextBoxSearchStyle" TargetType="TextBox">
+        <Setter Property="Foreground" Value="#111111"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="AcceptsReturn" Value="False"/>
+        <Setter Property="AcceptsTab" Value="False"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="#75C1FF"
+                            BorderThickness="1" SnapsToDevicePixels="True">
+                        <ScrollViewer SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <!--内容区域-->
+                                <ScrollViewer x:Name="PART_ContentHost" BorderThickness="0" Grid.Column="0" IsTabStop="False" Margin="2"
+                                          VerticalAlignment="Stretch" Background="{x:Null}"/>
+                                <Button x:Name="btn" Grid.Column="1" Style="{StaticResource BtnCrossImageStyle}" Click="Btn_Click"
+                                    Tag="{Binding Content,ElementName=PART_ContentHost,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                    Margin="5 5 0 5"/>
+                                <Image Grid.Column="2" Margin="0 5 5 5" Source="/Images/search.png" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                            </Grid>
+                        </ScrollViewer>
+                        
+                        <!--<ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>-->
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#CCFFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#068FFF"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#068FFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EditorBoxStyleB" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="#99D9EA"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="2,2,0,0"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="BackBorder" SnapsToDevicePixels="true" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="1">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#55CCFF"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#00A2E8"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="BackBorder" Value="#F4F4F4"/>
+                            <Setter Property="BorderBrush" TargetName="BackBorder" Value="#ADB2B5"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ACBStyleForUnits" TargetType="toolkit:AutoCompleteBox">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="MinimumPrefixLength" Value="0"/>
+        <Setter Property="IsTextCompletionEnabled" Value="True"/>
+        <Setter Property="FilterMode" Value="Custom"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource EditorBoxStyleB}"/>
+        <Setter Property="ItemTemplate" Value="{StaticResource UnitDataTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="toolkit:AutoCompleteBox">
+                    <Grid x:Name="PART_Root">
+                        <Grid x:Name="PART_InnerGrid">
+                            <toolkit:AutoCompleteBox x:Name="PART_ContentHost" Text="{Binding NameLabel,Mode=TwoWay}" ItemTemplate="{TemplateBinding ItemTemplate}" TextBoxStyle="{TemplateBinding TextBoxStyle}" VerticalAlignment="Center" ItemsSource="{Binding UnitsInfo,Mode=OneWay}"
+                                                     IsTextCompletionEnabled="{TemplateBinding IsTextCompletionEnabled}" FilterMode="{TemplateBinding FilterMode}" ItemFilter="{Binding UnitFilter}" ValueMemberPath="Name" MinimumPrefixLength="{TemplateBinding MinimumPrefixLength}" VerticalContentAlignment="Center"/>
+                            <!--<ScrollViewer x:Name="PART_ContentHost" Content="{Binding SAction,Mode=TwoWay}" BorderThickness="0" IsTabStop="False" Margin="0" VerticalAlignment="Stretch" Background="{x:Null}" />-->
+                            <TextBlock x:Name="Message" Text="{Binding Description,Mode=OneWay}" Foreground="#969696" IsHitTestVisible="False" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Right" Margin="36,2,5,2" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#CCFFFFFF"/>
+                            <Setter TargetName="Message" Property="Foreground" Value="#EFEFEF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="ACBStyleForTag" TargetType="toolkit:AutoCompleteBox">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="MinimumPrefixLength" Value="0"/>
+        <Setter Property="IsTextCompletionEnabled" Value="True"/>
+        <Setter Property="FilterMode" Value="Custom"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource EditorBoxStyleB}"/>
+        <Setter Property="ItemTemplate" Value="{StaticResource TagItemDataTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="toolkit:AutoCompleteBox">
+                    <Grid x:Name="PART_Root">
+                        <Grid x:Name="PART_InnerGrid">
+                            <toolkit:AutoCompleteBox x:Name="PART_ContentHost" Text="{TemplateBinding Text}" ItemTemplate="{TemplateBinding ItemTemplate}" TextBoxStyle="{TemplateBinding TextBoxStyle}" VerticalAlignment="Center" ItemsSource="{Binding TeamTypeInfo,Mode=OneWay}"
+                                                     IsTextCompletionEnabled="{TemplateBinding IsTextCompletionEnabled}" FilterMode="{TemplateBinding FilterMode}" ItemFilter="{Binding TagTypeFilter}" ValueMemberPath="PTag" MinimumPrefixLength="{TemplateBinding MinimumPrefixLength}" VerticalContentAlignment="Center"
+                                                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <!--<ScrollViewer x:Name="PART_ContentHost" Content="{Binding SAction,Mode=TwoWay}" BorderThickness="0" IsTabStop="False" Margin="0" VerticalAlignment="Stretch" Background="{x:Null}" />-->
+                            <TextBlock x:Name="Message" Text="{Binding PName,Mode=OneWay}" Foreground="#969696" IsHitTestVisible="False" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Left" Margin="50,2,5,2" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#CCFFFFFF"/>
+                            <Setter TargetName="Message" Property="Foreground" Value="#EFEFEF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="AutoBoxInListStyle" TargetType="{x:Type toolkit:AutoCompleteBox}">
+        <Style.Resources>
+            <Style x:Key="AutoBoxTextStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="2,2,0,0"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource AutoBoxTextStyle}"/>
+        <Setter Property="IsTextCompletionEnabled" Value="False"/>
+        <Setter Property="AllowDrop" Value="False"/>
+    </Style>
+
+    <Style x:Key="AutoBoxInListLAStyle" TargetType="{x:Type toolkit:AutoCompleteBox}">
+        <Style.Resources>
+            <Style x:Key="AutoBoxTextStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="2,2,0,0"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource AutoBoxTextStyle}"/>
+        <Setter Property="IsTextCompletionEnabled" Value="False"/>
+        <Setter Property="AllowDrop" Value="False"/>
+    </Style>
+
+    <Style x:Key="AutoEditorBoxStyleB" TargetType="{x:Type toolkit:AutoCompleteBox}">
+        <Setter Property="BorderBrush" Value="#99D9EA"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource EditorBoxStyleB}"/>
+        <Setter Property="IsTextCompletionEnabled" Value="False"/>
+        <Setter Property="AllowDrop" Value="False"/>
+    </Style>
+
+    <Style x:Key="ACBStyleForScriptAction" TargetType="toolkit:AutoCompleteBox">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="IsTextCompletionEnabled" Value="True"/>
+        <Setter Property="MinimumPrefixLength" Value="0"/>
+        <Setter Property="AllowDrop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="toolkit:AutoCompleteBox">
+                    <Grid x:Name="PART_Root">
+                        <Grid x:Name="PART_InnerGrid">
+                            <toolkit:AutoCompleteBox x:Name="PART_ContentHost" Text="{Binding SAction,Mode=TwoWay}" Margin="0 2 5 2" ItemsSource="{Binding ScriptInfo,Mode=OneWay}"
+                                                     Style="{StaticResource AutoBoxInListLAStyle}" PreviewKeyDown="Script_PreviewKeyDown"
+                                                             ItemTemplate="{TemplateBinding ItemTemplate}" PreviewMouseLeftButtonDown="ACBMouseLeftButtonDown"
+                                                             FilterMode="None" ValueMemberPath="SAction" MinimumPrefixLength="0"/>
+                            <!--<ScrollViewer x:Name="PART_ContentHost" Content="{Binding SAction,Mode=TwoWay}" BorderThickness="0" IsTabStop="False" Margin="0" VerticalAlignment="Stretch" Background="{x:Null}" />-->
+                            <TextBlock x:Name="Message" Text="{Binding SActionName,Mode=OneWay}" Foreground="#707070" IsHitTestVisible="False" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Top" TextAlignment="Left" Margin="28,5,0,5" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#CCFFFFFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ACBStyleForScriptParam" TargetType="toolkit:AutoCompleteBox">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="IsTextCompletionEnabled" Value="True"/>
+        <Setter Property="MinimumPrefixLength" Value="0"/>
+        <Setter Property="AllowDrop" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TextBoxFocusVisual}"/>
+        <Setter Property="TextBoxStyle" Value="{StaticResource AutoBoxTextStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="toolkit:AutoCompleteBox">
+                    <Grid x:Name="PART_Root">
+                        <Grid x:Name="PART_InnerGrid">
+                            <toolkit:AutoCompleteBox x:Name="PART_ContentHost" Text="{Binding Parameter,Mode=TwoWay}" Margin="0 2 5 2" Style="{StaticResource AutoBoxInListLAStyle}"
+                                                             ItemTemplate="{TemplateBinding ItemTemplate}" PreviewMouseLeftButtonDown="ACBMouseLeftButtonDown2"
+                                                             FilterMode="None" ValueMemberPath="Param" MinimumPrefixLength="0" PreviewKeyDown="Parameter_PreviewKeyDown"/>
+                            <TextBlock x:Name="Message" Text="{Binding ParameterName,Mode=OneWay}" Foreground="#707070" IsHitTestVisible="False" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Top" TextAlignment="Left" Margin="56,5,0,5" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_ContentHost" Property="Foreground" Value="#B0B0B0"/>
+                            <Setter TargetName="Message" Property="Foreground" Value="#B0B0B0"/>
+                            <Setter Property="Background" Value="#FFFFFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

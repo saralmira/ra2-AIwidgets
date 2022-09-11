@@ -1,0 +1,928 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RA2AI_Editor"
+                    xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+                    xmlns:controls="clr-namespace:RA2AI_Editor.Controls"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+
+    <Style x:Key="RoundButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="1" BorderThickness="1" CornerRadius="18" BorderBrush="#AA3778FF">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#3778FF"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="RadiusButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="0" BorderThickness="1" CornerRadius="3" BorderBrush="#AA3778FF">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#3778FF"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="0" BorderThickness="1" CornerRadius="0" BorderBrush="#AA3778FF">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#3778FF"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SpecialButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="-2" BorderThickness="1" CornerRadius="0" BorderBrush="#D712E7">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#D712E7"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="BtnSpecialStyle" TargetType="Button">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="backgroundorg" StartPoint="0.0,0" EndPoint="1.0,1">
+                <GradientStop Offset="0" Color="#DF22EE"/>
+                <GradientStop Offset="1" Color="#EE224A"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource SpecialButtonFocusVisual}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="{StaticResource backgroundorg}"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True">
+                        <Grid x:Name="grid">
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid" Property="Background" Value="#60F0A0A0"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="grid" Property="Background" Value="#70B060FF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="BtnMenuStyle" TargetType="Button">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#fbe6ae"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" Foreground="#212121" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#f8d374"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#f3b81d"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnInfoStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="#414141"/>
+        <Setter Property="BorderBrush" Value="#C7C7C7"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#EFEFEF"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Left" Margin="15 0 15 0" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#BFBFBF"/>
+                            <Setter TargetName="border" Property="Background" Value="#F3F3F3"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#BFBFBF"/>
+                            <Setter TargetName="border" Property="Background" Value="#D9D9D9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#BFBFBF"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DADADA"/>
+                            <Setter TargetName="border" Property="Background" Value="#F3F3F3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnInfoRadiusStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="#414141"/>
+        <Setter Property="BorderBrush" Value="#BFBFBF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#EFEFEF"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter TargetName="border" Property="Background" Value="#FBFBFB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter TargetName="border" Property="Background" Value="#D9D9D9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#BFBFBF"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DADADA"/>
+                            <Setter TargetName="border" Property="Background" Value="#F3F3F3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnStyleForStateBtn" TargetType="Button">
+        <Setter Property="Foreground" Value="#212121"/>
+        <Setter Property="BorderBrush" Value="#BFBFBF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#EFEFEF"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True"/>
+                        <Grid x:Name="grid">
+                            <TextBlock Margin="8 0 8 0" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter TargetName="grid" Property="Background" Value="#48FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter TargetName="grid" Property="Background" Value="#50666666"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnImageStyle1" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/other.png" Stretch="None"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/other.png"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/other.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnAddItemStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="bd" Width="30" Height="30" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3">
+                            <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/plus.png" Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnLocateStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="bd" Width="30" Height="30" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3">
+                            <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/locate.png" Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnReplaceStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="bd" Width="30" Height="30" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3">
+                            <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/replace.png" Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="BtnRedoStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="bd" Width="30" Height="30" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3">
+                            <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/redo_e.png" Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/redo_d.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnUndoStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent">
+                        <Border x:Name="bd" Width="30" Height="30" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3">
+                            <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/undo_e.png" Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/undo_d.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="BtnCrossImageStyle" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/cross.png" Stretch="Uniform"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/cross2.png"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/cross2.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnImgTxtStyle1" TargetType="Button">
+        <Setter Property="Foreground" Value="#555"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Images/search.png" Stretch="None"/>
+                            <TextBlock x:Name="Txt" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="#333333" TargetName="Txt"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonImageStyle_Plus" TargetType="Button">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border>
+                        <Grid HorizontalAlignment="Center">
+                            <Image x:Name="img" Width="18" Height="18" Source="/Images/plus_circle_fill.png" Stretch="Uniform"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="#D81E06" Opacity="0.7" BlurRadius="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="img" Property="Source" Value="/Images/plus_circle_fill2.png"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="#F79E83" Opacity="0.7" BlurRadius="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonImageStyle_Minus" TargetType="Button">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RoundButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border>
+                        <Grid HorizontalAlignment="Center">
+                            <Image x:Name="img" Width="18" Height="18" Source="/Images/minus_circle_fill.png" Stretch="Uniform"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="#707070" Opacity="0.7" BlurRadius="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="img" Property="Source" Value="/Images/minus_circle_fill2.png"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" Color="#CDCDCD" Opacity="0.7" BlurRadius="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonImageStyle_MinusCircle" TargetType="Button">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            Background="#11ffffff"
+                            BorderBrush="#11ffffff" SnapsToDevicePixels="True" CornerRadius="5">
+                        <Grid HorizontalAlignment="Center">
+                            <Image x:Name="img" MaxHeight="15" Source="null" Stretch="Uniform" Margin="25 0 25 0"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="img" Property="Source" Value="/Images/minus_circle.png"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#80bfbfbf"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="img" Property="Source" Value="/Images/minus_circle2.png"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#80515151"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="{x:Type controls:ButtonEx}">
+        <Setter Property="Focusable" Value="False"/>
+        <Style.Triggers>
+            <Trigger Property="ButtonType" Value="Normal">
+                <Setter Property="Background" Value="#43a9c7"/>
+                <Setter Property="MouseOverBackground" Value="#2f96b4"/>
+                <Setter Property="MousePressedBackground" Value="#2a89a4"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="MouseOverForeground" Value="White"/>
+                <Setter Property="MousePressedForeground" Value="White"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type controls:ButtonEx}">
+                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True">
+                                <TextBlock x:Name="txt" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{Binding MouseOverBackground,RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter TargetName="txt" Property="Foreground" Value="{Binding MouseOverForeground,RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{Binding MouseOverBorderbrush,RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{Binding MousePressedBackground,RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    <Setter TargetName="txt" Property="Foreground" Value="{Binding MousePressedForeground,RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="ButtonType" Value="Icon">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type controls:ButtonEx}">
+                            <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{TemplateBinding Icon}" Stretch="None"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="ButtonType" Value="Text">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="#002c99"/>
+                <Setter Property="MouseOverForeground" Value="#FF2c99"/>
+                <Setter Property="MousePressedForeground" Value="#002c99"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type controls:ButtonEx}">
+                            <TextBlock x:Name="txt" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{Binding MouseOverForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="txt"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Foreground" Value="{Binding MousePressedForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="txt"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="ButtonType" Value="IconText">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="#555"/>
+                <Setter Property="MouseOverForeground" Value="#555"/>
+                <Setter Property="MousePressedForeground" Value="#555"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type controls:ButtonEx}">
+                            <Border>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Image Source="{TemplateBinding Icon}" Stretch="None"/>
+                                    <TextBlock x:Name="Txt" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{Binding MouseOverForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="Txt"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Foreground" Value="{Binding MousePressedForeground,RelativeSource={RelativeSource TemplatedParent}}" TargetName="Txt"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="BtnJumpStyle" TargetType="Button">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.8">
+                <GradientStop Offset="0" Color="#FAFBFD"/>
+                <GradientStop Offset="1" Color="#EBF3FD"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.7">
+                <GradientStop Offset="0" Color="#F1F7FE"/>
+                <GradientStop Offset="1" Color="#CFE4FE"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!--<Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="#eaeaea" Background="#CEF0FF" SnapsToDevicePixels="True"
+                            CornerRadius="3"> -->
+                    <Grid>
+                        <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="Transparent" Background="Transparent" SnapsToDevicePixels="True"
+                            CornerRadius="3">
+                            <Grid>
+                                <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/redo.png" Stretch="Uniform" Height="15" Width="15"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background1}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#B8D6FB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/redo2.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background2}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#84ACDD"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/disable.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="Transparent"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnAddStyle" TargetType="Button">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.8">
+                <GradientStop Offset="0" Color="#FAFBFD"/>
+                <GradientStop Offset="1" Color="#EBF3FD"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.7">
+                <GradientStop Offset="0" Color="#F1F7FE"/>
+                <GradientStop Offset="1" Color="#CFE4FE"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!--<Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="#eaeaea" Background="#CEF0FF" SnapsToDevicePixels="True"
+                            CornerRadius="3"> -->
+                    <Grid>
+                        <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="Transparent" Background="Transparent" SnapsToDevicePixels="True"
+                            CornerRadius="3">
+                            <Grid>
+                                <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/add_n.png" Stretch="Uniform" Height="15" Width="15"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background1}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#B8D6FB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/add_o.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background2}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#84ACDD"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/disable.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="Transparent"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnCreateStyle" TargetType="Button">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.8">
+                <GradientStop Offset="0" Color="#FAFBFD"/>
+                <GradientStop Offset="1" Color="#EBF3FD"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.7">
+                <GradientStop Offset="0" Color="#F1F7FE"/>
+                <GradientStop Offset="1" Color="#CFE4FE"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <!--<Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="#eaeaea" Background="#CEF0FF" SnapsToDevicePixels="True"
+                            CornerRadius="3"> -->
+                    <Grid>
+                        <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="Transparent" Background="Transparent" SnapsToDevicePixels="True"
+                            CornerRadius="3">
+                            <Grid>
+                                <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/create_n.png" Stretch="Uniform" Height="18" Width="18"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background1}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#B8D6FB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/create_o.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource background2}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="#84ACDD"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/disable.png"/>
+                            <Setter TargetName="bd" Property="Background" Value="Transparent"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NewBtnStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#111111"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="#eaeaea" Background="#CEF0FF" SnapsToDevicePixels="True"
+                            CornerRadius="1">
+                        <Grid>
+                            <ContentPresenter x:Name="ButtonContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#97E0FF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#0083BB"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="UnderlinedTextBtnStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="0" 
+                            Background="Transparent" SnapsToDevicePixels="True">
+                        <Grid>
+                            <ContentPresenter x:Name="ButtonContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#50FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#50212121"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BtnRadiusArrowStyle" TargetType="Button">
+        <Style.Resources>
+            <convers:BoolToVisible x:Key="BoolToVisible"/>
+            <convers:BoolToVisibleR x:Key="BoolToVisibleR"/>
+        </Style.Resources>
+        <Setter Property="Foreground" Value="#414141"/>
+        <Setter Property="BorderBrush" Value="#BFBFBF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#EFEFEF"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse x:Name="ButtonEllipse" Visibility="Hidden" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" Height="16" StrokeThickness="1" Fill="#EFEFEF" Stroke="#BFBFBF"/>
+                        <Image Source="/Images/right.png" Width="14" Height="12" Visibility="{Binding State,Mode=OneWay,Converter={StaticResource BoolToVisible}}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        <Image Source="/Images/left.png" Width="14" Height="12" Visibility="{Binding State,Mode=OneWay,Converter={StaticResource BoolToVisibleR}}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonEllipse" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="ButtonEllipse" Property="Stroke" Value="#A0A0A0"/>
+                            <Setter TargetName="ButtonEllipse" Property="Fill" Value="#FBFBFB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ButtonEllipse" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="ButtonEllipse" Property="Stroke" Value="#A0A0A0"/>
+                            <Setter TargetName="ButtonEllipse" Property="Fill" Value="#D9D9D9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="SplitToggleStyle" TargetType="{x:Type ToggleButton}">
+        <Border x:Name="bd" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" 
+                            BorderBrush="Transparent" Background="{TemplateBinding Background}" SnapsToDevicePixels="True"
+                            CornerRadius="3">
+            <Grid Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Path x:Name="Arrow" Margin="0 0 0 0" Data="M 0 0 1 2 2 0 Z" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="None" Stroke="#2196F3" Fill="#2196F3"/>
+                <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="true">
+                <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                <Setter TargetName="Arrow" Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform CenterX="1" CenterY="1" Angle="180"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Stroke" TargetName="Arrow" Value="#27C7F7"/>
+                <Setter Property="Fill" TargetName="Arrow" Value="#BAE4FA"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="UndoStyle" TargetType="Button">
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RadiusButtonFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" BorderBrush="{TemplateBinding Control.BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="3,0,0,3">
+                        <Image x:Name="Img" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/undo_e.png" Stretch="Uniform"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#DBDBDB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="#A9A9A9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Img" Property="Source" Value="/Images/undo_d.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

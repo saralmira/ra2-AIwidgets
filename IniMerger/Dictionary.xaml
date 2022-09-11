@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IniMerger"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="str_target">目标文件</sys:String>
+    <sys:String x:Key="str_source">源文件</sys:String>
+    <sys:String x:Key="str_autobackup">自动备份</sys:String>
+    <sys:String x:Key="str_clearall">清除全部</sys:String>
+    <sys:String x:Key="str_analyse">分析元素</sys:String>
+    <sys:String x:Key="str_merge">布尔运算</sys:String>
+    <sys:String x:Key="str_result">分析结果</sys:String>
+    <sys:String x:Key="str_bool_intersection">差集</sys:String>
+    <sys:String x:Key="str_bool_merge">并集</sys:String>
+    <sys:String x:Key="str_bool_cover">覆盖</sys:String>
+
+
+
+    <sys:String x:Key="setting">预设项</sys:String>
+    <sys:String x:Key="rules">rules</sys:String>
+    <sys:String x:Key="art">art</sys:String>
+    <sys:String x:Key="ai">ai</sys:String>
+    <sys:String x:Key="sound">sound</sys:String>
+    <sys:String x:Key="theme">theme</sys:String>
+    <sys:String x:Key="eva">eva</sys:String>
+    <sys:String x:Key="other">其他</sys:String>
+
+    <sys:String x:Key="h_hint">提示</sys:String>
+    <sys:String x:Key="h_finish">任务处理完成！</sys:String>
+
+
+    <sys:String x:Key="tip_target">目标ini文件</sys:String>
+    <sys:String x:Key="tip_source">源ini文件</sys:String>
+    <sys:String x:Key="tip_intersection">差集：输出每个源ini文件中比目标ini多出来的section或value不同的内容</sys:String>
+    <sys:String x:Key="tip_merge">并集：输出将每个源ini文件与目标ini依次合并到一起的内容</sys:String>
+    <sys:String x:Key="tip_cover">覆盖：输出将每个源ini文件与目标ini同section覆盖、不同section保留的内容</sys:String>
+    <sys:String x:Key="tip_ul" xml:space="preserve">无颜色的结果代表内容有差异的section&#13;绿色的代表源ini中多出来的section&#13;红色的代表源ini中缺少的section</sys:String>
+
+</ResourceDictionary>

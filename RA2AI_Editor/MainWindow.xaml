@@ -1,0 +1,750 @@
+﻿<Window xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  
+        xmlns:UserControls="clr-namespace:RA2AI_Editor.UserControls"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RA2AI_Editor"
+        xmlns:controls="clr-namespace:RA2AI_Editor.Controls"
+        xmlns:gdex="clr-namespace:RA2AI_Editor.Styles"
+        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+        xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+        xmlns:SearchTextBox="clr-namespace:SearchTextBox;assembly=SearchTextBox"  
+        x:Class="RA2AI_Editor.MainWindow"
+        mc:Ignorable="d"
+        Title="AI Editor" Height="600" Width="800" Background="Transparent" WindowStartupLocation="CenterScreen" Icon="ai.png"
+        Closing="Window_Closing" KeyDown="MainWindow_KeyDown">
+    <Border Background="#0787dc">
+        <!--Background="#3fb0f9"-->
+        <Grid x:Name="maingrid">
+            <Grid.Resources>
+                <convers:BoolToStringInList x:Key="BoolToStringInList"/>
+                <convers:IntToString x:Key="IntToString"/>
+                <convers:StringToInt x:Key="StringToInt"/>
+                <convers:UIntToString x:Key="UIntToString"/>
+                <convers:UIntToDouble x:Key="UIntToDouble"/>
+                <convers:BoolToVisible x:Key="BoolToVisible"/>
+                <convers:BoolToVisibleR x:Key="BoolToVisibleR"/>
+                <convers:BoolToReverse x:Key="BoolToReverse"/>
+                <convers:FalseWhileAnalyse x:Key="FalseWhileAnalyse"/>
+                <convers:CollapsedWhileAnalyse x:Key="CollapsedWhileAnalyse"/>
+                <convers:ObjectToBool x:Key="ObjectToBool"/>
+                <convers:ObjectToBoolR x:Key="ObjectToBoolR"/>
+                <convers:ObjectToVisible x:Key="ObjectToVisible"/>
+                <convers:ObjectToCollapsed x:Key="ObjectToCollapsed"/>
+                <convers:AnalysisResultToBool x:Key="AnalysisResultToBool"/>
+                <convers:AnalysisResultToVisibility x:Key="AnalysisResultToVisibility"/>
+                <convers:BoolToWidth x:Key="BoolToWidth"/>
+                <ContextMenu x:Key="MainContextMenu" Opened="MainContextMenu_Opened">
+                    <MenuItem Name="mi_copy" Header="{DynamicResource MENU_COPY}" Click="ItemCopyToList_Click"/>
+                    <MenuItem Name="mi_cpyitem" Header="{DynamicResource MENU_COPYITEM}" Click="ItemCopyCur_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Images/copy.png" Stretch="Uniform" Height="16" VerticalAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="mi_cpyitemrel" Header="{DynamicResource MENU_COPYALL}" Click="ItemCopyRel_Click"/>
+                    <MenuItem Name="mi_pstitem" Header="{DynamicResource MENU_PASTEITEM}" Click="ItemPaste_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Images/paste.png" Stretch="Uniform" Height="16" VerticalAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Name="mi_sep1"/>
+                    <MenuItem Name="mi_add" Header="{DynamicResource MENU_ADD}" Click="ItemAdd_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Images/add.png" Stretch="Uniform" Height="16" VerticalAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="mi_delete" Header="{DynamicResource MENU_DELETE}" Click="ItemDelete_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Images/delete.png" Stretch="Uniform" Height="16" VerticalAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="mi_safedelete" Header="{DynamicResource MENU_SAFEDELETE}" Click="ItemSafeDelete_Click"/>
+                    <MenuItem Name="mi_recover" Header="{DynamicResource MENU_RECOVER}" Click="ItemRecover_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Images/recover.png" Stretch="Uniform" Height="16" VerticalAlignment="Center"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator Name="mi_sep2"/>
+                    <MenuItem Name="mi_c_tt" Header="{DynamicResource MENU_CREATE_TEAMTYPE}" Click="CreateTeamType_Click"/>
+                    <MenuItem Name="mi_c_at" Header="{DynamicResource MENU_CREATE_AITRIGGER}" Click="CreateAITrigger_Click"/>
+                </ContextMenu>
+            </Grid.Resources>
+            <TabControl x:Name="MainTabControl" Style="{StaticResource TabControlStyle}" Background="White">
+                <TabItem x:Name="tab_file" Header="{DynamicResource MENU_FILE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="7"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{DynamicResource HISTORY_FILE}" Foreground="#111111" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ListBox Grid.Row="1" VerticalAlignment="Top"  BorderThickness="1"
+                                     ItemContainerStyle="{StaticResource HistoryItemStyle}" x:Name="HistoryItemList" 
+                                     BorderBrush="#eaeaeb" Background="#fef9eb" SizeChanged="HistoryItemList_SizeChanged">
+                                <ListBox.Effect>
+                                    <DropShadowEffect Opacity="0.25"/>
+                                </ListBox.Effect>
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="{DynamicResource MENU_DELETE}" Click="HistoryItemDelete_Click"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.Style>
+                                    <Style TargetType="{x:Type ListBox}">
+                                        <Setter Property="Focusable" Value="False"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListBox}">
+                                                    <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" 
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="0">
+                                                        <ScrollViewer Focusable="False">
+                                                            <ItemsPresenter />
+                                                        </ScrollViewer>
+                                                    </Border>
+
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.Style>
+                            </ListBox>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.RowSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="84"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="5"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Foreground="#111111" Text="{DynamicResource FILE_CURRENT}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource BtnSpecialStyle}" ToolTip="{DynamicResource TIP_OPENFILE}" Click="OpenFile_Click" Margin="0 5 0 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="Images/open_icon.png" Grid.Column="0" Height="24" Width="24" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding OpenFileBoxText,Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Margin="5 0 0 0"/>
+                                </Grid>
+                            </Button>
+
+                            <StackPanel Grid.Column="1" Grid.Row="5">
+                                <Button Style="{StaticResource BtnInfoStyle}" ToolTip="{DynamicResource TIP_CREATEFILE}" Margin="0 7 0 0" Height="38" Click="FileNew_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="Images/new_icon.png" Width="24" Height="24" Margin="0 0 7 0"/>
+                                        <TextBlock Text="{DynamicResource FILE_NEW}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Button>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Style="{StaticResource BtnInfoStyle}" ToolTip="{DynamicResource TIP_SAVEFILE}" IsEnabled="{Binding CurrentFile,Mode=OneWay,Converter={StaticResource ObjectToBool}}" Grid.Column="0" Margin="0 7 2 0" Height="38" Click="FileSave_Click">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Image Source="Images/save_icon.png" Width="24" Height="24" Margin="0 0 7 0"/>
+                                            <TextBlock Text="{DynamicResource FILE_SAVE}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource BtnInfoStyle}" ToolTip="{DynamicResource TIP_SAVEASFILE}" Content="{DynamicResource FILE_SAVEAS}" IsEnabled="{Binding CurrentFile,Mode=OneWay,Converter={StaticResource ObjectToBool}}" Grid.Column="1" Margin="2 7 0 0" Height="38" Click="FileSaveAs_Click"/>
+                                </Grid>
+                                <Button Style="{StaticResource BtnInfoStyle}" ToolTip="{DynamicResource TIP_RELEASE}" IsEnabled="{Binding CurrentFile,Mode=OneWay,Converter={StaticResource ObjectToBool}}" Margin="0 7 0 0" Height="38" Click="FileRelease_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="Images/release.png" Width="24" Height="24" Margin="0 0 7 0"/>
+                                        <TextBlock Text="{DynamicResource FILE_RELEASE}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource BtnInfoStyle}" ToolTip="{DynamicResource TIP_CLOSEFILE}" IsEnabled="{Binding CurrentFile,Mode=OneWay,Converter={StaticResource ObjectToBool}}" Margin="0 7 0 0" Height="38" Click="FileClose_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="Images/close_icon.png" Width="24" Height="24" Margin="0 0 7 0"/>
+                                        <TextBlock Text="{DynamicResource FILE_CLOSE}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <controls:ButtonEx Grid.Row="6" Grid.Column="1" Content="{DynamicResource BTN_RECOVER}" Margin="10 0 10 0" ButtonType="Text" HorizontalAlignment="Right" Foreground="{Binding RandomColor,Mode=OneWay}" Click="FileRecover_Click"/>
+                        </Grid>
+                    </Grid>
+
+                </TabItem>
+                
+                <TabItem x:Name="tab_taskforce" Header="{DynamicResource MENU_TASKFORCE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid  Grid.Row="0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<TextBlock Text="{DynamicResource TASKFORCE_LIST}" Grid.Column="0" Grid.ColumnSpan="1" Foreground="#111111" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 0 0"/>-->
+                                <!--<TextBox Style="{StaticResource TextBoxSearchStyle}" Grid.Column="1" Margin="5 0 5 0"/>-->
+                                <SearchTextBox:SearchTextBox Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2" InstantSearchDelay="{Binding SearchDelay,Mode=OneWay}" SearchMode="Instant" AllowEmptySearches="True" FocusVisualStyle="{StaticResource TextBoxFocusVisual}" Search="TaskForceList_Search"/>
+                                <ToggleButton x:Name="toggle_tf" Template="{StaticResource PopToggleButtonStyle}" Margin="0 2 0 2" Width="26" Grid.Column="1" Focusable="True" FocusVisualStyle="{StaticResource RadiusButtonFocusVisual}" ClickMode="Release"/>
+                                <Popup x:Name="tf_pop" Width="150" PlacementTarget="{Binding ElementName=toggle_tf}" Style="{StaticResource PopupStyle}" Opened="SearchPopup_Opened" Closed="SearchPopup_Closed"
+                                        Placement="Bottom" HorizontalOffset="-62" VerticalOffset="-1" IsOpen="{Binding ElementName=toggle_tf,Path=IsChecked,Mode=TwoWay}">
+                                    <Grid Background="Transparent">
+                                        <Border Style="{StaticResource PanelBorderStyle}"/>
+                                        <Grid Margin="14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="1"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{DynamicResource SEARCH_OPTIONS}" Foreground="#202020" HorizontalAlignment="Center" Margin="0 5 0 5"/>
+                                            <Rectangle Grid.Row="1" Fill="Gray"/>
+                                            <CheckBox x:Name="scb_1" Grid.Row="2" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_CASE}" IsChecked="{Binding Search_InCase,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="3" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_TAG}" IsChecked="{Binding Search_ID,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="4" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_NAME}" IsChecked="{Binding Search_Name,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="5" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_UNIT}" IsChecked="{Binding Search_Unit,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                        </Grid>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+
+                            <ListView x:Name="TaskForceList" Grid.Row="1" ContextMenu="{StaticResource MainContextMenu}" Style="{StaticResource TypeListViewStyle}"
+                                      SelectionChanged="TaskForceList_SelectionChanged">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                        <GridViewColumn Header="{DynamicResource COLUMN_ID}" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="7"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Margin="0 0 2 0" Visibility="{Binding EnableExt,Mode=OneWay,Converter={StaticResource BoolToVisible}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="#85D3E7"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Path=PTag}"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding PName}" Header="{DynamicResource COLUMN_NAME}" Width="270"/>
+                                        <GridViewColumn Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{DynamicResource BTN_SWITCH}" IsEnabled="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToBool}}" Visibility="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToVisibility}}" IsChecked="{Binding SwitchType,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Grid Grid.Row="2" Margin="10 3 10 3" IsEnabled="{Binding IniAnalyse,Converter={StaticResource FalseWhileAnalyse}}" 
+                                  Visibility="{Binding IniAnalyse,Converter={StaticResource CollapsedWhileAnalyse}}" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource BtnAddItemStyle}" ToolTip="{DynamicResource STR_ADDINBOTTOM}" Click="BottomAdd_Click"/>
+                                    <Button Style="{StaticResource BtnLocateStyle}" ToolTip="{DynamicResource STR_LOCATE}" Click="BottomFocus_Click"/>
+                                    <Button Style="{StaticResource BtnReplaceStyle}" ToolTip="{DynamicResource STR_REPLACEUNIT}" Click="BottomUnitReplace_Click"/>
+                                    <!--<UserControls:UndoButton Grid.Column="3" ToolTip="{DynamicResource STR_UNDO}"/>-->
+                                    <Button Style="{StaticResource BtnUndoStyle}" IsEnabled="{Binding Path=IsUndoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_UNDO}" Click="BottomUndo_Click"/>
+                                    <Button Style="{StaticResource BtnRedoStyle}" IsEnabled="{Binding Path=IsRedoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_REDO}" Click="BottomRedo_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center"/>
+                        <Grid Grid.Column="2">
+                            <gdex:TaskForceGrid x:Name="tfgrid"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_scripttype" Header="{DynamicResource MENU_SCRIPTTYPE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="35"/>
+                            </Grid.RowDefinitions>
+                            <Grid  Grid.Row="0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<TextBlock Text="{DynamicResource SCRIPTTYPE_LIST}" Grid.Column="0" Grid.ColumnSpan="1" Foreground="#111111" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 0 0"/>-->
+                                <!--<TextBox Style="{StaticResource TextBoxSearchStyle}" Grid.Column="1" Margin="5 0 5 0"/>-->
+                                <SearchTextBox:SearchTextBox Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2" InstantSearchDelay="{Binding SearchDelay,Mode=OneWay}" FocusVisualStyle="{StaticResource TextBoxFocusVisual}" SearchMode="Instant" AllowEmptySearches="True" Search="ScriptTypeList_Search"/>
+                                <ToggleButton x:Name="toggle_st" Template="{StaticResource PopToggleButtonStyle}" Margin="0 2 0 2" Width="26" Grid.Column="1" Focusable="False" ClickMode="Release"/>
+                                <Popup Width="150" PlacementTarget="{Binding ElementName=toggle_st}" Style="{StaticResource PopupStyle}"
+                                        Placement="Bottom" HorizontalOffset="-62" VerticalOffset="-1" IsOpen="{Binding ElementName=toggle_st,Path=IsChecked,Mode=TwoWay}">
+                                    <Grid Background="Transparent">
+                                        <Border Style="{StaticResource PanelBorderStyle}"/>
+                                        <Grid Margin="14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="1"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{DynamicResource SEARCH_OPTIONS}" Foreground="#202020" HorizontalAlignment="Center" Margin="0 5 0 5"/>
+                                            <Rectangle Grid.Row="1" Fill="Gray"/>
+                                            <CheckBox Grid.Row="2" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_CASE}" IsChecked="{Binding Search_InCase,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="3" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_TAG}" IsChecked="{Binding Search_ID,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="4" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_NAME}" IsChecked="{Binding Search_Name,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                        </Grid>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ListView x:Name="ScriptTypeList" Grid.Row="1" ContextMenu="{StaticResource MainContextMenu}" Style="{StaticResource TypeListViewStyle}"
+                                      SelectionChanged="ScriptTypeList_SelectionChanged">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                        <GridViewColumn DisplayMemberBinding="{Binding PTag}" Header="{DynamicResource COLUMN_ID}" Width="100"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding PName}" Header="{DynamicResource COLUMN_NAME}" Width="270"/>
+                                        <GridViewColumn Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{DynamicResource BTN_SWITCH}" IsEnabled="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToBool}}" Visibility="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToVisibility}}" IsChecked="{Binding SwitchType,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Grid Grid.Row="2" Margin="10 3 10 3" IsEnabled="{Binding IniAnalyse,Converter={StaticResource FalseWhileAnalyse}}" 
+                                  Visibility="{Binding IniAnalyse,Converter={StaticResource CollapsedWhileAnalyse}}" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Style="{StaticResource BtnAddItemStyle}" ToolTip="{DynamicResource STR_ADDINBOTTOM}" Click="BottomAdd_Click"/>
+                                <Button Grid.Column="1" Margin="0" Style="{StaticResource BtnLocateStyle}" ToolTip="{DynamicResource STR_LOCATE}" Click="BottomFocus_Click"/>
+                                <!--<UserControls:UndoButton Grid.Column="3" ToolTip="{DynamicResource STR_UNDO}"/>-->
+                                <Button Grid.Column="3" Style="{StaticResource BtnUndoStyle}" IsEnabled="{Binding Path=IsUndoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_UNDO}" Click="BottomUndo_Click"/>
+                                <Button Grid.Column="4" Style="{StaticResource BtnRedoStyle}" IsEnabled="{Binding Path=IsRedoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_REDO}" Click="BottomRedo_Click"/>
+                            </Grid>
+                        </Grid>
+                        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center"/>
+                        <Grid Grid.Column="2">
+                            <gdex:ScriptTypeGrid x:Name="stgrid2"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_teamtype" Header="{DynamicResource MENU_TEAMTYPE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="35"/>
+                            </Grid.RowDefinitions>
+                            <Grid  Grid.Row="0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<TextBlock Text="{DynamicResource TEAMTYPE_LIST}" Grid.Column="0" Grid.ColumnSpan="1" Foreground="#111111" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 0 0"/>-->
+                                <SearchTextBox:SearchTextBox Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2" InstantSearchDelay="{Binding SearchDelay,Mode=OneWay}" FocusVisualStyle="{StaticResource TextBoxFocusVisual}" SearchMode="Instant" AllowEmptySearches="True" Search="TeamTypeList_Search"/>
+                                <ToggleButton x:Name="toggle_tt" Template="{StaticResource PopToggleButtonStyle}" Margin="0 2 0 2" Width="26" Grid.Column="1" Focusable="False" ClickMode="Release"/>
+                                <Popup Width="150" PlacementTarget="{Binding ElementName=toggle_tt}" Style="{StaticResource PopupStyle}"
+                                        Placement="Bottom" HorizontalOffset="-62" VerticalOffset="-1" IsOpen="{Binding ElementName=toggle_tt,Path=IsChecked,Mode=TwoWay}">
+                                    <Grid Background="Transparent">
+                                        <Border Style="{StaticResource PanelBorderStyle}"/>
+                                        <Grid Margin="14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="1"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{DynamicResource SEARCH_OPTIONS}" Foreground="#202020" HorizontalAlignment="Center" Margin="0 5 0 5"/>
+                                            <Rectangle Grid.Row="1" Fill="Gray"/>
+                                            <CheckBox Grid.Row="2" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_CASE}" IsChecked="{Binding Search_InCase,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="3" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_TAG}" IsChecked="{Binding Search_ID,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="4" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_NAME}" IsChecked="{Binding Search_Name,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                        </Grid>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ListView x:Name="TeamTypeList" Grid.Row="1" ContextMenu="{StaticResource MainContextMenu}" 
+                                      SelectionChanged="TeamTypeList_SelectionChanged" Style="{StaticResource TypeListViewStyle}">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                        <GridViewColumn Header="{DynamicResource COLUMN_ID}" Width="90">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="7"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.Column="0" Margin="0 0 2 0" Visibility="{Binding EnableExt,Mode=OneWay,Converter={StaticResource BoolToVisible}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="#85D3E7"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Path=PTag}"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding PName}" Header="{DynamicResource COLUMN_NAME}" Width="170"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding IsBaseDefense,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_ISBASEDEFENCE}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Priority,Mode=OneWay,Converter={StaticResource UIntToString}}" Header="{DynamicResource COLUMN_PRIORITY}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Recruiter,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_RECRUITER}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding AreTeamMembersRecruitable,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_RECRUITABLE}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Max,Mode=OneWay,Converter={StaticResource UIntToString}}" Header="{DynamicResource COLUMN_MAX}" Width="60"/>
+                                        <GridViewColumn Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox x:Name="tfcb" Content="{DynamicResource BTN_SWITCH}" IsEnabled="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToBool}}" Visibility="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToVisibility}}" IsChecked="{Binding SwitchType,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Grid Grid.Row="2" Margin="10 3 10 3" IsEnabled="{Binding IniAnalyse,Converter={StaticResource FalseWhileAnalyse}}" 
+                                  Visibility="{Binding IniAnalyse,Converter={StaticResource CollapsedWhileAnalyse}}" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Style="{StaticResource BtnAddItemStyle}" ToolTip="{DynamicResource STR_ADDINBOTTOM}" Click="BottomAdd_Click"/>
+                                <Button Grid.Column="1" Margin="0" Style="{StaticResource BtnLocateStyle}" ToolTip="{DynamicResource STR_LOCATE}" Click="BottomFocus_Click"/>
+                                <!--<UserControls:UndoButton Grid.Column="3" ToolTip="{DynamicResource STR_UNDO}"/>-->
+                                <Button Grid.Column="3" Style="{StaticResource BtnUndoStyle}" IsEnabled="{Binding Path=IsUndoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_UNDO}" Click="BottomUndo_Click"/>
+                                <Button Grid.Column="4" Style="{StaticResource BtnRedoStyle}" IsEnabled="{Binding Path=IsRedoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_REDO}" Click="BottomRedo_Click"/>
+                            </Grid>
+                        </Grid>
+                        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center"/>
+                        <Grid Grid.Column="2">
+                            <gdex:TeamTypeGrid x:Name="ttgrid"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_aitriggers" Header="{DynamicResource MENU_AITRIGGERTYPE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<TextBlock Text="{DynamicResource AITRIGGERS_LIST}" Grid.Column="0" Grid.ColumnSpan="1" Foreground="#111111" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 0 0"/>-->
+                                <SearchTextBox:SearchTextBox Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2" InstantSearchDelay="{Binding SearchDelay,Mode=OneWay}" FocusVisualStyle="{StaticResource TextBoxFocusVisual}" SearchMode="Instant" AllowEmptySearches="True" Search="AITriggerList_Search"/>
+                                <ToggleButton x:Name="toggle_at" Template="{StaticResource PopToggleButtonStyle}" Margin="0 2 0 2" Width="26" Grid.Column="1" Focusable="False" ClickMode="Release"/>
+                                <Popup Width="150" PlacementTarget="{Binding ElementName=toggle_at}" Style="{StaticResource PopupStyle}"
+                                        Placement="Bottom" HorizontalOffset="-62" VerticalOffset="-1" IsOpen="{Binding ElementName=toggle_at,Path=IsChecked,Mode=TwoWay}">
+                                    <Grid Background="Transparent">
+                                        <Border Style="{StaticResource PanelBorderStyle}"/>
+                                        <Grid Margin="14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="1"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{DynamicResource SEARCH_OPTIONS}" Foreground="#202020" HorizontalAlignment="Center" Margin="0 5 0 5"/>
+                                            <Rectangle Grid.Row="1" Fill="Gray"/>
+                                            <CheckBox Grid.Row="2" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_CASE}" IsChecked="{Binding Search_InCase,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="3" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_TAG}" IsChecked="{Binding Search_ID,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                            <CheckBox Grid.Row="4" Style="{StaticResource SliderCheckBox}" Content="{DynamicResource SEARCH_NAME}" IsChecked="{Binding Search_Name,Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="3"/>
+                                        </Grid>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ListView x:Name="AITriggersList" Grid.Row="1" ContextMenu="{StaticResource MainContextMenu}" Style="{StaticResource TypeListViewStyle}"
+                                      SelectionChanged="AITriggersList_SelectionChanged">
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                        <GridViewColumn DisplayMemberBinding="{Binding PTag}" Header="{DynamicResource COLUMN_ID}" Width="80"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding PName}" Header="{DynamicResource COLUMN_NAME}" Width="160"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding SideDes,Mode=OneWay}" Header="{DynamicResource COLUMN_SIDE}" Width="40"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding TechLevel,Mode=OneWay,Converter={StaticResource IntToString}}" Header="{DynamicResource COLUMN_TECHLEVEL}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding BaseWeight,Mode=OneWay,Converter={StaticResource UIntToString}}" Header="{DynamicResource COLUMN_INITIALWEIGHT}" Width="60"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding EasyMode,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_EASY}" Width="40"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding NormalMode,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_MEDIUM}" Width="40"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding HardMode,Mode=OneWay,Converter={StaticResource BoolToStringInList}}" Header="{DynamicResource COLUMN_HARD}" Width="40"/>
+                                        <GridViewColumn Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox x:Name="tfcb" Content="{DynamicResource BTN_SWITCH}" IsEnabled="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToBool}}" Visibility="{Binding AnalysisResult,Mode=OneWay,Converter={StaticResource AnalysisResultToVisibility}}" IsChecked="{Binding SwitchType,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Grid Grid.Row="2" Margin="10 3 10 3" IsEnabled="{Binding IniAnalyse,Converter={StaticResource FalseWhileAnalyse}}" 
+                                  Visibility="{Binding IniAnalyse,Converter={StaticResource CollapsedWhileAnalyse}}" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Style="{StaticResource BtnAddItemStyle}" ToolTip="{DynamicResource STR_ADDINBOTTOM}" Click="BottomAdd_Click"/>
+                                <Button Grid.Column="1" Margin="0" Style="{StaticResource BtnLocateStyle}" ToolTip="{DynamicResource STR_LOCATE}" Click="BottomFocus_Click"/>
+                                <!--<UserControls:UndoButton Grid.Column="3" ToolTip="{DynamicResource STR_UNDO}"/>-->
+                                <Button Grid.Column="3" Style="{StaticResource BtnUndoStyle}" IsEnabled="{Binding Path=IsUndoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_UNDO}" Click="BottomUndo_Click"/>
+                                <Button Grid.Column="4" Style="{StaticResource BtnRedoStyle}" IsEnabled="{Binding Path=IsRedoEnabled, Source={x:Static local:Local.GlobalCommandStack}}" ToolTip="{DynamicResource STR_REDO}" Click="BottomRedo_Click"/>
+                            </Grid>
+                        </Grid>
+                        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center"/>
+                        <Grid Grid.Column="2">
+                            <gdex:AITriggerTypeGrid x:Name="atgrid"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                
+                <TabItem x:Name="tab_analyse" Header="{DynamicResource MENU_ANALYSE}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}">
+                    <Grid>
+                        <TabControl Margin="5" Style="{StaticResource TabControlStyle}">
+                            <TabItem Header="{DynamicResource MENU_COMPARE}" Style="{StaticResource GeneralTabItemStyle}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="36"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <Button Style="{StaticResource BtnInfoRadiusStyle}" Content="{DynamicResource BTN_CHSCPFILE}" Width="120" Margin="5" VerticalContentAlignment="Center" HorizontalAlignment="Left" Click="Gen_CompareReport_Click" ToolTip="{DynamicResource TIP_COMPAREFILE}"/>
+                                        <CheckBox Content="{DynamicResource BTN_SHOWANARESINLIST}" IsEnabled="{Binding IniAnalyse,Mode=OneWay,Converter={StaticResource ObjectToBool}}" IsChecked="{Binding IniAnalyseShowRes,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+                                        <Button Style="{StaticResource BtnInfoRadiusStyle}" Content="{DynamicResource BTN_CLEARANARES}" IsEnabled="{Binding IniAnalyse,Mode=OneWay,Converter={StaticResource ObjectToBool}}" Width="120" Margin="20 5 5 5" VerticalContentAlignment="Center" Click="Clear_CompareReport_Click" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="18"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource STR_CURRENTFILE}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#303030"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding AnalyseIniPath,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#303030"/>
+                                        <TreeView Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="#BBB" Background="#A0FFFDF7" Margin="10 5 5 5" IsEnabled="{Binding IniAnalyse,Mode=OneWay,Converter={StaticResource ObjectToBool}}">
+                                            <TreeViewItem Header="{DynamicResource TREENODE_DIFF}" Style="{StaticResource TreeViewItemStyle1}" IsExpanded="{Binding ElementName=ati_diff2,Path=IsExpanded,Mode=TwoWay}">
+                                                <TreeViewItem x:Name="ati_diff_tf" IsExpanded="{Binding ElementName=ati_diff_tf2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_diff_st" IsExpanded="{Binding ElementName=ati_diff_st2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_diff_tt" IsExpanded="{Binding ElementName=ati_diff_tt2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_diff_at" IsExpanded="{Binding ElementName=ati_diff_at2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                            </TreeViewItem>
+                                            <TreeViewItem Header="{DynamicResource TREENODE_SOUR}" Style="{StaticResource TreeViewItemStyle1}" IsExpanded="{Binding ElementName=ati_left2,Path=IsExpanded,Mode=TwoWay}">
+                                                <TreeViewItem x:Name="ati_left_tf" IsExpanded="{Binding ElementName=ati_left_tf2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_left_st" IsExpanded="{Binding ElementName=ati_left_st2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_left_tt" IsExpanded="{Binding ElementName=ati_left_tt2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_left_at" IsExpanded="{Binding ElementName=ati_left_at2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                            </TreeViewItem>
+                                            <TreeViewItem Header="{DynamicResource TREENODE_SAME}" Style="{StaticResource TreeViewItemStyle1}" IsExpanded="{Binding ElementName=ati_same2,Path=IsExpanded,Mode=TwoWay}">
+                                                <TreeViewItem x:Name="ati_same_tf" IsExpanded="{Binding ElementName=ati_same_tf2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_same_st" IsExpanded="{Binding ElementName=ati_same_st2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_same_tt" IsExpanded="{Binding ElementName=ati_same_tt2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                                <TreeViewItem x:Name="ati_same_at" IsExpanded="{Binding ElementName=ati_same_at2,Path=IsExpanded,Mode=TwoWay}" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle1}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide1}"/>
+                                            </TreeViewItem>
+                                        </TreeView>
+                                        <TreeView Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="#BBB" Background="#A0F7FAFF" Margin="10 5 5 5" IsEnabled="{Binding IniAnalyse,Mode=OneWay,Converter={StaticResource ObjectToBool}}">
+                                            <TreeViewItem x:Name="ati_diff2" Header="{DynamicResource TREENODE_DIFF}" Style="{StaticResource TreeViewItemStyle2}">
+                                                <TreeViewItem x:Name="ati_diff_tf2" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_diff_st2" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_diff_tt2" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_diff_at2" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                            </TreeViewItem>
+                                            <TreeViewItem x:Name="ati_left2" Header="{DynamicResource TREENODE_SOUR}" Style="{StaticResource TreeViewItemStyle2}">
+                                                <TreeViewItem x:Name="ati_left_tf2" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_left_st2" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_left_tt2" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_left_at2" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                            </TreeViewItem>
+                                            <TreeViewItem x:Name="ati_same2" Header="{DynamicResource TREENODE_SAME}" Style="{StaticResource TreeViewItemStyle2}">
+                                                <TreeViewItem x:Name="ati_same_tf2" Header="{DynamicResource TASKFORCE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_same_st2" Header="{DynamicResource SCRIPTTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_same_tt2" Header="{DynamicResource TEAMTYPE_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                                <TreeViewItem x:Name="ati_same_at2" Header="{DynamicResource AITRIGGERS_LIST}" Style="{StaticResource TreeViewItemStyle2}" ItemTemplate="{StaticResource TagTypeItemNode}" ItemContainerStyle="{StaticResource TreeViewItemStyleWide2}"/>
+                                            </TreeViewItem>
+                                        </TreeView>
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+                        
+                        </TabControl>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_settings" Header="{DynamicResource MENU_SETTINGS}" Foreground="#ddefefef" Style="{StaticResource TabItemStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="7">
+                            <Border BorderBrush="Gray" BorderThickness="1">
+                                <StackPanel Orientation="Vertical" ToolTip="{DynamicResource TIP_DONOTCHANGEGAME}">
+                                    <Grid Margin="5" IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource STR_GAMETYPE}" Foreground="#111111" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                                        <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding GameTypesInfo,Mode=OneWay}" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource GameTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedGameType,Mode=TwoWay}" Margin="5 2 5 2"/>
+                                    </Grid>
+                                    <Button Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADRULES}" Height="32" Margin="5" Click="RulesImport_Click" ToolTip="{DynamicResource TIP_IMPORTRULES}"/>
+                                    <Button Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADCSF}" Height="32" Margin="5" Click="CsfImport_Click" ToolTip="{DynamicResource TIP_IMPORTCSF}"/>
+                                    <Expander Header="{DynamicResource BTN_ADDCUSTOMGAME}" IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}">
+                                        <Grid Margin="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="30"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource STR_CUSTOMGAMENAME}" Foreground="#111111" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                                            <TextBox x:Name="tb_customgame" Grid.Column="1" Grid.Row="0" Margin="5 2 5 2"/>
+                                            <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="{DynamicResource BTN_ADDWITHCURRENT}" Style="{StaticResource BtnInfoRadiusStyle}" HorizontalAlignment="Center" Width="200" Margin="5 2 5 2" Click="AddCustomGame_Click"/>
+                                            <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" IsEnabled="{Binding IsCustomGame,Mode=OneWay}" Content="{DynamicResource BTN_DELETECURRENT}" Style="{StaticResource BtnInfoRadiusStyle}" HorizontalAlignment="Center" Width="200" Margin="5 2 5 2" Click="DeleteCustomGame_Click"/>
+                                        </Grid>
+                                    </Expander>
+                                </StackPanel>
+                            </Border>
+                            <Grid Margin="0 5 0 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_SEARCHDELAY}" Foreground="#111111" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                                <Slider Grid.Column="1" Minimum="0" Maximum="500" Value="{Binding SearchDelayValue,Mode=TwoWay,Converter={StaticResource UIntToDouble}}" Interval="10"/>
+                                <TextBlock Grid.Column="2" Text="{Binding SearchDelayDisplay,Mode=OneWay}" Foreground="#111111" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                            </Grid>
+                            <CheckBox Content="{DynamicResource BTN_HIDESCRIPTS}" IsChecked="{Binding HideScripts,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+                            <CheckBox Content="{DynamicResource BTN_HIDEIDGRID}" IsChecked="{Binding HideIDGrid,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+                            <CheckBox Content="{DynamicResource BTN_COPYAPPEND}" IsChecked="{Binding Append_WhileCopy,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="7">
+                            <Border BorderBrush="Gray" BorderThickness="1">
+                                <Grid Margin="0 5 0 5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="22"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource STR_ITEMBGCOLOR}" Foreground="#111111" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" MinWidth="70"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="20"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20"/>
+                                            <RowDefinition Height="20"/>
+                                            <RowDefinition Height="20"/>
+                                            <RowDefinition Height="20"/>
+                                            <RowDefinition Height="20"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.Resources>
+                                            <Style x:Key="arrct" TargetType="{x:Type Rectangle}">
+                                                <Setter Property="Margin" Value="1"/>
+                                                <Setter Property="Stroke" Value="Gray"/>
+                                                <Setter Property="StrokeThickness" Value="1"/>
+                                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ARRectangle_PreviewMouseLeftButtonDown"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource ARCOLOR_NONE}" Foreground="#111111" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource ARCOLOR_SAME}" Foreground="#111111" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource ARCOLOR_DIFF}" Foreground="#111111" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource ARCOLOR_SOUR}" Foreground="#111111" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource ARCOLOR_TARG}" Foreground="#111111" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                                        <Rectangle Grid.Row="0" Grid.Column="1" Style="{StaticResource arrct}" Fill="{Binding ARColor_None,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="0" Grid.Column="2" Style="{StaticResource arrct}" Fill="{Binding ARColorOver_None,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="0" Grid.Column="3" Style="{StaticResource arrct}" Fill="{Binding ARColorSelected_None,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="1" Style="{StaticResource arrct}" Fill="{Binding ARColor_Same,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="2" Style="{StaticResource arrct}" Fill="{Binding ARColorOver_Same,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="3" Style="{StaticResource arrct}" Fill="{Binding ARColorSelected_Same,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="2" Grid.Column="1" Style="{StaticResource arrct}" Fill="{Binding ARColor_Diff,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="2" Grid.Column="2" Style="{StaticResource arrct}" Fill="{Binding ARColorOver_Diff,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="2" Grid.Column="3" Style="{StaticResource arrct}" Fill="{Binding ARColorSelected_Diff,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="3" Grid.Column="1" Style="{StaticResource arrct}" Fill="{Binding ARColor_Sour,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="3" Grid.Column="2" Style="{StaticResource arrct}" Fill="{Binding ARColorOver_Sour,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="3" Grid.Column="3" Style="{StaticResource arrct}" Fill="{Binding ARColorSelected_Sour,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="4" Grid.Column="1" Style="{StaticResource arrct}" Fill="{Binding ARColor_Targ,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="4" Grid.Column="2" Style="{StaticResource arrct}" Fill="{Binding ARColorOver_Targ,Mode=TwoWay}" Margin="3"/>
+                                        <Rectangle Grid.Row="4" Grid.Column="3" Style="{StaticResource arrct}" Fill="{Binding ARColorSelected_Targ,Mode=TwoWay}" Margin="3"/>
+
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="7">
+                            <ListView x:Name="lv_tabitem" Focusable="False">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Name,Mode=TwoWay}" Header="{DynamicResource STR_TABQUEUESETTING}" Width="200"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
+
+</Window>
+
+
+

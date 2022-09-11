@@ -1,0 +1,587 @@
+﻿<UserControl x:Class="RA2AI_Editor.Styles.TeamTypeGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA2AI_Editor.Styles"
+             xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+             xmlns:usercon="clr-namespace:RA2AI_Editor.UserControls"
+             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             xmlns:aicore="clr-namespace:AIcore"
+             xmlns:misc="clr-namespace:RA2AI_Editor.Misc"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400">
+    <Grid x:Name="grid">
+        <Grid.Resources>
+            <convers:BoolToReverse x:Key="BoolToReverse"/>
+            <convers:UIntToString x:Key="UIntToString"/>
+            <convers:IntToString x:Key="IntToString"/>
+            <convers:DoubleToHalf x:Key="DoubleToHalf"/>
+            <Popup x:Key="ListPopup" x:Name="LPopup" PopupAnimation="Fade" MinWidth="300" MaxWidth="500" MinHeight="80" MaxHeight="500" PlacementTarget="{Binding ElementName=btn_pop}"
+                   Placement="Bottom" AllowsTransparency="True" StaysOpen="False" LostFocus="Popup_LostFocus">
+                <Grid>
+                    <Border Style="{StaticResource PopupBorderStyle}"/>
+                    <ListBox x:Name="PopList" SelectionChanged="List_SelectionChanged"
+                 ItemContainerStyle="{StaticResource ListItemWindowStyle}" BorderThickness="0"
+                 Background="#fef9eb" Margin="8">
+                        <ListBox.Style>
+                            <Style TargetType="{x:Type ListBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBox}">
+                                            <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" 
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="0">
+                                                <ScrollViewer Focusable="False">
+                                                    <ItemsPresenter />
+                                                </ScrollViewer>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Style>
+                    </ListBox>
+                </Grid>
+            </Popup>
+            <ControlTemplate x:Key="ValidationErrorObject">
+                <Border BorderThickness="1" CornerRadius="1" BorderBrush="Red">
+                    <Grid>
+                        <AdornedElementPlaceholder Name="customAdorner"/>
+                        <Image Source="/Images/error.png" Stretch="Uniform" Margin="0 0 5 0" Width="16" Height="16" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                        <!--<TextBlock Text="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" Background="White" HorizontalAlignment="Right" Margin="0 0 5 0" Foreground="Red" VerticalAlignment="Center" IsHitTestVisible="False"/>-->
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Border x:Name="gd_id" Grid.Row="1" Style="{StaticResource GridBorderStyle}" Height="26" Margin="0 0 0 3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ID}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 5 0"/>
+                <TextBox x:Name="tb_tag" Grid.Column="1" Style="{StaticResource EditorBoxStyleB}" Margin="5 0 5 0" Validation.ErrorTemplate="{StaticResource ValidationErrorObject}" VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding UpdateSourceTrigger="PropertyChanged" Path="PTag" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <misc:IDValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Style="{StaticResource GridBorderStyle}" Height="26" Margin="0 0 0 3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="#111111" Text="{DynamicResource TAG_NAME}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 5 0"/>
+                <TextBox x:Name="tb_name" Grid.Column="1" Style="{StaticResource EditorBoxStyleB}" Margin="5 0 5 0" Validation.ErrorTemplate="{StaticResource ValidationErrorObject}" VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding UpdateSourceTrigger="PropertyChanged" Path="PName" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <misc:NameValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Button Grid.Column="3" Width="26" x:Name="btn_pop" Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOAITRIGGER}" Content="{StaticResource ListPopup}" Margin="0 0 5 0" Click="TeamType_JumpClick"/>
+            </Grid>
+        </Border>
+        <TabControl x:Name="viewtab" Grid.Row="3" Grid.RowSpan="2" Margin="0 0 0 0" Style="{StaticResource TabControlStyle}" Background="Transparent">
+            <TabItem Header="{DynamicResource MENU_AIEDIT_NORMAL}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid Margin="0 5 0 0" IsEnabled="{Binding Path=EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay,Converter={StaticResource BoolToReverse}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="gd_taskforce" Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TaskForce}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 0 0"/>
+                            <toolkit:AutoCompleteBox x:Name="acb_tf" Text="{Binding Path=STaskForce,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TaskForceInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="TaskForceBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                            <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                            <TextBox Grid.Column="3" Text="{Binding STaskForceName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                            <!--<Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue" Margin="0 0 5 0">
+                    <TextBlock Foreground="#111111" Text="{Binding STaskForceName,Mode=OneWay}" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                </Border>-->
+                            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETASKFORCE}" Margin="0 0 0 0" Width="26" Click="TaskForce_CreateClick"/>
+                                <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTASKFORCE}" Margin="0 0 5 0" Width="26" Click="TaskForce_JumpClick"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border x:Name="gd_scripttype" Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ScriptType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                            <toolkit:AutoCompleteBox x:Name="acb_s" Text="{Binding Path=SScript,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding ScriptTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="ScriptTypeBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                            <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                            <!--<Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue" Margin="0 0 5 0">
+                    <TextBlock Foreground="#111111" Text="{Binding SScriptTypeName,Mode=OneWay}" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                </Border>-->
+                            <TextBox Grid.Column="3" Text="{Binding SScriptTypeName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATESCRIPTTYPE}" Margin="0 0 0 0" Width="26" Click="ScriptType_CreateClick"/>
+                                <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOSCRIPTTYPE}" Margin="0 0 5 0" Width="26" Click="ScriptType_JumpClick"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource MENU_AIEDIT_EXT}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid Margin="0 5 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Content="{DynamicResource MENU_ENABLE_EXT}" IsChecked="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="0"/>
+                    <StackPanel Grid.Row="1" Orientation="Vertical" CanVerticallyScroll="True" IsEnabled="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
+                        <Expander x:Name="ext_easy" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                            <Expander.Header>
+                                <CheckBox Content="{DynamicResource COLUMN_EASY}" IsChecked="{Binding Path=Ext_EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
+                            </Expander.Header>
+                            <Grid Margin="0 0 0 0" IsEnabled="{Binding Path=Ext_EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TaskForce}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 0 0"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_acb_tf" Text="{Binding Path=Ext_EasyMode_Type.STaskForce,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TaskForceInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="TaskForceBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_EasyMode_Type.STaskForceName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETASKFORCE}" Margin="0 0 0 0" Width="26" Click="Ext_EasyMode_TaskForce_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTASKFORCE}" Margin="0 0 5 0" Width="26" Click="Ext_EasyMode_TaskForce_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ScriptType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_acb_s" Text="{Binding Path=Ext_EasyMode_Type.SScript,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding ScriptTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="ScriptTypeBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_EasyMode_Type.SScriptTypeName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATESCRIPTTYPE}" Margin="0 0 0 0" Width="26" Click="Ext_EasyMode_ScriptType_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOSCRIPTTYPE}" Margin="0 0 5 0" Width="26" Click="Ext_EasyMode_ScriptType_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Expander>
+                        <Expander x:Name="ext_medium" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                            <Expander.Header>
+                                <CheckBox Content="{DynamicResource COLUMN_MEDIUM}" IsChecked="{Binding Path=Ext_MediumMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
+                            </Expander.Header>
+                            <Grid Margin="0 0 0 0" IsEnabled="{Binding Path=Ext_MediumMode,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TaskForce}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 0 0"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_m_acb_tf" Text="{Binding Path=Ext_MediumMode_Type.STaskForce,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TaskForceInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="TaskForceBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_MediumMode_Type.STaskForceName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETASKFORCE}" Margin="0 0 0 0" Width="26" Click="Ext_MediumMode_TaskForce_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTASKFORCE}" Margin="0 0 5 0" Width="26" Click="Ext_MediumMode_TaskForce_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ScriptType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_m_acb_s" Text="{Binding Path=Ext_MediumMode_Type.SScript,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding ScriptTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="ScriptTypeBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_MediumMode_Type.SScriptTypeName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATESCRIPTTYPE}" Margin="0 0 0 0" Width="26" Click="Ext_MediumMode_ScriptType_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOSCRIPTTYPE}" Margin="0 0 5 0" Width="26" Click="Ext_MediumMode_ScriptType_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Expander>
+                        <Expander x:Name="ext_hard" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                            <Expander.Header>
+                                <CheckBox Content="{DynamicResource COLUMN_HARD}" IsChecked="{Binding Path=Ext_HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
+                            </Expander.Header>
+                            <Grid Margin="0 0 0 0" IsEnabled="{Binding Path=Ext_HardMode,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TaskForce}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 0 0 0"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_h_acb_tf" Text="{Binding Path=Ext_HardMode_Type.STaskForce,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TaskForceInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="TaskForceBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_HardMode_Type.STaskForceName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETASKFORCE}" Margin="0 0 0 0" Width="26" Click="Ext_HardMode_TaskForce_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTASKFORCE}" Margin="0 0 5 0" Width="26" Click="Ext_HardMode_TaskForce_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="1"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ScriptType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                                        <toolkit:AutoCompleteBox x:Name="ext_h_acb_s" Text="{Binding Path=Ext_HardMode_Type.SScript,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding ScriptTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" PreviewKeyDown="ScriptTypeBox_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TagFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                                        <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                                        <TextBox Grid.Column="3" Text="{Binding Path=Ext_HardMode_Type.SScriptTypeName,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATESCRIPTTYPE}" Margin="0 0 0 0" Width="26" Click="Ext_HardMode_ScriptType_CreateClick"/>
+                                            <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOSCRIPTTYPE}" Margin="0 0 5 0" Width="26" Click="Ext_HardMode_ScriptType_JumpClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Expander>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+        <Grid x:Name="sgrid" Grid.Row="5" Margin="0 5 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="0">
+                <StackPanel x:Name="stackpanel">
+
+                    <Expander x:Name="exp1" Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_BASEITEMS}" VerticalAlignment="Center"/>
+                                <usercon:ArrowButton x:Name="abtn1" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel Orientation="Vertical" Margin="5 0 5 0">
+                            <Border x:Name="gd_prebuild" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=Prebuild,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Prebuild}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_autocreate" Style="{StaticResource GridBorderStyleForMap}">
+                                <CheckBox Content="{DynamicResource TAG_Autocreate}" IsChecked="{Binding Path=Autocreate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_guardslower" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_GuardSlower}" IsChecked="{Binding Path=GuardSlower,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_annoyance" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Annoyance}" IsChecked="{Binding Path=Annoyance,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_isbasedefense" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_IsBaseDefense}" IsChecked="{Binding Path=IsBaseDefense,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_whiner" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Whiner}" IsChecked="{Binding Path=Whiner,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_ionimmune" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_IonImmune}" IsChecked="{Binding Path=IonImmune,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_techlevel" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechLevel}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=TechLevel,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue" PreviewMouseWheel="MouseWheelInt_Index"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_max" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Max}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=Max,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue" PreviewMouseWheel="MouseWheel_Index"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_mindcontroldecision" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_MindControlDecision}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding MindControlDecisionInfo,Mode=OneWay}" SelectedValuePath="Value" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource InfoValueItemCBStyle}" DisplayMemberPath="Description" SelectedItem="{Binding MindControlDecision,Mode=TwoWay}" Margin="5 0 5 0"/>
+
+                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=MindControlDecision,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource InfoItemDataTemplate}" ItemsSource="{Binding MindControlDecisionInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="Value" MinimumPrefixLength="0"/>-->
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander x:Name="exp2" Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_RECRUITMENTRELATED}" VerticalAlignment="Center"/>
+                                <usercon:ArrowButton x:Name="abtn2" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel Orientation="Vertical" Margin="5 0 5 0">
+                            <Border x:Name="gd_priority" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Priority}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=Priority,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue" PreviewMouseWheel="MouseWheel_Index"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_group" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_GROUP}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <toolkit:AutoCompleteBox Text="{Binding Path=Group,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource InfoItemDataTemplate}" ItemsSource="{Binding GroupInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="Value" MinimumPrefixLength="0" VerticalContentAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_areteammembersrecruitble" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_AreTeamMembersRecruitable}" IsChecked="{Binding Path=AreTeamMembersRecruitable,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_recruiter" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Recruiter}" IsChecked="{Binding Path=Recruiter,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_looserecruit" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_LooseRecruit}" IsChecked="{Binding Path=LooseRecruit,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander x:Name="exp3" Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_ENGAGEMENTRELATED}" VerticalAlignment="Center"/>
+                                <usercon:ArrowButton x:Name="abtn3" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel Orientation="Vertical" Margin="5 0 0 5">
+                            <Border x:Name="gd_avoidthreats" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_AvoidThreats}" IsChecked="{Binding Path=AvoidThreats,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_onlytargethouseenemy" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_OnlyTargetHouseEnemy}" IsChecked="{Binding Path=OnlyTargetHouseEnemy,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_aggressive" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Aggressive}" IsChecked="{Binding Path=Aggressive,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_suicide" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Suicide}" IsChecked="{Binding Path=Suicide,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander x:Name="exp4" Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_TRANSPORTRELATED}" VerticalAlignment="Center"/>
+                                <usercon:ArrowButton x:Name="abtn4" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header><StackPanel Orientation="Vertical" Margin="5 0 5 0">
+                            <Border x:Name="gd_loadable" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_Loadable}" IsChecked="{Binding Path=Loadable,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_transportsreturnonunload" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_TransportsReturnOnUnload}" IsChecked="{Binding Path=TransportsReturnOnUnload,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_ontransonly" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox Content="{DynamicResource TAG_OnTransOnly}" IsChecked="{Binding Path=OnTransOnly,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+
+                    <!--<Border BorderBrush="#99D9EA" BorderThickness="1" Margin="5 0 5 0" Background="#40D3EFF5">
+                        <TextBlock Text="{DynamicResource STR_BASEITEMS}" Foreground="#707070" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" Margin="5 2 5 2"/>
+                    </Border>-->
+
+                    <Expander x:Name="exp5" Style="{StaticResource ExpanderStyleForMap}" Margin="0 0 0 5">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Column="0" Text="{DynamicResource STR_FORMAPONLY}" VerticalAlignment="Center"/>
+                                <usercon:ArrowButton x:Name="abtn5" Margin="5 0 5 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel Orientation="Vertical" Margin="5 0 5 0">
+                            <Border x:Name="gd_veteranlevel" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_VETERANLEVEL}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <toolkit:AutoCompleteBox Text="{Binding Path=VeteranLevel,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource InfoItemDataTemplate}" ItemsSource="{Binding VeteranLevelInfo}"
+                                             IsTextCompletionEnabled="False" FilterMode="None" ValueMemberPath="Value" MinimumPrefixLength="0" VerticalContentAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_house" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_House}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding CountryListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource CountryItemCBStyle2}" DisplayMemberPath="DescriptionOrNone" SelectedItem="{Binding House,Mode=TwoWay}" Margin="5 0 5 0"/>
+
+                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=SHouseDes,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource CountryDataTemplate}" ItemsSource="{Binding CountryListInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="NameOrNone" MinimumPrefixLength="0"/>-->
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_reinforce" Style="{StaticResource GridBorderStyleForMap}">
+                                <CheckBox IsChecked="{Binding Path=Reinforce,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Reinforce}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_full" Style="{StaticResource GridBorderStyleForMap}">
+                                <CheckBox Content="{DynamicResource TAG_Full}" IsChecked="{Binding Path=Full,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_dropped" Style="{StaticResource GridBorderStyleForMap}">
+                                <CheckBox Content="{DynamicResource TAG_Droppod}" IsChecked="{Binding Path=Droppod,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_waypoint" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Waypoint}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <toolkit:AutoCompleteBox Text="{Binding Path=SWaypoint,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemsSource="{Binding WaypointsInfo}"
+                                             IsTextCompletionEnabled="False" FilterMode="None" MinimumPrefixLength="0" VerticalContentAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_transwaypoint" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TransportWaypoint}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <toolkit:AutoCompleteBox Text="{Binding Path=STransportWaypoint,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemsSource="{Binding TransportWaypointsInfo}"
+                                             IsTextCompletionEnabled="False" FilterMode="None" MinimumPrefixLength="0" VerticalContentAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_tag" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerTag}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=Tag,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Column="1" Margin="5 0 0 0">
+                <StackPanel x:Name="stackpanel_formap">
+                    
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+</UserControl>

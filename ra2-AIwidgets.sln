@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IniMerger", "IniMerger\IniMerger.csproj", "{58B54AE8-D81B-49AE-AE37-251E49441C2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA2AI_Editor", "RA2AI_Editor\RA2AI_Editor.csproj", "{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{AA034096-A1E7-431E-A342-C174ED735D48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|x64.Build.0 = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Debug|x86.Build.0 = Debug|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|x64.ActiveCfg = Release|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|x64.Build.0 = Release|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|x86.ActiveCfg = Release|Any CPU
+		{58B54AE8-D81B-49AE-AE37-251E49441C2E}.Release|x86.Build.0 = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|x64.Build.0 = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Debug|x86.Build.0 = Debug|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|x64.ActiveCfg = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|x64.Build.0 = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|x86.ActiveCfg = Release|Any CPU
+		{48FCA3D6-B3A0-4179-A37E-38BD5C68056C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {426BFB30-13BC-4B8B-9A83-D838356926D2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{aa034096-a1e7-431e-a342-c174ed735d48}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

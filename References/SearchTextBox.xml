@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SearchTextBox</name>
+    </assembly>
+    <members>
+        <member name="T:SearchTextBox.SearchTextBox">
+            <summary>
+            Represents a control that can be used for text search input.
+            </summary>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.#cctor">
+            <summary>
+            Initializes the <see cref="T:SearchTextBox.SearchTextBox"/> class.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.AllowEmptySearchesProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.AllowEmptySearches" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.CommandProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.Command" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.CommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.CommandParameter" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.CommandTargetProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.CommandTarget" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.HasTextProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.HasText" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.InstantSearchDelayProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.InstantSearchDelay" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.PromptProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.Prompt" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.PromptTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.PromptTemplate" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.SearchModeProperty">
+            <summary>
+            Identifies the <see cref="P:SearchTextBox.SearchTextBox.SearchMode" /> dependency property.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBox.SearchEvent">
+            <summary>
+            Identifies the <see cref="E:SearchTextBox.SearchTextBox.Search"/> routed event.
+            </summary>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SearchTextBox.SearchTextBox"/> class.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.AllowEmptySearches">
+            <summary>
+            Gets or sets a value indicating whether empty text searches are allowed.
+            </summary>
+            <value>The default value is <c>true</c>.</value>
+            <remarks>
+            If set to <c>false</c>, no Search event or command execution will
+            occur if the text is empty and the Search button will be disabled
+            while the text is empty.
+            </remarks>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.Command">
+            <summary>
+            Gets or sets the command to invoke when the search button is pressed or during instant search.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.CommandParameter">
+            <summary>
+            Gets or sets the parameter to pass to the <see cref="P:Command"/> property.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.CommandTarget">
+            <summary>
+            Gets or sets the element on which to raise the specified command.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.HasText">
+            <summary>
+            Gets a value indicating whether this control has text entered or not.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.InstantSearchDelay">
+            <summary>
+            Gets or sets the delay between firing command during instant search mode.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.Prompt">
+            <summary>
+            Gets or sets content to display as a prompt when the textbox is empty.
+            </summary>
+            <remarks>
+            The default is Search.
+            </remarks>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.PromptTemplate">
+            <summary>
+            Gets or sets the template to use for the prompt content.
+            </summary>
+        </member>
+        <member name="P:SearchTextBox.SearchTextBox.SearchMode">
+            <summary>
+            Gets or sets the search behavior of the textbox.
+            </summary>
+            <value>
+            One of the <see cref="T:SearchTextBox.SearchTextBoxMode"/> values. The default is Instant.
+            </value>
+        </member>
+        <member name="E:SearchTextBox.SearchTextBox.Search">
+            <summary>
+            Occurs when the search button is pressed or during instant search.
+            </summary>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.Reset">
+            <summary>
+            Resets search text to empty. This will both raise the Search event
+            and execute any bound command.
+            </summary>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.OnApplyTemplate">
+            <summary>
+            Is called when a control template is applied.
+            </summary>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Invoked whenever an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached routed event reaches an element derived from this class in its route. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">Provides data about the event.</param>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.OnTextChanged(System.Windows.Controls.TextChangedEventArgs)">
+            <summary>
+            Is called when content in this editing control changes.
+            </summary>
+            <param name="e">The arguments that are associated with the <see cref="E:System.Windows.Controls.Primitives.TextBoxBase.TextChanged"/> event.</param>
+        </member>
+        <member name="M:SearchTextBox.SearchTextBox.OnSearch(System.Windows.RoutedEventArgs)">
+            <summary>
+            Raises the <see cref="E:Search"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+            <exception cref="T:System.ArgumentException">
+            Thrown when <paramref name="e"/> relates to an event other than <see cref="F:SearchTextBox.SearchTextBox.SearchEvent"/>.
+            </exception>
+        </member>
+        <member name="T:SearchTextBox.SearchTextBoxMode">
+            <summary>
+            Defines a list of modes for the <see cref="T:SearchTextBox.SearchTextBox"/> control.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBoxMode.Instant">
+            <summary>
+            Command will be fired automatically as the user types. The default
+            is to fire on every keystroke, but you can optionally define the
+            InstantSearchDelay.
+            </summary>
+        </member>
+        <member name="F:SearchTextBox.SearchTextBoxMode.Regular">
+            <summary>
+            Command will be fired only when the search button is explicitly
+            clicked or when the user presses Enter while focus is in the
+            textbox.
+            </summary>
+        </member>
+    </members>
+</doc>

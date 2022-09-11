@@ -1,0 +1,74 @@
+﻿<Window x:Class="RA2AI_Editor.PopupForms.BuildingIDForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RA2AI_Editor.PopupForms"
+        xmlns:SearchTextBox="clr-namespace:SearchTextBox;assembly=SearchTextBox"
+        mc:Ignorable="d"
+        Title="{DynamicResource FRM_BUILDINGID}" ShowInTaskbar="False" Height="400" Width="560" WindowStartupLocation="CenterScreen" 
+        WindowStyle="ToolWindow">
+    <Grid x:Name="maingd" FocusManager.FocusedElement="{Binding ElementName=searchbox}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Margin="5" BorderBrush="#8CD3E8" BorderThickness="1">
+            <StackPanel x:Name="sp" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                <Border Margin="0" Background="#8CD3E8" Height="26" Focusable="False">
+                    <TextBlock Text="{DynamicResource STR_TARGETCHOOSE}" Foreground="#303030" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="0"/>
+                </Border>
+                <RadioButton x:Name="rb_1" Content="{DynamicResource RB_MINTHREAT}" IsChecked="{Binding bmode1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5 2 5 2" GroupName="MODE" Style="{StaticResource RadioButtonItemStyle}"/>
+                <RadioButton x:Name="rb_2" Content="{DynamicResource RB_MAXTHREAT}" IsChecked="{Binding bmode2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5 2 5 2" GroupName="MODE" Style="{StaticResource RadioButtonItemStyle}"/>
+                <RadioButton x:Name="rb_3" Content="{DynamicResource RB_MINDIST}" IsChecked="{Binding bmode3,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5 2 5 2" GroupName="MODE" Style="{StaticResource RadioButtonItemStyle}"/>
+                <RadioButton x:Name="rb_4" Content="{DynamicResource RB_MAXDIST}" IsChecked="{Binding bmode4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5 2 5 2" GroupName="MODE" Style="{StaticResource RadioButtonItemStyle}"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource STR_BUILDINGID}" Grid.Row="0" Grid.Column="0" Margin="5 3 5 3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox x:Name="stxtbox" Text="{Binding STEXT,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Grid.Column="1" Grid.Row="0" Margin="5 3 5 3" VerticalContentAlignment="Center"/>
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{DynamicResource STR_SEARCH}" VerticalAlignment="Center" Margin="7 2 2 2"/>
+                <SearchTextBox:SearchTextBox Name="searchbox" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" 
+                                     TextAlignment="Left" Margin="5 2 5 2" SearchMode="Instant" VerticalContentAlignment="Center"
+                                     AllowEmptySearches="True" Search="SearchTextBox_Search"/>
+            </Grid>
+            <ListView x:Name="list" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" HorizontalAlignment="Stretch" 
+                                      SelectionMode="Single" BorderBrush="#eaeaeb" GridViewColumnHeader.Click="List_Click" SelectedItem="{Binding SelectedBuilding,Mode=TwoWay}"
+                                      Background="#fef9eb" ItemContainerStyle="{StaticResource ListViewStyleForUnit}">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                        <GridViewColumn DisplayMemberBinding="{Binding SequenceIndex,Mode=OneWay}" Header="{DynamicResource COLUMN_SEQUENCEINDEX}" Width="60">
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name,Mode=OneWay}" Header="{DynamicResource COLUMN_BUILDINGID}" Width="90">
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Description,Mode=OneWay}" Header="{DynamicResource COLUMN_BUILDINGNAME}" Width="200">
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <TextBlock Text="{DynamicResource STR_RESULT}" Grid.Row="3" Grid.Column="0" Margin="5 3 5 3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SResult,Mode=OneWay}" Grid.Column="1" Grid.Row="3" Margin="5 3 5 3" Style="{StaticResource ReadOnlyTextStyle}" VerticalContentAlignment="Center"/>
+            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button HorizontalAlignment="Right" Width="80" IsDefault="True" IsCancel="False" Content="{DynamicResource MB_OK}" Style="{StaticResource BtnInfoRadiusStyle}" Margin="5 3 5 3" Click="Button_Click"/>
+                <Button HorizontalAlignment="Right" Width="80" IsCancel="True" Content="{DynamicResource MB_CANCEL}" Style="{StaticResource BtnInfoRadiusStyle}" Margin="5 3 5 3" Click="Cancel_Click"/>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

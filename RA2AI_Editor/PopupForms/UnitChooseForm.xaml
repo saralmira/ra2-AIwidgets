@@ -1,0 +1,200 @@
+﻿<Window x:Class="RA2AI_Editor.PopupForms.UnitChooseForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RA2AI_Editor.PopupForms"
+        xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+        xmlns:SearchTextBox="clr-namespace:SearchTextBox;assembly=SearchTextBox"
+        mc:Ignorable="d"
+        Title="{DynamicResource FRM_RULESIMPORT}" ShowInTaskbar="False" Height="400" Width="600" WindowStartupLocation="CenterScreen" 
+        WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Style="{StaticResource TabControlStyle}">
+            <TabItem Header="{DynamicResource MENU_UNITS}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid>
+                    <Grid.Resources>
+                        <convers:BoolToStringInList x:Key="BoolToStringInList"/>
+                        <convers:UnitTypeToString x:Key="UnitTypeToString"/>
+                        <convers:IntToString x:Key="IntToString"/>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource STR_SEARCH}" VerticalAlignment="Center" Margin="7 2 2 2"/>
+                        <SearchTextBox:SearchTextBox Name="searchbox" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="NoWrap" VerticalAlignment="Center" 
+                                     TextAlignment="Left" Margin="5 2 5 2" SearchMode="Instant" FocusVisualStyle="{StaticResource RadiusButtonFocusVisual}"
+                                     AllowEmptySearches="True" Search="SearchTextBox_Search" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <ListView x:Name="list" Grid.Row="1" HorizontalAlignment="Stretch" SelectionMode="Single" BorderBrush="#eaeaeb"
+                  Background="#fef9eb" ItemContainerStyle="{StaticResource ListViewStyleForUnit}" Margin="5 0 5 0"
+                  GridViewColumnHeader.Click="List_Click" SelectionChanged="List_SelectionChanged">
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                <GridViewColumn Header="{DynamicResource COLUMN_UNITENABLE}" Width="70" x:Name="gvcolumn1">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxStyleWithoutText}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding UType,Mode=OneWay,Converter={StaticResource UnitTypeToString}}" Header="{DynamicResource COLUMN_TYPE}" Width="70"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Name,Mode=OneWay}" Header="{DynamicResource COLUMN_UNIT}" Width="80"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Description,Mode=OneWay}" Header="{DynamicResource COLUMN_NAME}" Width="160"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Cost,Mode=OneWay,Converter={StaticResource IntToString}}" Header="{DynamicResource COLUMN_COST}" Width="80"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding TechLevel,Mode=OneWay,Converter={StaticResource IntToString}}" Header="{DynamicResource COLUMN_TECHLEVEL}" Width="80"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu Name="context">
+                                <MenuItem Header="{DynamicResource MENU_NONE}" IsCheckable="True" IsChecked="{Binding mode1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                <MenuItem Header="{DynamicResource MENU_MULTICHECK}" IsCheckable="True" IsChecked="{Binding mode2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                <MenuItem Header="{DynamicResource MENU_MULTIUNCHECK}" IsCheckable="True" IsChecked="{Binding mode3,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                    <Grid Grid.Row="2" Margin="0 5 0 0" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Once">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center" Margin="5 2 2 5" Content="{DynamicResource STR_SELECTALL}" Style="{StaticResource CheckBoxNewStyle}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" Margin="5 2 2 5" Content="{DynamicResource STR_KEEPEXISTEDUNIT}" Style="{StaticResource CheckBoxNewStyle}" Checked="KeepExistedUnits_Checked" Unchecked="KeepExistedUnits_Checked"/>
+                        <CheckBox Grid.Column="2" VerticalAlignment="Center" Margin="5 2 2 5" Content="{DynamicResource STR_KEEPEXISTEDUNITS}" Style="{StaticResource CheckBoxNewStyle}" Checked="DontImportUnits_Checked" Unchecked="DontImportUnits_Checked"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource MENU_SIDES}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="list_sides" Grid.Row="0" HorizontalAlignment="Stretch" SelectionMode="Single" BorderBrush="#eaeaeb"
+                  Background="#fef9eb" ItemContainerStyle="{StaticResource ListViewStyleForList}" Margin="5 5 5 0">
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                <GridViewColumn Header="{DynamicResource COLUMN_SIDEENABLE}" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="5 0 0 0" >
+                                                <CheckBox IsChecked="{Binding IsEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxStyleWithoutText}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_SIDENAME}" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBlock Text="{Binding Name,Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_SIDEVALUE}" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBox Text="{Binding SIndex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource TextBoxMetroStyle}" MinWidth="50" Foreground="#373737" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_SIDEDESC}" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBox Text="{Binding Description,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource TextBoxMetroStyle}" MinWidth="100"  Foreground="#373737" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <CheckBox Grid.Row="1" VerticalAlignment="Center" Margin="5 5 5 0" Content="{DynamicResource STR_KEEPEXISTEDSIDES}" Style="{StaticResource CheckBoxNewStyle}" Checked="KeepExistedSides_Checked" Unchecked="KeepExistedSides_Checked"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource MENU_HOUSES}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="list_houses" Grid.Row="0" HorizontalAlignment="Stretch" SelectionMode="Single" BorderBrush="#eaeaeb"
+                  Background="#fef9eb" ItemContainerStyle="{StaticResource ListViewStyleForList}" Margin="5 5 5 0">
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
+                                <GridViewColumn Header="{DynamicResource COLUMN_HOUSEENABLE}" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="5 0 0 0" >
+                                                <CheckBox IsChecked="{Binding IsEnabled,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxStyleWithoutText}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_HOUSENAME}" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBlock Text="{Binding Name,Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_HOUSEVALUE}" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBlock Text="{Binding SIndex,Mode=OneWay}" Foreground="#373737" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_HOUSEDESC}" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBox Text="{Binding Description,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource TextBoxMetroStyle}" MinWidth="100"  Foreground="#373737" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{DynamicResource COLUMN_HOUSEOFSIDE}" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0 0 0 0">
+                                                <TextBlock Text="{Binding SSide,Mode=OneWay}" Foreground="#503030" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <CheckBox Grid.Row="1" VerticalAlignment="Center" Margin="5 5 5 0" Content="{DynamicResource STR_KEEPEXISTEDHOUSES}" Style="{StaticResource CheckBoxNewStyle}" Checked="KeepExistedHouses_Checked" Unchecked="KeepExistedHouses_Checked"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 0 5 5">
+            <Button HorizontalAlignment="Right" Width="120" IsDefault="True" Content="{DynamicResource MB_SAVEALL}" Style="{StaticResource BtnInfoRadiusStyle}" Margin="5 0 5 0" Click="SaveAll_Click"/>
+            <!--<Button HorizontalAlignment="Right" Width="120" Content="{DynamicResource MB_SAVEPART}" Margin="5 0 5 0" Click="SavePart_Click"/>-->
+            <Button HorizontalAlignment="Right" Width="120" IsCancel="True" Content="{DynamicResource MB_CANCEL}" Style="{StaticResource BtnInfoRadiusStyle}" Margin="5 0 5 0" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+    
+</Window>

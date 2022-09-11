@@ -1,0 +1,714 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RA2AI_Editor"
+                    xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+                    x:Class="RA2AI_Editor.Styles.Treeview">
+
+    <HierarchicalDataTemplate x:Key="TagTypeItemNode">
+        <Grid Background="Transparent">
+            <Grid.Resources>
+                <convers:BoolToVisible x:Key="boolToVisible"/>
+                <convers:VisibleToReverse x:Key="visibleToReverse"/>
+            </Grid.Resources>
+            <Grid Background="Transparent" Margin="-5 0 0 0">
+                <Grid x:Name="grid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding PTag,Mode=OneWay}" Grid.Row="0" Foreground="#808080" Margin="5 0 0 0"/>
+                    <TextBlock Text="{Binding PName,Mode=OneWay}" Grid.Row="1" Margin="5 0 0 0"/>
+                    <Button Style="{StaticResource BtnJumpStyle}" Grid.Row="0" Grid.RowSpan="2" ToolTip="{DynamicResource STR_JUMPTOLIST}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 5 0" Width="32" Height="22" Click="JumpButtonClick"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </HierarchicalDataTemplate>
+    
+    <Style  x:Key="TreeViewItemStyle1" TargetType="{x:Type TreeViewItem}">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FDFDFB"/>
+                <GradientStop Offset="1" Color="#FDFAEC"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FEFCF1"/>
+                <GradientStop Offset="1" Color="#FEF4CF"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background3" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FCF5DC"/>
+                <GradientStop Offset="1" Color="#FCF0C0"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                    <ControlTemplate.Resources>
+                        <convers:IndentConverter  x:Key="indentConverter"/>
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"-->
+                        <Border Name="itemBackground" Background="{TemplateBinding Background}"  Height="28"
+                                BorderThickness="1" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid Background="Transparent">
+                                <Grid x:Name="ItemRoot" Margin="{Binding Converter={StaticResource indentConverter},RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton x:Name="Expander" HorizontalAlignment="Left" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Width" Value="16"/>
+                                                <Setter Property="Height" Value="16"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                            <Border Background="Transparent" Height="16" Padding="5" Width="16">
+                                                                <Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="Transparent" Stroke="#9e9e9e">
+                                                                    <Path.RenderTransform>
+                                                                        <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                                                    </Path.RenderTransform>
+                                                                </Path>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="False"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#F8CE27"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#FAEDBA"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#F8CE27" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#F8CB1B"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#FBE282"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#F8CB1B" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="False"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#202326"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#595959"/>
+                                                                </MultiTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <ContentPresenter Grid.Column="1" x:Name="PART_Header" ContentSource="Header"
+                                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5 0 0 0">
+                                    </ContentPresenter>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background1}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#FBEEB9" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background2}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#DDCB84" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background3}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#CEBE7D" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style  x:Key="TreeViewItemStyle2" TargetType="{x:Type TreeViewItem}">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FAFBFD"/>
+                <GradientStop Offset="1" Color="#EBF3FD"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#F1F7FE"/>
+                <GradientStop Offset="1" Color="#CFE4FE"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background3" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#DCEBFC"/>
+                <GradientStop Offset="1" Color="#C1DBFC"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                    <ControlTemplate.Resources>
+                        <convers:IndentConverter  x:Key="indentConverter"/>
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"-->
+                        <Border Name="itemBackground" Background="{TemplateBinding Background}"  Height="28"
+                                BorderThickness="1" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid Background="Transparent">
+                                <Grid x:Name="ItemRoot" Margin="{Binding Converter={StaticResource indentConverter},RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton x:Name="Expander" HorizontalAlignment="Left" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Width" Value="16"/>
+                                                <Setter Property="Height" Value="16"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                            <Border Background="Transparent" Height="16" Padding="5" Width="16">
+                                                                <Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="Transparent" Stroke="#9e9e9e">
+                                                                    <Path.RenderTransform>
+                                                                        <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                                                    </Path.RenderTransform>
+                                                                </Path>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="False"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#27C7F7"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#BAE4FA"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#27C7F7" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#1CC4F7"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#82DFFB"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#1CC4F7" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="False"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#202326"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#595959"/>
+                                                                </MultiTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <ContentPresenter Grid.Column="1" x:Name="PART_Header" ContentSource="Header"
+                                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5 0 0 0">
+                                    </ContentPresenter>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background1}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#B8D6FB" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background2}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#84ACDD" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background3}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#7DA2CE" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style  x:Key="TreeViewItemStyleWide1" TargetType="{x:Type TreeViewItem}">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FDFDFB"/>
+                <GradientStop Offset="1" Color="#FDFAEC"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FEFCF1"/>
+                <GradientStop Offset="1" Color="#FEF4CF"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background3" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FCF5DC"/>
+                <GradientStop Offset="1" Color="#FCF0C0"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="backgroundhl" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#DCEBFC"/>
+                <GradientStop Offset="1" Color="#C1DBFC"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0"/>
+        <EventSetter Event="Selected" Handler="TreeViewItem_Selected"/>
+        <EventSetter Event="Unselected" Handler="TreeViewItem_Unselected"/>
+        <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                    <ControlTemplate.Resources>
+                        <convers:IndentConverter  x:Key="indentConverter"/>
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"-->
+                        <Border Name="itemBackground" Background="{TemplateBinding Background}"  MinHeight="28"
+                                BorderThickness="1" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid Background="Transparent">
+                                <Grid x:Name="ItemRoot" Margin="{Binding Converter={StaticResource indentConverter},RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton x:Name="Expander" HorizontalAlignment="Left" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Width" Value="16"/>
+                                                <Setter Property="Height" Value="16"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                            <Border Background="Transparent" Height="16" Padding="5" Width="16">
+                                                                <Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="Transparent" Stroke="#9e9e9e">
+                                                                    <Path.RenderTransform>
+                                                                        <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                                                    </Path.RenderTransform>
+                                                                </Path>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="False"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#F8CE27"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#FAEDBA"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#F8CE27" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#F8CB1B"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#FBE282"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#F8CB1B" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="False"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#202326"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#595959"/>
+                                                                </MultiTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <ContentPresenter Grid.Column="1" x:Name="PART_Header" ContentSource="Header"
+                                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5 0 0 0">
+                                    </ContentPresenter>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background1}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#FBEEB9" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background2}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#DDCB84" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background3}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#CEBE7D" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding HighLight}" Value="True">
+                            <Setter Property="Background" Value="{StaticResource backgroundhl}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#7DA2CE" TargetName="itemBackground"/>
+                            <Setter Property="Effect" TargetName="itemBackground">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="5" Opacity="1" Color="#7DA2CE" ShadowDepth="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style  x:Key="TreeViewItemStyleWide2" TargetType="{x:Type TreeViewItem}">
+        <Style.Resources>
+            <LinearGradientBrush x:Key="background1" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FAFBFD"/>
+                <GradientStop Offset="1" Color="#EBF3FD"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background2" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#F1F7FE"/>
+                <GradientStop Offset="1" Color="#CFE4FE"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="background3" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#DCEBFC"/>
+                <GradientStop Offset="1" Color="#C1DBFC"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="backgroundhl" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Offset="0" Color="#FCF5DC"/>
+                <GradientStop Offset="1" Color="#FCF0C0"/>
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0"/>
+        <EventSetter Event="Selected" Handler="TreeViewItem_Selected"/>
+        <EventSetter Event="Unselected" Handler="TreeViewItem_Unselected"/>
+        <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                    <ControlTemplate.Resources>
+                        <convers:IndentConverter  x:Key="indentConverter"/>
+                    </ControlTemplate.Resources>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"-->
+                        <Border Name="itemBackground" Background="{TemplateBinding Background}"  MinHeight="28"
+                                BorderThickness="1" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid Background="Transparent">
+                                <Grid x:Name="ItemRoot" Margin="{Binding Converter={StaticResource indentConverter},RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton x:Name="Expander" HorizontalAlignment="Left" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton.Style>
+                                            <Style TargetType="{x:Type ToggleButton}">
+                                                <Setter Property="Focusable" Value="False"/>
+                                                <Setter Property="Width" Value="16"/>
+                                                <Setter Property="Height" Value="16"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                            <Border Background="Transparent" Height="16" Padding="5" Width="16">
+                                                                <Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="Transparent" Stroke="#9e9e9e">
+                                                                    <Path.RenderTransform>
+                                                                        <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                                                    </Path.RenderTransform>
+                                                                </Path>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="True">
+                                                                    <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="False"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#27C7F7"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#BAE4FA"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#27C7F7" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#1CC4F7"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#82DFFB"/>
+                                                                    <Setter Property="Effect" TargetName="ExpandPath">
+                                                                        <Setter.Value>
+                                                                            <DropShadowEffect ShadowDepth="0" Color="#1CC4F7" Opacity="1" BlurRadius="1"/>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </MultiTrigger>
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsMouseOver" Value="False"/>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#202326"/>
+                                                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#595959"/>
+                                                                </MultiTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <ContentPresenter Grid.Column="1" x:Name="PART_Header" ContentSource="Header"
+                                                 HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5 0 0 0">
+                                    </ContentPresenter>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background1}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#B8D6FB" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background2}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#84ACDD" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition SourceName="itemBackground" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource background3}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#7DA2CE" TargetName="itemBackground"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding HighLight}" Value="True">
+                            <Setter Property="Background" Value="{StaticResource backgroundhl}" TargetName="itemBackground"/>
+                            <Setter Property="BorderBrush" Value="#CEBE7D" TargetName="itemBackground"/>
+                            <Setter Property="Effect" TargetName="itemBackground">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="5" Opacity="1" Color="#CEBE7D" ShadowDepth="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TreeViewStyle1" TargetType="{x:Type TreeView}">
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"></Setter>
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource TreeViewItemStyle1}"></Setter>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Margin="0"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TreeViewStyle2" TargetType="{x:Type TreeView}">
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"></Setter>
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource TreeViewItemStyle2}"></Setter>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Margin="0"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

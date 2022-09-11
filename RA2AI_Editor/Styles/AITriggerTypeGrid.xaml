@@ -1,0 +1,319 @@
+﻿<UserControl x:Class="RA2AI_Editor.Styles.AITriggerTypeGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:styles="clr-namespace:RA2AI_Editor.Styles"
+             xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
+             xmlns:misc="clr-namespace:RA2AI_Editor.Misc"
+             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400">
+    <Grid x:Name="grid">
+        <Grid.Resources>
+            <convers:UIntToString x:Key="UIntToString"/>
+            <convers:IntToString x:Key="IntToString"/>
+            <ControlTemplate x:Key="ValidationErrorObject">
+                <Border BorderThickness="1" CornerRadius="1" BorderBrush="Red">
+                    <Grid>
+                        <AdornedElementPlaceholder Name="customAdorner"/>
+                        <Image Source="/Images/error.png" Stretch="Uniform" Margin="0 0 5 0" Width="16" Height="16" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                        <!--<TextBlock Text="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" Background="White" HorizontalAlignment="Right" Margin="0 0 5 0" Foreground="Red" VerticalAlignment="Center" IsHitTestVisible="False"/>-->
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Border x:Name="gd_id" Grid.Row="1" Style="{StaticResource GridBorderStyle}" Height="26" Margin="5 0 0 5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="#111111" Text="{DynamicResource TAG_ID}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 5 2"/>
+                <TextBox x:Name="tb_tag" Style="{StaticResource EditorBoxStyleB}" Grid.Column="1" Margin="5 0 5 0" Validation.ErrorTemplate="{StaticResource ValidationErrorObject}" VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding UpdateSourceTrigger="PropertyChanged" Path="PTag" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <misc:IDValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Style="{StaticResource GridBorderStyle}" Height="26" Margin="5 0 0 5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="#111111" Text="{DynamicResource TAG_NAME}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 5 2"/>
+                <TextBox x:Name="tb_name" Grid.Column="1" Style="{StaticResource EditorBoxStyleB}" Margin="5 0 5 0" Validation.ErrorTemplate="{StaticResource ValidationErrorObject}" VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding UpdateSourceTrigger="PropertyChanged" Path="PName" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <misc:TriggerNameValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="3" Margin="5 0 5 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="gd_team1" Grid.Row="0" Style="{StaticResource GridBorderStyle}" Height="26" Margin="0 0 0 5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TeamType1}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                    <toolkit:AutoCompleteBox Text="{Binding Path=STeamType1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TeamTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" LostFocus="AutoCompleteBox_LostFocus" PreviewKeyDown="TeamType_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TeamTypeFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                    <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                    <!--<Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue" Margin="0 0 5 0">
+                    <TextBlock Foreground="#111111" Text="{Binding STeamType1Name,Mode=OneWay}" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                </Border>-->
+                    <TextBox Grid.Column="3" Text="{Binding STeamType1Name,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" IsReadOnly="True" Focusable="False" Background="Transparent" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0 0 5 0">
+                        <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETEAMTYPE}" Width="26" Click="TeamType1_CreateClick"/>
+                        <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTEAMTYPE}" Width="26" Click="TeamType1_JumpClick"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border x:Name="gd_team2" Grid.Row="1" Style="{StaticResource GridBorderStyle}" Height="26" Margin="0 0 0 5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TeamType2}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="5 2 0 2"/>
+                    <toolkit:AutoCompleteBox Text="{Binding Path=STeamType2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Stretch" Margin="5 0 0 0" BorderBrush="LightBlue" ItemsSource="{Binding TeamTypeInfo,Mode=OneWay}"
+                                             ItemTemplate="{StaticResource TagItemDataTemplate}" VerticalContentAlignment="Center" LostFocus="AutoCompleteBox_LostFocus" PreviewKeyDown="TeamType_PreviewKeyDown" TextBoxStyle="{StaticResource EditorBoxStyleB}"
+                                             IsTextCompletionEnabled="True" FilterMode="Custom" ItemFilter="{Binding TeamTypeFilter}" ValueMemberPath="PTag" MinimumPrefixLength="0"/>
+                    <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-2 0 -2 0" VerticalAlignment="Stretch" Background="Transparent" Focusable="False"/>
+                    <!--<Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue" Margin="0 0 5 0">
+                    <TextBlock Foreground="#111111" Text="{Binding STeamType2Name,Mode=OneWay}" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                </Border>-->
+                    <TextBox Grid.Column="3" Text="{Binding STeamType2Name,Mode=OneWay}" Margin="0 0 5 0" BorderThickness="1" BorderBrush="LightBlue" Background="Transparent" IsReadOnly="True" Focusable="False" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Center"/>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0 0 5 0">
+                        <Button Style="{StaticResource BtnAddStyle}" ToolTip="{DynamicResource STR_CREATETEAMTYPE}" Width="26" Click="TeamType2_CreateClick"/>
+                        <Button Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTEAMTYPE}" Width="26" Click="TeamType2_JumpClick"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="4" Margin="5 0 5 5" Height="54">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="gd_minweight" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="#ABC8F3">
+                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_MinWeight}" VerticalAlignment="Center" TextAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightBlue"/>
+                <Border Grid.Row="2">
+                    <TextBox Text="{Binding Path=MinWeight,Mode=TwoWay}" Padding="0 5 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" PreviewMouseWheel="MinWeight_PreviewMouseWheel"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="gd_initweight" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="#ABC8F3">
+                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_InitialWeight}" VerticalAlignment="Center" TextAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightBlue"/>
+                <Border Grid.Row="2">
+                    <TextBox Text="{Binding Path=BaseWeight,Mode=TwoWay}" Padding="0 5 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" PreviewMouseWheel="Weight_PreviewMouseWheel"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="gd_maxweight" Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="#ABC8F3">
+                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_MaxWeight}" VerticalAlignment="Center" TextAlignment="Center"/>
+                </Border>
+                <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightBlue"/>
+                <Border Grid.Row="2">
+                    <TextBox Text="{Binding Path=MaxWeight,Mode=TwoWay}" Padding="0 5 0 0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" PreviewMouseWheel="MaxWeight_PreviewMouseWheel"/>
+                </Border>
+            </Grid>
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="LightBlue"/>
+            <Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue"/>
+            <Border Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" BorderBrush="LightBlue"/>
+        </Grid>
+        <Grid Grid.Row="5" Margin="5 0 5 5">
+            <Grid Grid.Row="2" Margin="0 0 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <ScrollViewer Grid.Column="0">
+                    <Border BorderBrush="#ABC8F3" BorderThickness="1" Margin="0 0 3 0" Background="#20ABC8F3">
+                        <StackPanel x:Name="stackpanel">
+                            <Border Margin="0" Background="#ABC8F3">
+                                <TextBlock Text="{DynamicResource STR_BASEITEMS}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                            </Border>
+                            <Border x:Name="gd_owner" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Owner}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding CountryListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource CountryItemCBStyle}" DisplayMemberPath="DescriptionOrAll" SelectedItem="{Binding House,Mode=TwoWay}" Margin="5 0 5 0"/>
+
+                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=SHouseDes,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource CountryDataTemplate}" ItemsSource="{Binding CountryListInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="NameOrAll" MinimumPrefixLength="0"/>-->
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_side" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Side}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding SideListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource SideItemCBStyle}" DisplayMemberPath="Description" SelectedItem="{Binding Side,Mode=TwoWay}" Margin="5 0 5 0"/>
+
+                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=SSide,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource SideDataTemplate}" ItemsSource="{Binding SideListInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="SIndex" MinimumPrefixLength="0"/>-->
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_techlevel" Style="{StaticResource GridBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechLevel}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=TechLevel,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue" PreviewMouseWheel="MouseWheelTechLevel_Index"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_easymode" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Easy}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_mediummode" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=NormalMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Medium}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_hardmode" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Hard}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_skirmish" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=Skirmish,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Skirmish}" Grid.Column="1" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                            <Border x:Name="gd_basedefence" Style="{StaticResource GridBorderStyle}">
+                                <CheckBox IsChecked="{Binding Path=BaseDefence,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_BaseDefense}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+                <ScrollViewer Grid.Column="1">
+                    <Border BorderBrush="#EFE4B0" BorderThickness="1" Margin="3 0 0 0" Background="#20A0A040">
+                        <StackPanel x:Name="stackpanel_formap">
+                            <StackPanel.Resources>
+                                <convers:TriggerToVisible1 x:Key="TriggerToVisible1"/>
+                                <convers:TriggerToVisible2 x:Key="TriggerToVisible2"/>
+                                <convers:TriggerToVisible3 x:Key="TriggerToVisible3"/>
+                            </StackPanel.Resources>
+                            <Border Margin="0" Background="#EFE4B0">
+                                <TextBlock Text="{DynamicResource STR_TRIGGERRELATED}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                            </Border>
+                            <Border x:Name="gd_triggercondition" Style="{StaticResource GridBorderStyleForMap}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                                    <ComboBox Grid.Column="1" Margin="5 0 5 0" IsEditable="False" ItemsSource="{Binding TriggerTypeListInfo,Mode=OneWay}" SelectedValuePath="Value" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource TriggerTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding TriggerType,Mode=TwoWay}"/>
+
+                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=STriggerCondition,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource TriggerConditionDataTemplate}" ItemsSource="{Binding TriggerTypeListInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="SValue" MinimumPrefixLength="0"/>-->
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_techtype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible3}}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*" MinWidth="70"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <toolkit:AutoCompleteBox Text="{Binding Path=STriggerUnit,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 0 0 0" BorderBrush="#A0DAC049" VerticalContentAlignment="Center"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource UnitDataTemplate}" ItemsSource="{Binding TechTypeInfo}" PreviewKeyDown="Unit_PreviewKeyDown"
+                                             IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" ValueMemberPath="Name" MinimumPrefixLength="0"/>
+                                    <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-1 0 -1 0" VerticalAlignment="Stretch" Background="#A0DAC049"/>
+                                    <Border Grid.Column="3" BorderThickness="1" BorderBrush="#A0DAC049" Margin="0 0 5 0">
+                                        <TextBlock Foreground="#111111" Text="{Binding STriggerUnitName, Mode=OneWay}" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2" TextTrimming="CharacterEllipsis"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_comparetype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible1}}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerCondition}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                                    <ComboBox Grid.Column="1" IsEditable="False" Margin="5 0 5 0" ItemsSource="{Binding CompareTypeListInfo,Mode=OneWay}" SelectedValuePath="CompareTypes" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource CompareTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedComparison,Mode=TwoWay}"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="gd_techcount" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible2}}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechCount}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                    <TextBox Text="{Binding Path=CompareCount,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049" PreviewMouseWheel="MouseWheel_Index"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

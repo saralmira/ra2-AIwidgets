@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RA2AI_Editor.Styles"
+                    xmlns:convers="clr-namespace:RA2AI_Editor.Convers">
+
+    <DataTemplate x:Key="SideDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding SIndex}"
+            Width="auto"/>
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding Description}"
+            Width="auto" Foreground="#D95700"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="UnitDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Resources>
+                <convers:BoolToForeGround x:Key="BoolToForeGround"/>
+                <convers:BoolToForeGround2 x:Key="BoolToForeGround2"/>
+            </StackPanel.Resources>
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding Name}" Foreground="{Binding IsEnabled,Mode=OneWay,Converter={StaticResource BoolToForeGround}}"
+            Width="auto"/>
+            <TextBlock Margin="5 2 5 2" 
+            Text="{Binding Description}" Width="auto" 
+            Foreground="{Binding IsEnabled,Mode=OneWay,Converter={StaticResource BoolToForeGround2}}"/>
+        </StackPanel>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="TagItemDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding PTag}"
+            Width="auto"/>
+            <TextBlock Margin="5 2 5 2" 
+            Text="{Binding PName}" Width="auto" 
+            Foreground="#D95700" />
+        </StackPanel>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="CountryDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding DescriptionOrNone}"
+            Width="auto"/>
+        </StackPanel>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="InfoItemDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding Value}"
+            Width="auto"/>
+            <TextBlock Margin="5 2 5 2" 
+            Text="{Binding Description}" Width="auto" 
+            Foreground="#D95700" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TriggerConditionDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding SValue}"
+            Width="auto"/>
+            <TextBlock Margin="5 2 5 2" 
+            Text="{Binding Description}" Width="auto" 
+            Foreground="#D95700" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ACBItemTemplate_ScriptAction">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding SAction}"
+            Width="auto" Foreground="#D95700"/>
+            <!--<TextBlock Margin="5 2 5 2"
+            Text="{Binding Name}"
+            Width="auto"/>-->
+            <TextBlock Margin="12 2 5 2" 
+            Text="{Binding Summary}" Width="auto"/>
+        </StackPanel>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="ACBItemTemplate_ScriptParam">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding Param}"
+            Width="auto" Foreground="#D95700" />
+            <TextBlock Margin="5 2 5 2"
+            Text="{Binding Description}" Width="auto"/>
+        </StackPanel>
+    </DataTemplate>
+
+
+</ResourceDictionary>
