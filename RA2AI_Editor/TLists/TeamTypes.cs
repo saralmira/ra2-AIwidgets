@@ -27,6 +27,7 @@ namespace AIcore.TLists
         public void SaveIni(bool release = false)
         {
             ini.WriteValue("TeamTypes", null, null);
+            if (release) ResetTag();
             for (int i = 0; i < teamTypes.Count; ++i)
             {
                 teamTypes[i].Output(ini, release);

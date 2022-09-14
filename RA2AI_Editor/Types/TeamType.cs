@@ -511,70 +511,81 @@ namespace AIcore.Types
                 PropertyChange(nameof(EnableExt)); 
             } 
         }
+        public bool EnableExtInRelease { get { return EnableExt || TaskForce.EnableExt; } }
 
         private bool _Ext_EasyMode = true;
         public bool Ext_EasyMode { get => _Ext_EasyMode; set { _Ext_EasyMode = value; PropertyChange(nameof(Ext_EasyMode)); } }
         public TeamTypeBase Ext_EasyMode_Type { get; set; }
-        public TeamType Get_Easy_Type(bool output = false) { return Get_Ext_Type(Ext_EasyMode_Type, Ext_EasyMode, 1, output); }
+        public TeamType Get_Easy_Type { get => Get_Ext_Type(Ext_EasyMode_Type, Ext_EasyMode, 1); }
 
         private bool _Ext_MediumMode = true;
         public bool Ext_MediumMode { get => _Ext_MediumMode; set { _Ext_MediumMode = value; PropertyChange(nameof(Ext_MediumMode)); } }
         public TeamTypeBase Ext_MediumMode_Type { get; set; }
-        public TeamType Get_Medium_Type(bool output = false) { return Get_Ext_Type(Ext_MediumMode_Type, Ext_MediumMode, 2, output); }
+        public TeamType Get_Medium_Type { get => Get_Ext_Type(Ext_MediumMode_Type, Ext_MediumMode, 2); }
 
         private bool _Ext_HardMode = true;
         public bool Ext_HardMode { get => _Ext_HardMode; set { _Ext_HardMode = value; PropertyChange(nameof(Ext_HardMode)); } }
         public TeamTypeBase Ext_HardMode_Type { get; set; }
-        public TeamType Get_Hard_Type(bool output = false) { return Get_Ext_Type(Ext_HardMode_Type, Ext_HardMode, 3, output); }
+        public TeamType Get_Hard_Type { get => Get_Ext_Type(Ext_HardMode_Type, Ext_HardMode, 3); }
 
-        public TeamType Get_Ext_Type(TeamTypeBase ttb, bool extmode, int mode, bool output = false)
+        public (TaskForce, TaskForce, TaskForce) GetExtTaskForce(TaskForce tf)
         {
-            if (!EnableExt || !extmode)
+            if (!tf.EnableExt)
+                return (tf, tf, tf);
+
+            return (tf.CloneFromBase(tf.Ext_EasyMode_Type, ai.taskForces.GetNewTag(), " - E"),
+                tf.CloneFromBase(tf.Ext_MediumMode_Type, ai.taskForces.GetNewTag(), " - M"),
+                tf.CloneFromBase(tf.Ext_HardMode_Type, ai.taskForces.GetNewTag(), " - H"));
+        }
+
+        private void FromCache(TaskForce t, out (TaskForce, TaskForce, TaskForce) out_type)
+        {
+            if (t == AI.NullTaskForce) out_type = (t, t, t);
+            else if (!ai.releaseTaskForces.TryGetValue(t, out out_type))
+            {
+                // remove totally
+                t.RemoveSectionFromIni(ai.ini);
+                ai.taskForces.Delete(t);
+                ai.releaseTaskForces[t] = out_type = GetExtTaskForce(t);
+                ai.taskForces.TryAdd(out_type.Item1);
+                ai.taskForces.TryAdd(out_type.Item2);
+                ai.taskForces.TryAdd(out_type.Item3);
+            }
+        }
+
+        public TeamType Get_Ext_Type(TeamTypeBase ttb, bool extmode, int mode)
+        {
+            var tf = ttb.TaskForce;
+            if (!EnableExt && !tf.EnableExt)
                 return this;
 
-            if (ttb.Ext_Generate != null)
-                return ttb.Ext_Generate;
+            if (!extmode)
+                return this;
 
-            TaskForceBase tfb;
+            FromCache(tf, out (TaskForce, TaskForce, TaskForce) out_tf);
             string modefix;
             switch (mode)
             {
                 case 1: // easy
                     modefix = " - E";
-                    tfb = ttb.TaskForce.Ext_EasyMode_Type;
+                    tf = out_tf.Item1;
                     break;
                 case 2: // medium
                     modefix = " - M";
-                    tfb = ttb.TaskForce.Ext_MediumMode_Type;
+                    tf = out_tf.Item2;
                     break;
                 case 3: // hard
                     modefix = " - H";
-                    tfb = ttb.TaskForce.Ext_HardMode_Type;
+                    tf = out_tf.Item3;
                     break;
                 default:
                     return this;
             }
 
             var ext = this.CloneType(ai.teamTypes.GetNewTag());
+            ext.PName = NameWithExt(this.Name, modefix);
             ext.Script = ttb.Script;
-            ext.TaskForce = ttb.TaskForce;
-            ext.PName = this.Name + modefix;
-            ttb.Ext_Generate = ext;
-            if (output)
-            {
-                var tf = ttb.TaskForce;
-                if (tf.EnableExt)
-                {
-                    tf = tf.CloneType(ai.taskForces.GetNewTag());
-                    tf.PName = tf.Name + modefix;
-                    tf.BindList = tfb.BindList;
-                    ext.TaskForce = tf;
-                    tf.Output(ai.ini, true);
-                    ai.taskForces.Add(tf);
-                }
-                ext.Output(ai.ini, true);
-                ai.teamTypes.Add(ext);
-            }
+            ext.TaskForce = tf;
             return ext;
         }
 
@@ -667,8 +678,6 @@ namespace AIcore.Types
         public string STaskForceName => TaskForce != null && TaskForce != AI.NullTaskForce ? TaskForce.PName : AI.NullTaskForce.PTag;
 
         protected readonly AI ai;
-
-        public TeamType Ext_Generate = null;
 
         public override void Output(IniClass ini, bool release)
         {

@@ -137,6 +137,13 @@ namespace AIcore.Types
         public TaskForceBase Ext_MediumMode_Type { get; set; }
         public TaskForceBase Ext_HardMode_Type { get; set; }
 
+        public TaskForce CloneFromBase(TaskForceBase tfb, string tag, string modefix = "")
+        {
+            var ext = this.CloneType(tag);
+            ext.BindList = tfb.BindList;
+            ext.PName = NameWithExt(this.PName, modefix);
+            return ext;
+        }
     }
 
     public class TaskForceData : NotifyClass

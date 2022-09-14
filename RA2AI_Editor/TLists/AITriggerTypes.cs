@@ -27,6 +27,7 @@ namespace AIcore.TLists
         public void SaveIni(bool release = false)
         {
             ai.ini.WriteValue("AITriggerTypes", null, null);
+            if (release) ResetTag();
             for (int i = 0; i < aITriggerTypes.Count; ++i)
             {
                 aITriggerTypes[i].Output(ini, release);

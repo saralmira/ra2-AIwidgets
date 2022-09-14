@@ -8,7 +8,7 @@ using Library;
 
 namespace AIcore.Types
 {
-    public class AITriggerType : OType, INotifyPropertyChanged
+    public class AITriggerType : OType
     {
         public AITriggerType(AI _ai, string tag, TeamType teamtype1, TeamType teamtype2 = null) : base(tag)
         {
@@ -69,6 +69,11 @@ namespace AIcore.Types
             }
         }
 
+        public override void RemoveSectionFromIni(IniClass ini)
+        {
+            ini.WriteValue("AITriggerTypes", _tag, null);
+        }
+
         public AITriggerType CloneType(string tag)
         {
             return new AITriggerType(ai, tag, TeamType1, TeamType2)
@@ -93,21 +98,42 @@ namespace AIcore.Types
             };
         }
 
+        private void FromCache(TeamType t, out (TeamType, TeamType, TeamType) out_type)
+        {
+            if (t == AI.NullTeamType) out_type = (t, t, t);
+            else if (!ai.releaseTeamTypes.TryGetValue(t, out out_type))
+            {
+                // remove totally
+                t.RemoveSectionFromIni(ai.ini);
+                ai.teamTypes.Delete(t);
+                // if extension is enabled, auto cache
+                // if not, cache itself
+                // which is really simple
+                ai.releaseTeamTypes[t] = out_type = (t.Get_Easy_Type, t.Get_Medium_Type, t.Get_Hard_Type);
+                ai.teamTypes.TryAdd(out_type.Item1);
+                ai.teamTypes.TryAdd(out_type.Item2);
+                ai.teamTypes.TryAdd(out_type.Item3);
+            }
+        }
+
         public override void Output(IniClass ini, bool release)
         {
             if (release)
             {
-                if (TeamType1.EnableExt || TeamType2.EnableExt)
+                if (TeamType1.EnableExtInRelease || TeamType2.EnableExtInRelease)
                 {
                     bool ext_this = false;
                     var ot1 = TeamType1;
                     var ot2 = TeamType2;
                     bool em = EasyMode, mm = NormalMode, hm = HardMode;
 
+                    FromCache(ot1, out (TeamType, TeamType, TeamType) ot1_type);
+                    FromCache(ot2, out (TeamType, TeamType, TeamType) ot2_type);
+
                     if (em)
                     {
-                        var tt1_e = ot1.Get_Easy_Type(true);
-                        var tt2_e = ot2.Get_Easy_Type(true);
+                        var tt1_e = ot1_type.Item1;
+                        var tt2_e = ot2_type.Item1;
 
                         ext_this = true;
                         this.TeamType1 = tt1_e;
@@ -119,8 +145,8 @@ namespace AIcore.Types
                     }
                     if (mm)
                     {
-                        var tt1 = ot1.Get_Medium_Type(true);
-                        var tt2 = ot2.Get_Medium_Type(true);
+                        var tt1 = ot1_type.Item2;
+                        var tt2 = ot2_type.Item2;
 
                         AITriggerType ext;
 
@@ -142,14 +168,13 @@ namespace AIcore.Types
                             ext.EasyMode = false;
                             ext.NormalMode = true;
                             ext.HardMode = false;
-                            ai.aITriggerTypes.Add(ext);
                         }
                         OutputStr(ini, ext, " - M");
                     }
                     if (hm)
                     {
-                        var tt1 = ot1.Get_Hard_Type(true);
-                        var tt2 = ot2.Get_Hard_Type(true);
+                        var tt1 = ot1_type.Item3;
+                        var tt2 = ot2_type.Item3;
 
                         AITriggerType ext;
 
@@ -171,7 +196,6 @@ namespace AIcore.Types
                             ext.EasyMode = false;
                             ext.NormalMode = false;
                             ext.HardMode = true;
-                            ai.aITriggerTypes.Add(ext);
                         }
                         OutputStr(ini, ext, " - H");
                     }
@@ -185,7 +209,7 @@ namespace AIcore.Types
         private void OutputStr(IniClass ini, AITriggerType type, string nameappend = "")
         {
             int index = type.Name.IndexOf(",");
-            string str = (index >= 0 ? type.Name.Substring(0, index) : type.Name) + nameappend + ",";
+            string str = NameWithExt(index >= 0 ? type.Name.Substring(0, index) : type.Name, nameappend) + ",";
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";
@@ -565,6 +589,5 @@ namespace AIcore.Types
             get { return AI.teamtypes_info; }
             //set { _TeamTypeInfo = value; PropertyChange(this, "TeamTypeInfo"); }
         }
-
     }
 }

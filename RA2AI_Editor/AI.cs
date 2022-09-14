@@ -145,6 +145,8 @@ namespace AIcore
             release.scriptTypes.SaveIni(true);
             release.teamTypes.SaveIni(true);
             release.ini.Save();
+            releaseTaskForces.Clear();
+            releaseTeamTypes.Clear();
         }
 
         private Game.GameTypeClass GetLastGameType()
@@ -315,6 +317,8 @@ namespace AIcore
         public static readonly TaskForce NullTaskForce = new TaskForce(null);
         public static readonly ScriptType NullScriptType = new ScriptType(null);
         public static readonly TeamType NullTeamType = new TeamType(null, null, NullScriptType, NullTaskForce);
-        
+
+        public Dictionary<TaskForce, (TaskForce, TaskForce, TaskForce)> releaseTaskForces = new Dictionary<TaskForce, (TaskForce, TaskForce, TaskForce)>();
+        public Dictionary<TeamType, (TeamType, TeamType, TeamType)> releaseTeamTypes = new Dictionary<TeamType, (TeamType, TeamType, TeamType)>();
     }
 }

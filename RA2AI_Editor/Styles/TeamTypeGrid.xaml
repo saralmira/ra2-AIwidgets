@@ -168,7 +168,7 @@
                     </Grid.RowDefinitions>
                     <CheckBox Content="{DynamicResource MENU_ENABLE_EXT}" IsChecked="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="0"/>
                     <StackPanel Grid.Row="1" Orientation="Vertical" CanVerticallyScroll="True" IsEnabled="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
-                        <Expander x:Name="ext_easy" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                        <Expander x:Name="ext_easy" Style="{StaticResource ExpanderStyleBlue}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Margin="0 5 0 5">
                             <Expander.Header>
                                 <CheckBox Content="{DynamicResource COLUMN_EASY}" IsChecked="{Binding Path=Ext_EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
                             </Expander.Header>
@@ -221,7 +221,7 @@
                                 </Border>
                             </Grid>
                         </Expander>
-                        <Expander x:Name="ext_medium" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                        <Expander x:Name="ext_medium" Style="{StaticResource ExpanderStyleBlue}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Margin="0 5 0 5">
                             <Expander.Header>
                                 <CheckBox Content="{DynamicResource COLUMN_MEDIUM}" IsChecked="{Binding Path=Ext_MediumMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
                             </Expander.Header>
@@ -274,7 +274,7 @@
                                 </Border>
                             </Grid>
                         </Expander>
-                        <Expander x:Name="ext_hard" Style="{StaticResource ExpanderStyleBlue}" Margin="0 5 0 5">
+                        <Expander x:Name="ext_hard" Style="{StaticResource ExpanderStyleBlue}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Margin="0 5 0 5">
                             <Expander.Header>
                                 <CheckBox Content="{DynamicResource COLUMN_HARD}" IsChecked="{Binding Path=Ext_HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource CheckBoxNewStyle}" VerticalAlignment="Center" Margin="6 0 0 0"/>
                             </Expander.Header>

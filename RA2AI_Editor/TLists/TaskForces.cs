@@ -27,6 +27,7 @@ namespace AIcore.TLists
         public void SaveIni(bool release = false)
         {
             ini.WriteValue("TaskForces", null, null);
+            if (release) ResetTag();
             for (int i = 0; i < taskForces.Count; ++i)
             {
                 taskForces[i].Output(ini, release);

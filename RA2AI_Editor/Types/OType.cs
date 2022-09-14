@@ -79,6 +79,22 @@ namespace AIcore.Types
                 return (searchText, obj) => (obj as TagType).Find(searchText);
             }
         }
+
+        protected string NameWithExt(string name, string modefix)
+        {
+            if (name.EndsWith(modefix, StringComparison.CurrentCultureIgnoreCase))
+                return name;
+
+            string[] md = { " - E", " - M", " - H" };
+            foreach (string fix in md)
+                if (name.EndsWith(fix, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    name = name.Remove(name.Length - fix.Length);
+                    break;
+                }
+            return name + modefix;
+        }
+
     }
 
     public abstract class OType : TagType
@@ -90,6 +106,11 @@ namespace AIcore.Types
         }
 
         public abstract void Output(IniClass ini, bool release = false);
+
+        public virtual void RemoveSectionFromIni(IniClass ini)
+        {
+            ini.WriteValue(_tag, null, null);
+        }
 
         protected abstract void Init(IniClass ini, string tag);
 

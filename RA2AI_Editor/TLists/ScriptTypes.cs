@@ -27,6 +27,7 @@ namespace AIcore.TLists
         public void SaveIni(bool release = false)
         {
             ini.WriteValue("ScriptTypes", null, null);
+            if (release) ResetTag();
             for (int i = 0; i < scriptTypes.Count; ++i)
             {
                 scriptTypes[i].Output(ini, release);

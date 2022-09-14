@@ -33,10 +33,15 @@ namespace AIcore.TLists
                 }
                 tag = Convert.ToString(current_tag, 16).ToUpper().PadLeft(8, '0');
 
-                tag += (ai.IsMapFile ? tag_post : (tag_post + "-G"));
+                tag += ai.IsMapFile ? tag_post : (tag_post + "-G");
             }
             while (F_Exist(list, tag));
             return tag;
+        }
+
+        public void ResetTag()
+        {
+            current_tag = base_tag;
         }
 
         public static bool F_Exist(ObservableCollection<Type> list, string tag)
@@ -91,6 +96,13 @@ namespace AIcore.TLists
                 typelist.Insert(index, t);
             else
                 typelist.Add(t);
+        }
+
+        public virtual void TryAdd(Type t, int index = -1)
+        {
+            if (typelist.Contains(t))
+                return;
+            Add(t, index);
         }
     }
 }
