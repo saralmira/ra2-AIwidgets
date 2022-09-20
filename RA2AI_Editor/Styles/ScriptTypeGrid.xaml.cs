@@ -119,19 +119,25 @@ namespace RA2AI_Editor.Styles
         {
             if (st != null)
             {
-                Button b = (Button)sender;
-                if (b.Content is Popup)
-                {
-                    Popup p = (Popup)b.Content;
-                    Grid g = (Grid)p.Child;
-                    System.Windows.Controls.ListBox lb = Local.FindListBoxInElement(g.Children, "PopList");
-                    if (lb != null)
-                    {
-                        lb.ItemsSource = MainWindow.teamTypeDataInit.Find(st);
-                        lb.SelectedIndex = -1;
-                        p.IsOpen = true;
-                    }
-                }
+                var ttlist = MainWindow.teamTypeDataInit.Find(st);
+                PopList.ItemsSource = ttlist;
+                PopList.SelectedIndex = -1;
+                PopList2.ItemsSource = Local.FindAITriggers(ttlist);
+                PopList2.SelectedIndex = -1;
+                LPopup.IsOpen = true;
+                //Button b = (Button)sender;
+                //if (b.Content is Popup)
+                //{
+                //    Popup p = (Popup)b.Content;
+                //    Grid g = (Grid)p.Child;
+                //    System.Windows.Controls.ListBox lb = Local.FindListBoxInElement(g.Children, "PopList");
+                //    if (lb != null)
+                //    {
+                //        lb.ItemsSource = MainWindow.teamTypeDataInit.Find(st);
+                //        lb.SelectedIndex = -1;
+                //        p.IsOpen = true;
+                //    }
+                //}
             }
         }
 

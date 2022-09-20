@@ -78,12 +78,17 @@
             </TextBox>
             <!--<uc:StateButton x:Name="statebtn" Grid.Column="2" Margin="0 4 5 4"/>-->
             <Button Grid.Column="2" Style="{StaticResource BtnCreateStyle}" ToolTip="{DynamicResource STR_CREATENAME}" Width="28" Click="NameCreate_Click" Margin="0" Focusable="True"/>
-            <Button Grid.Column="3" x:Name="btn_pop" Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTEAMTYPE}" Width="28" Margin="0 0 20 0" Click="Button_Click"/>
+            <Button Grid.Column="3" x:Name="btn_pop" Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTT_AT}" Width="28" Margin="0 0 20 0" Click="Button_Click"/>
             <Popup x:Name="LPopup" Style="{StaticResource PopupListStyle}" PlacementTarget="{Binding ElementName=btn_pop}"
                    Opened="LPopup_Opened" Closed="LPopup_Closed">
                 <Grid>
                     <Border Style="{StaticResource PopupBorderStyle}"/>
-                    <ListBox x:Name="PopList" Style="{StaticResource PopupListBoxStyle}"/>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="{DynamicResource TEAMTYPE_LIST}" Margin="3 0 3 0" Foreground="#CCAF28"/>
+                        <ListBox x:Name="PopList" Style="{StaticResource PopupListBoxStyle}"/>
+                        <TextBlock Text="{DynamicResource AITRIGGERS_LIST}" Margin="3 0 3 0" Foreground="#28ABCC"/>
+                        <ListBox x:Name="PopList2" Style="{StaticResource PopupListBoxStyleB}"/>
+                    </StackPanel>
                 </Grid>
             </Popup>
         </Grid>

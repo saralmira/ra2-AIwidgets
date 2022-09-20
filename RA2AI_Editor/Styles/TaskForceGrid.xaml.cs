@@ -146,8 +146,11 @@ namespace RA2AI_Editor.Styles
             {
                 //Grid g = (Grid)LPopup.Child;
                 //System.Windows.Controls.ListBox lb = Local.FindListBoxInElement(g.Children, "PopList");
-                PopList.ItemsSource = MainWindow.teamTypeDataInit.Find(tf);
+                var ttlist = MainWindow.teamTypeDataInit.Find(tf);
+                PopList.ItemsSource = ttlist;
                 PopList.SelectedIndex = -1;
+                PopList2.ItemsSource = Local.FindAITriggers(ttlist);
+                PopList2.SelectedIndex = -1;
                 LPopup.IsOpen = true;
             }
         }
@@ -286,17 +289,18 @@ namespace RA2AI_Editor.Styles
         private void PopList_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             ListBox lb = (ListBox)sender;
-            if (lb.SelectedItem != null && lb.SelectedItem is TeamType)
+            if (lb.SelectedItem != null && lb.SelectedItem is OType type)
             {
-                MainWindow.TeamTypeJumpEvent((TeamType)lb.SelectedItem);
+                MainWindow.JumpEvent(type);
             }
         }
 
         private void LPopup_Opened(object sender, EventArgs e)
         {
-            if (PopList.Items.Count > 0)
-                PopList.SelectedIndex = 0;
-            PopList.MoveFocus(Utils.NextTraversalRequest);
+            //if (PopList.Items.Count > 0)
+            //    PopList.SelectedIndex = 0;
+            //PopList.MoveFocus(Utils.NextTraversalRequest);
+            PopList.Focus();
         }
 
         private void LPopup_Closed(object sender, EventArgs e)

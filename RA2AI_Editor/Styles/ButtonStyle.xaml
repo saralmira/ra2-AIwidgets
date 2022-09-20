@@ -456,6 +456,9 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="img" Property="Source" Value="/Images/disable.png"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -490,6 +493,9 @@
                                     <DropShadowEffect ShadowDepth="0" Color="#CDCDCD" Opacity="0.7" BlurRadius="3"/>
                                 </Setter.Value>
                             </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="img" Property="Source" Value="/Images/disable.png"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -757,7 +763,7 @@
                             CornerRadius="3">
                             <Grid>
                                 <ContentPresenter x:Name="ButtonContentPresenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/create_n.png" Stretch="Uniform" Height="18" Width="18"/>
+                                <Image x:Name="Img" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Images/create_n.png" Stretch="Uniform" Height="15" Width="15"/>
                             </Grid>
                         </Border>
                     </Grid>

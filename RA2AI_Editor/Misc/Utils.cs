@@ -280,5 +280,17 @@ namespace AIcore
             foreach (T t in list)
                 this.Add(t);
         }
+
+        public void TryAddRange(ICollection<T> list)
+        {
+            foreach (T t in list)
+                this.TryAdd(t);
+        }
+
+        public void TryAdd(T list)
+        {
+            if (!this.Contains(list))
+                this.Add(list);
+        }
     }
 }

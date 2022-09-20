@@ -158,6 +158,40 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ListItemWindowStyleB" TargetType="{x:Type ListBoxItem}">
+        <Style.Resources>
+            <convers:BoolToVisible x:Key="boolToVisible"/>
+        </Style.Resources>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ListBoxItemFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid x:Name="grid" Background="#EBFBFE">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding PTag}" Margin="5 0 0 0" FontSize="13" TextWrapping="Wrap" TextAlignment="Left" VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Column="1" Text="{Binding PName}" Margin="5 0 0 0" FontSize="13" TextWrapping="Wrap" TextAlignment="Left" VerticalAlignment="Center" Foreground="#8C8C8C"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="grid" Property="Background" Value="#BAEFFC"/>
+                        </Trigger>
+                        <Trigger Property="Selector.IsSelected" Value="true">
+                            <Setter TargetName="grid" Property="Background" Value="#89E3FA"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style x:Key="PopupListStyle" TargetType="{x:Type Popup}">
         <Style.Resources>
             <convers:BoolToVisible x:Key="boolToVisible"/>
@@ -178,7 +212,6 @@
         <Style.Resources>
             <convers:BoolToVisible x:Key="boolToVisible"/>
         </Style.Resources>
-        <Setter Property="Margin" Value="8"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="#fef9eb"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListItemWindowStyle}"/>
@@ -200,5 +233,31 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="PopupListBoxStyleB" TargetType="{x:Type ListBox}">
+        <Style.Resources>
+            <convers:BoolToVisible x:Key="boolToVisible"/>
+        </Style.Resources>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#EBFBFE"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListItemWindowStyleB}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ListBoxItemFocusVisual}"/>
+        <EventSetter Event="PreviewKeyDown" Handler="PopupList_KeyDown"/>
+        <EventSetter Event="PreviewMouseUp" Handler="PopupList_PreviewMouseUp"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" 
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="0">
+                        <ScrollViewer Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

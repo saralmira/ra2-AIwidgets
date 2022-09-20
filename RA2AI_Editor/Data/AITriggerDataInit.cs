@@ -13,9 +13,9 @@ namespace RA2AI_Editor.Data
             ItemList = ai.aITriggerTypes.aITriggerTypes;
         }
 
-        public ObservableCollection<AITriggerType> Find(TeamType tt)
+        public NotifyList<AITriggerType> Find(TeamType tt)
         {
-            ObservableCollection<AITriggerType> ret = new ObservableCollection<AITriggerType>();
+            NotifyList<AITriggerType> ret = new NotifyList<AITriggerType>();
             foreach (AITriggerType at in ItemList)
             {
                 if (at.TeamType1 == tt || at.TeamType2 == tt)

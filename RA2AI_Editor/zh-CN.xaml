@@ -247,6 +247,7 @@
     <sys:String x:Key="STR_JUMPTOTASKFORCE">跳转至相应特遣部队</sys:String>
     <sys:String x:Key="STR_JUMPTOSCRIPTTYPE">跳转至相应脚本</sys:String>
     <sys:String x:Key="STR_JUMPTOAITRIGGER">所在AI触发</sys:String>
+    <sys:String x:Key="STR_JUMPTOTT_AT">所在作战小队、AI触发</sys:String>
     <sys:String x:Key="STR_LOCATE">定位当前项</sys:String>
     <sys:String x:Key="STR_ADD">添加新项</sys:String>
     <sys:String x:Key="STR_ADDINBOTTOM">在列表末尾添加新项</sys:String>

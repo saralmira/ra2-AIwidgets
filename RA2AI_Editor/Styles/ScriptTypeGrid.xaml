@@ -12,35 +12,6 @@
              d:DesignHeight="400" d:DesignWidth="400">
     <Grid x:Name="grid">
         <Grid.Resources>
-            <Popup x:Key="ListPopup" x:Name="LPopup" PopupAnimation="Fade" MinWidth="300" MaxWidth="500" MinHeight="80" MaxHeight="500" PlacementTarget="{Binding ElementName=btn_pop}"
-                   Placement="Bottom" AllowsTransparency="True" StaysOpen="False" LostFocus="Popup_LostFocus">
-                <Grid>
-                    <Border Style="{StaticResource PopupBorderStyle}"/>
-                    <ListBox x:Name="PopList" SelectionChanged="List_SelectionChanged"
-                 ItemContainerStyle="{StaticResource ListItemWindowStyle}" BorderThickness="0"
-                 Background="#fef9eb" Margin="8">
-                        <ListBox.Style>
-                            <Style TargetType="{x:Type ListBox}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBox}">
-                                            <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" 
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        Background="{TemplateBinding Background}"
-                                                        Padding="0">
-                                                <ScrollViewer Focusable="False">
-                                                    <ItemsPresenter />
-                                                </ScrollViewer>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.Style>
-                    </ListBox>
-                </Grid>
-
-            </Popup>
             <ContextMenu x:Key="cm">
                 <MenuItem Header="{DynamicResource MENU_ADD}" Click="ButtonAdd_Click">
                     <MenuItem.Icon>
@@ -105,7 +76,43 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Button Grid.Column="2" x:Name="btn_pop" Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTEAMTYPE}" Content="{StaticResource ListPopup}" Margin="0" Click="Button_Click"/>
+            <Button Grid.Column="2" x:Name="btn_pop" Style="{StaticResource BtnJumpStyle}" ToolTip="{DynamicResource STR_JUMPTOTT_AT}" Margin="0" Click="Button_Click"/>
+            <Popup x:Name="LPopup" PopupAnimation="Fade" MinWidth="300" MaxWidth="500" MinHeight="80" MaxHeight="500" PlacementTarget="{Binding ElementName=btn_pop}"
+                   Placement="Bottom" AllowsTransparency="True" StaysOpen="False" LostFocus="Popup_LostFocus">
+                <Grid>
+                    <Border Style="{StaticResource PopupBorderStyle}"/>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="{DynamicResource TEAMTYPE_LIST}" Margin="3 0 3 0" Foreground="#CCAF28"/>
+                        <ListBox x:Name="PopList" Style="{StaticResource PopupListBoxStyle}"/>
+                        <TextBlock Text="{DynamicResource AITRIGGERS_LIST}" Margin="3 0 3 0" Foreground="#28ABCC"/>
+                        <ListBox x:Name="PopList2" Style="{StaticResource PopupListBoxStyleB}"/>
+                    </StackPanel>
+                    <!--
+                    <ListBox x:Name="PopList" SelectionChanged="List_SelectionChanged"
+                 ItemContainerStyle="{StaticResource ListItemWindowStyle}" BorderThickness="0"
+                 Background="#fef9eb" Margin="8">
+                        <ListBox.Style>
+                            <Style TargetType="{x:Type ListBox}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBox}">
+                                            <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" 
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Background="{TemplateBinding Background}"
+                                                        Padding="0">
+                                                <ScrollViewer Focusable="False">
+                                                    <ItemsPresenter />
+                                                </ScrollViewer>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Style>
+                    </ListBox>
+                    -->
+                </Grid>
+            </Popup>
         </Grid>
 
         <Grid Grid.Row="3">

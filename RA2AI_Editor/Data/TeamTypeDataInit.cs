@@ -13,9 +13,9 @@ namespace RA2AI_Editor.Data
             ItemList = ai.teamTypes.teamTypes;
         }
 
-        public ObservableCollection<TeamType> Find(TaskForce tf)
+        public NotifyList<TeamType> Find(TaskForce tf)
         {
-            ObservableCollection<TeamType> ret = new ObservableCollection<TeamType>();
+            NotifyList<TeamType> ret = new NotifyList<TeamType>();
             foreach (TeamType tt in ItemList)
             {
                 if (tt.Find(tf))
@@ -26,9 +26,9 @@ namespace RA2AI_Editor.Data
             return ret;
         }
 
-        public ObservableCollection<TeamType> Find(ScriptType st)
+        public NotifyList<TeamType> Find(ScriptType st)
         {
-            ObservableCollection<TeamType> ret = new ObservableCollection<TeamType>();
+            NotifyList<TeamType> ret = new NotifyList<TeamType>();
             foreach (TeamType tt in ItemList)
             {
                 if (tt.Find(st))

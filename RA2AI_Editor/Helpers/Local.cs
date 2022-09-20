@@ -1,4 +1,5 @@
 ﻿using AIcore;
+using AIcore.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,15 @@ namespace RA2AI_Editor
             return null;
         }
 
+        public static NotifyList<AITriggerType> FindAITriggers(NotifyList<TeamType> teamTypes)
+        {
+            NotifyList<AITriggerType> list2 = new NotifyList<AITriggerType>();
+            foreach (var tt in teamTypes)
+            {
+                list2.TryAddRange(MainWindow.aITriggerDataInit.Find(tt));
+            }
+            return list2;
+        }
 
         public static CommandStack GlobalCommandStack = new CommandStack();
     }
