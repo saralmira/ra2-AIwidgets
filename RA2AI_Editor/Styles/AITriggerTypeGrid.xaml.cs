@@ -120,7 +120,7 @@ namespace RA2AI_Editor.Styles
         private void TeamType1_JumpClick(object sender, RoutedEventArgs e)
         {
             if (at != null)
-                TeamTypeJumpEvent(at.TeamType1);
+                JumpTo(at.TeamType1);
         }
 
         private void TeamType1_CreateClick(object sender, RoutedEventArgs e)
@@ -130,14 +130,14 @@ namespace RA2AI_Editor.Styles
                 TeamType tt = teamTypeDataInit.Add();
                 tt.PName = at.PName + " 1";
                 at.TeamType1 = tt;
-                TeamTypeJumpEvent(tt);
+                JumpTo(tt);
             }
         }
 
         private void TeamType2_JumpClick(object sender, RoutedEventArgs e)
         {
             if (at != null)
-                TeamTypeJumpEvent(at.TeamType2);
+                JumpTo(at.TeamType2);
         }
 
         private void TeamType2_CreateClick(object sender, RoutedEventArgs e)
@@ -148,7 +148,7 @@ namespace RA2AI_Editor.Styles
                 TeamType tt = teamTypeDataInit.Add();
                 tt.PName = at.PName + " 2";
                 at.TeamType2 = tt;
-                TeamTypeJumpEvent(tt);
+                JumpTo(tt);
             }
         }
 

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using WPF.JoshSmith.ServiceProviders.UI;
+using AvalonDock;
 
 namespace RA2AI_Editor
 {
@@ -22,15 +22,15 @@ namespace RA2AI_Editor
     public partial class MainWindow : Window
     {
         public delegate void AITriggerTypeJumpEventDel(AITriggerType at);
-        public static AITriggerTypeJumpEventDel AITriggerTypeJumpEvent;
+        private static AITriggerTypeJumpEventDel AITriggerTypeJumpEvent;
         public delegate void TeamTypeJumpEventDel(TeamType tf);
-        public static TeamTypeJumpEventDel TeamTypeJumpEvent;
+        private static TeamTypeJumpEventDel TeamTypeJumpEvent;
         public delegate void TaskForceJumpEventDel(TaskForce tf);
-        public static TaskForceJumpEventDel TaskForceJumpEvent;
+        private static TaskForceJumpEventDel TaskForceJumpEvent;
         public delegate void ScriptTypeJumpEventDel(ScriptType st);
-        public static ScriptTypeJumpEventDel ScriptTypeJumpEvent;
+        private static ScriptTypeJumpEventDel ScriptTypeJumpEvent;
         public delegate void JumpEventDel(OType type);
-        public static JumpEventDel JumpEvent;
+        private static JumpEventDel JumpEvent;
 
         public delegate void SwitchTypeViewDel(OType type, bool alter);
         public static SwitchTypeViewDel SwitchTypeViewEvent;
@@ -41,13 +41,10 @@ namespace RA2AI_Editor
         public delegate void GeneralBoolEventDel(bool value);
         public static GeneralBoolEventDel HideIDGridEvent;
 
-        private ListViewDragDropManager<TabItemInfo> lvddm_tabitem;
-        private ObservableCollection<TabItemInfo> tabiteminfo;
         public delegate void TmpFileEventDel(string md5, string path);
         public static TmpFileEventDel TmpFileEvent;
         public static TmpFileEventDel TmpFileDeleteEvent;
 
-        private static Units units;
         private static string current_lang;
         public static UInt32 searchinterval;
 
@@ -56,77 +53,31 @@ namespace RA2AI_Editor
         public static ConfigClass configData;
 
         public static AI current_ai;
-        private TmpFileDataInit tmpFileDataInit; 
+        private TmpFileDataInit tmpFileDataInit;
         public static TaskForceDataInit taskForceDataInit { get; private set; }
         public static ScriptTypeDataInit scriptTypeDataInit { get; private set; }
         public static TeamTypeDataInit teamTypeDataInit { get; private set; }
         public static AITriggerDataInit aITriggerDataInit { get; private set; }
 
+        public static Window Window { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
+            Window = this;
+
             InitData();
 
             InitHistoryListBox();
-            
-            InitTabItem();
-            
+
+            MainWindow_Navigate(true);
+
             if (Program.FileToOpen != null && File.Exists(Program.FileToOpen))
             {
                 current_file = Program.FileToOpen;
                 OpenFile(current_file);
             }
-        }
-
-        private void InitTabItem()
-        {
-            MainTabControl.Items.Clear();
-            MainTabControl.Items.Add(tab_file);
-
-            tabiteminfo = new ObservableCollection<TabItemInfo>
-            {
-                new TabItemInfo()
-                {
-                    Index = Config_Current.ReadIntValue("Preference", "TAB_INDEX1", 0),
-                    Name = Local.Dictionary("MENU_TASKFORCE"),
-                    TabItem = tab_taskforce,
-                    Tag = "TAB_INDEX1"
-                },
-                new TabItemInfo()
-                {
-                    Index = Config_Current.ReadIntValue("Preference", "TAB_INDEX2", 1),
-                    Name = Local.Dictionary("MENU_SCRIPTTYPE"),
-                    TabItem = tab_scripttype,
-                    Tag = "TAB_INDEX2"
-                },
-                new TabItemInfo()
-                {
-                    Index = Config_Current.ReadIntValue("Preference", "TAB_INDEX3", 2),
-                    Name = Local.Dictionary("MENU_TEAMTYPE"),
-                    TabItem = tab_teamtype,
-                    Tag = "TAB_INDEX3"
-                },
-                new TabItemInfo()
-                {
-                    Index = Config_Current.ReadIntValue("Preference", "TAB_INDEX4", 3),
-                    Name = Local.Dictionary("MENU_AITRIGGERTYPE"),
-                    TabItem = tab_aitriggers,
-                    Tag = "TAB_INDEX4"
-                }
-            };
-            Utils.Sort(tabiteminfo, t => t.Index);
-            for (int i = 0; i < tabiteminfo.Count; ++i)
-                MainTabControl.Items.Add(tabiteminfo[i].TabItem);
-            MainTabControl.Items.Add(tab_analyse);
-            MainTabControl.Items.Add(tab_settings);
-
-            lv_tabitem.ItemsSource = tabiteminfo;
-            lvddm_tabitem = new ListViewDragDropManager<TabItemInfo>(lv_tabitem)
-            {
-                DragAdornerOpacity = 0.7
-            };
-            lvddm_tabitem.ProcessDrop += Lvddm_tabitem_ProcessDrop;
         }
 
         private void InitData()
@@ -141,12 +92,12 @@ namespace RA2AI_Editor
             LoadXmlOfCurrent();
             ttgrid.GetToolTit();
             atgrid.GetToolTit();
-            
-            tab_taskforce.Visibility = Visibility.Collapsed;
-            tab_scripttype.Visibility = Visibility.Collapsed;
-            tab_teamtype.Visibility = Visibility.Collapsed;
-            tab_aitriggers.Visibility = Visibility.Collapsed;
-            tab_analyse.Visibility = Visibility.Collapsed;
+
+            lanc_tf.Hide(false);
+            lanc_st.Hide(false);
+            lanc_tt.Hide(false);
+            lanc_at.Hide(false);
+            lanc_analyse.Hide(false);
 
             TaskForceJumpEvent = Jump_To_TaskForce;
             ScriptTypeJumpEvent = Jump_To_ScriptType;
@@ -165,7 +116,6 @@ namespace RA2AI_Editor
             tmpFileDataInit = new TmpFileDataInit(Config_Current);
 
             maingrid.DataContext = configData;
-
         }
 
         private void InitHistoryListBox()
@@ -208,8 +158,8 @@ namespace RA2AI_Editor
 
         private void SaveCurrentConfig()
         {
-            for (int i = 0; i < tabiteminfo.Count; ++i)
-                Config_Current.WriteValue("Preference", tabiteminfo[i].Tag, i);
+            //for (int i = 0; i < tabiteminfo.Count; ++i)
+            //    Config_Current.WriteValue("Preference", tabiteminfo[i].Tag, i);
 
             Config_Current.WriteValue("Config", "SearchInterval", searchinterval.ToString());
 
@@ -218,7 +168,7 @@ namespace RA2AI_Editor
             tmpFileDataInit.Save();
 
             Config_Current.Save(); 
-            units.Save();
+            Units.Save();
             Sides.Save();
             Countries.Save();
         }
@@ -237,11 +187,11 @@ namespace RA2AI_Editor
             configData.CurrentFile = path;
             Title = configData.TitleText;
 
-            tab_taskforce.Visibility = Visibility.Visible;
-            tab_scripttype.Visibility = Visibility.Visible;
-            tab_teamtype.Visibility = Visibility.Visible;
-            tab_aitriggers.Visibility = Visibility.Visible;
-            tab_analyse.Visibility = Visibility.Visible;
+            lanc_tf.Show();
+            lanc_st.Show();
+            lanc_tt.Show();
+            lanc_at.Show();
+            lanc_analyse.Show();
             taskForceDataInit = new TaskForceDataInit(current_ai);
             TaskForceList.ItemsSource = taskForceDataInit.ItemList;
 
@@ -258,42 +208,6 @@ namespace RA2AI_Editor
             AITriggersList.ItemsSource = aITriggerDataInit.ItemList;
 
             InitGrid();
-        }
-
-        private string SelectFileToOpen(string title = null)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                RestoreDirectory = true,
-                Multiselect = false
-            };
-            if (title == null)
-                title = Local.Dictionary("FILE_OPEN");
-            openFileDialog.Title = title;
-            openFileDialog.Filter = "RA2 Files(*.ini,*.mpr,*.yrm,*.map)| *.ini;*.mpr;*.yrm;*.map|ALL Files.| *";
-            openFileDialog.CheckFileExists = openFileDialog.CheckPathExists = true;
-            if (openFileDialog.ShowDialog() == true)
-            {
-                return openFileDialog.FileName;
-            }
-            return null;
-        }
-
-        private string SelectCSFFileToOpen()
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                RestoreDirectory = true,
-                Multiselect = false
-            };
-            openFileDialog.Title = Local.Dictionary("FILE_OPENCSF");
-            openFileDialog.Filter = "Csf Files(*.csf)| *.csf|ALL Files.| *";
-            openFileDialog.CheckFileExists = openFileDialog.CheckPathExists = true;
-            if (openFileDialog.ShowDialog() == true)
-            {
-                return openFileDialog.FileName;
-            }
-            return null;
         }
 
         private string SelectFileToSave(string title = null)
@@ -342,11 +256,11 @@ namespace RA2AI_Editor
             current_ai = null;
             Title = configData.TitleText;
 
-            tab_taskforce.Visibility = Visibility.Collapsed;
-            tab_scripttype.Visibility = Visibility.Collapsed;
-            tab_teamtype.Visibility = Visibility.Collapsed;
-            tab_aitriggers.Visibility = Visibility.Collapsed;
-            tab_analyse.Visibility = Visibility.Collapsed;
+            lanc_tf.Hide(false);
+            lanc_st.Hide(false);
+            lanc_tt.Hide(false);
+            lanc_at.Hide(false);
+            lanc_analyse.Hide(false);
             TaskForceList.ItemsSource = null;
             ScriptTypeList.ItemsSource = null;
             TeamTypeList.ItemsSource = null;
@@ -367,22 +281,15 @@ namespace RA2AI_Editor
             ScriptTypeList.SelectedIndex = -1;
             TeamTypeList.SelectedIndex = -1;
             AITriggersList.SelectedIndex = -1;
-            tfgrid.Initialize(null);
-            stgrid2.Initialize(null);
-            ttgrid.Initialize(null);
-            atgrid.Initialize(null);
+            InitPage();
         }
 
         private void InitPage()
         {
-            if (TaskForceList.SelectedItem == null)
-                tfgrid.Initialize(null);
-            if (ScriptTypeList.SelectedItem == null)
-                stgrid2.Initialize(null);
-            if (TeamTypeList.SelectedItem == null)
-                ttgrid.Initialize(null);
-            if (AITriggersList.SelectedItem == null)
-                atgrid.Initialize(null);
+            tfgrid.Initialize(null);
+            stgrid2.Initialize(null);
+            ttgrid.Initialize(null);
+            atgrid.Initialize(null);
         }
 
         /// <summary>
@@ -429,31 +336,6 @@ namespace RA2AI_Editor
         private void TmpFileDeleteEventHandler(string md5, string path)
         {
             tmpFileDataInit.Delete(md5);
-        }
-
-        private void Lvddm_tabitem_ProcessDrop(object sender, ProcessDropEventArgs<TabItemInfo> e)
-        {
-            if (e.NewIndex != e.OldIndex)
-            {
-                tabiteminfo.Move(e.OldIndex, e.NewIndex);
-            }
-        }
-
-        private void ARRectangle_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle rec = sender as Rectangle;
-            ColorDialog cd = new ColorDialog
-            {
-                FullOpen = true
-            };
-            SolidColorBrush tmp = rec.Fill as SolidColorBrush;
-            cd.Color = System.Drawing.Color.FromArgb(tmp.Color.A, tmp.Color.R, tmp.Color.G, tmp.Color.B);
-            if (cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                rec.Fill = new SolidColorBrush(Color.FromArgb(cd.Color.A, cd.Color.R, cd.Color.G, cd.Color.B));
-                current_ai.RefreshAnalysisResult();
-            }
-            cd.Dispose();
         }
 
         private void Clear_CompareReport()
@@ -532,7 +414,7 @@ namespace RA2AI_Editor
                 configData.SelectedGameType = newgametype;
         }
 
-        private static string GetGameXmlDirRelative()
+        public static string GetGameXmlDirRelative()
         {
             if (Game.IsCustomGameType())
                 return @"Custom\" + Game.CurrentGame.Description;
@@ -543,7 +425,7 @@ namespace RA2AI_Editor
         private static void LoadXmlOfCurrent()
         {
             string infodir = GetGameXmlDirRelative();
-            units = new Units(infodir);
+            new Units(infodir);
             MindControlDecision.Load(infodir);
             GroupInfo.Load(infodir);
             VeteranLevelInfo.Load(infodir);

@@ -1,6 +1,7 @@
 ﻿using AIcore;
 using AIcore.Types;
 using RA2AI_Editor.Model;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -37,10 +38,8 @@ namespace RA2AI_Editor.Styles
 
         private void JumpEvent(object o)
         {
-            if (o is TeamType t)
-                MainWindow.TeamTypeJumpEvent(t);
-            else if (o is AITriggerType a)
-                MainWindow.AITriggerTypeJumpEvent(a);
+            if (o is OType t)
+                MainWindow.JumpTo(t);
         }
 
         private void Popup_KeyDown(object sender, KeyEventArgs e)
@@ -92,7 +91,13 @@ namespace RA2AI_Editor.Styles
                             return;
                         object item = l.ItemContainerGenerator.ItemFromContainer(element);
                         if (!item.Equals(DependencyProperty.UnsetValue))
+                        {
+                            if (l.Tag != null && l.Tag is Popup p)
+                            {
+                                p.IsOpen = false;
+                            }
                             JumpEvent(l.SelectedItem);
+                        }
                         element = (UIElement)VisualTreeHelper.GetParent(element);
                     }
                 }

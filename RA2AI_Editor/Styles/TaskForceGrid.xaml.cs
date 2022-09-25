@@ -291,7 +291,7 @@ namespace RA2AI_Editor.Styles
             ListBox lb = (ListBox)sender;
             if (lb.SelectedItem != null && lb.SelectedItem is OType type)
             {
-                MainWindow.JumpEvent(type);
+                MainWindow.JumpTo(type);
             }
         }
 
@@ -307,5 +307,6 @@ namespace RA2AI_Editor.Styles
         {
             btn_pop.Focus();
         }
+
     }
 }

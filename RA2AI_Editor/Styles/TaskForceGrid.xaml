@@ -85,9 +85,9 @@
                     <Border Style="{StaticResource PopupBorderStyle}"/>
                     <StackPanel Margin="8">
                         <TextBlock Text="{DynamicResource TEAMTYPE_LIST}" Margin="3 0 3 0" Foreground="#CCAF28"/>
-                        <ListBox x:Name="PopList" Style="{StaticResource PopupListBoxStyle}"/>
+                        <ListBox x:Name="PopList" Style="{StaticResource PopupListBoxStyle}" Tag="{Binding ElementName=LPopup}"/>
                         <TextBlock Text="{DynamicResource AITRIGGERS_LIST}" Margin="3 0 3 0" Foreground="#28ABCC"/>
-                        <ListBox x:Name="PopList2" Style="{StaticResource PopupListBoxStyleB}"/>
+                        <ListBox x:Name="PopList2" Style="{StaticResource PopupListBoxStyleB}" Tag="{Binding ElementName=LPopup}"/>
                     </StackPanel>
                 </Grid>
             </Popup>

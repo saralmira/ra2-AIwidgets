@@ -1,4 +1,5 @@
 ﻿using Library;
+using RA2AI_Editor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -186,6 +187,19 @@ namespace AIcore
             while (index != tab.SelectedIndex);
         }
 
+        public static FrameworkElement GetParent(FrameworkElement cont, Type type)
+        {
+            while (cont.Parent != null)
+            {
+                if (cont.Parent.GetType() == type)
+                {
+                    return (FrameworkElement)cont.Parent;
+                }
+                cont = (FrameworkElement)cont.Parent;
+            }
+            return null;
+        }
+
         public static void MoveFocusWithKey(FrameworkElement ele, KeyEventArgs e)
         {
             if (!ele.IsFocused)
@@ -249,6 +263,24 @@ namespace AIcore
                 if (init != null)
                     list.Add(init);
             }
+        }
+        public static string SelectFileToOpen(string title = null)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Multiselect = false
+            };
+            if (title == null)
+                title = Local.Dictionary("FILE_OPEN");
+            openFileDialog.Title = title;
+            openFileDialog.Filter = "RA2 Files(*.ini,*.mpr,*.yrm,*.map)| *.ini;*.mpr;*.yrm;*.map|ALL Files.| *";
+            openFileDialog.CheckFileExists = openFileDialog.CheckPathExists = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                return openFileDialog.FileName;
+            }
+            return null;
         }
     }
 

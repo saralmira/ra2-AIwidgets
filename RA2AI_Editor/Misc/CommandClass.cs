@@ -38,7 +38,7 @@ namespace AIcore
         public override void Do()
         {
             tlist.Add(TypeObject, index);
-            RA2AI_Editor.MainWindow.JumpEvent?.Invoke(TypeObject);
+            RA2AI_Editor.MainWindow.JumpTo(TypeObject);
         }
 
         public override void Undo()
@@ -71,7 +71,7 @@ namespace AIcore
         public override void Undo()
         {
             tlist.Add(TypeObject, index);
-            RA2AI_Editor.MainWindow.JumpEvent?.Invoke(TypeObject);
+            RA2AI_Editor.MainWindow.JumpTo(TypeObject);
         }
     }
 

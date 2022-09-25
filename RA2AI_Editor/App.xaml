@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/TextBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ListBoxStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/GridBorder.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/AvalonDockStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

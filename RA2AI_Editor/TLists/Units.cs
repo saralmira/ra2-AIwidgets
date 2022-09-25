@@ -1,4 +1,5 @@
 ﻿using Library;
+using RA2AI_Editor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +22,7 @@ namespace AIcore
             else
                 folder = Environment.CurrentDirectory + @"\" + folder + @"\units.xml";
             xmlpath = folder;
-            xmlDoc = XmlClass.XmlOpen(xmlpath);
+            XmlDocument xmlDoc = XmlClass.XmlOpen(xmlpath);
 
             try
             {
@@ -60,7 +61,7 @@ namespace AIcore
             }
         }
 
-        public void Update(ObservableCollection<Unit> alllist,
+        public static void Update(ObservableCollection<Unit> alllist,
             ObservableCollection<Unit> buildinglist,
             ObservableCollection<Unit> unitlist, bool KeepExistedUnits)
         {
@@ -89,72 +90,18 @@ namespace AIcore
             }
         }
 
-        private void Clear()
+        private static void Clear()
         {
             Utils.InitList(ref AllList);
             Utils.InitList(ref BuildingList);
             Utils.InitList(ref UnitsList);
         }
 
-        public void Save(bool SaveEnabledOnly = false)
+        public static void Save(bool SaveEnabledOnly = false)
         {
             if (IsSaved)
                 return;
             IsSaved = true;
-            xmlDoc = XmlClass.CreateNew(xmlpath);
-            XmlElement u_ele = xmlDoc.CreateElement("Units");
-            XmlElement b_ele = xmlDoc.CreateElement("Buildings");
-            XmlElement i_ele = xmlDoc.CreateElement("Infantries");
-            XmlElement v_ele = xmlDoc.CreateElement("Vehicles");
-            XmlElement a_ele = xmlDoc.CreateElement("Aircrafts");
-            foreach (Unit u in AllList)
-            {
-                if (SaveEnabledOnly && !u.IsEnabled)
-                    continue;
-                XmlElement ele_m;
-                XmlElement elec;
-                switch (u.UType)
-                {
-                    case UnitType.BuildingType:
-                        ele_m = b_ele;
-                        elec = xmlDoc.CreateElement("Building");
-                        break;
-                    case UnitType.InfantryType:
-                        ele_m = i_ele;
-                        elec = xmlDoc.CreateElement("Infantry");
-                        break;
-                    case UnitType.VehicleType:
-                        ele_m = v_ele;
-                        elec = xmlDoc.CreateElement("Vehicle");
-                        break;
-                    case UnitType.AircraftType:
-                        ele_m = a_ele;
-                        elec = xmlDoc.CreateElement("Aircraft");
-                        break;
-                    default:
-                        continue;
-                }
-                elec.SetAttribute("Name", u.Name);
-                elec.SetAttribute("UIName", u.UIName);
-                elec.SetAttribute("Index", u.SIndex);
-                elec.SetAttribute("IsEnabled", u.SIsEnabled);
-                elec.SetAttribute("Cost", u.SCost);
-                elec.SetAttribute("SequenceNumber", u.SSequenceIndex);
-                elec.SetAttribute("TechLevel", u.STechLevel);
-                elec.SetAttribute("Translation", u.Translation);
-                elec.InnerText = u.GetDescription();
-                ele_m.AppendChild(elec);
-            }
-            u_ele.AppendChild(b_ele);
-            u_ele.AppendChild(i_ele);
-            u_ele.AppendChild(v_ele);
-            u_ele.AppendChild(a_ele);
-            xmlDoc.AppendChild(u_ele);
-            xmlDoc.Save(xmlpath);
-        }
-
-        public static void StaticSave(bool SaveEnabledOnly = false)
-        {
             XmlDocument xmlDoc = XmlClass.CreateNew(xmlpath);
             XmlElement u_ele = xmlDoc.CreateElement("Units");
             XmlElement b_ele = xmlDoc.CreateElement("Buildings");
@@ -296,9 +243,25 @@ namespace AIcore
             return false;
         }
 
-        private bool IsSaved;
+        public static bool ImportFromCsf(CsfClass csf)
+        {
+            if (csf.IsValidCSF && csf.ElementCount > 0)
+            {
+                foreach (Unit u in AllList)
+                {
+                    string tmp = csf.GetString(u.UIName);
+                    if (tmp != null)
+                        u.Translation = tmp;
+                }
+                IsSaved = false;
+                Save();
+                return true;
+            }
+            return false;
+        }
+
+        private static bool IsSaved;
         private static string xmlpath;
-        private XmlDocument xmlDoc;
 
         public static Unit NullUnit = new Unit(UnitType.BuildingType, null);
 

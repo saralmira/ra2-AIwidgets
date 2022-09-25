@@ -17,14 +17,8 @@ namespace RA2AI_Editor.Styles
             object data = b.DataContext;
             if (data != null)
             {
-                if (data is TaskForce)
-                    MainWindow.TaskForceJumpEvent(data as TaskForce);
-                else if (data is ScriptType)
-                    MainWindow.ScriptTypeJumpEvent(data as ScriptType);
-                else if (data is TeamType)
-                    MainWindow.TeamTypeJumpEvent(data as TeamType);
-                else if (data is AITriggerType)
-                    MainWindow.AITriggerTypeJumpEvent(data as AITriggerType);
+                if (data is OType t)
+                    MainWindow.JumpTo(t);
             }
         }
 

@@ -20,6 +20,12 @@ namespace RA2AI_Editor
 {
     public partial class MainWindow : Window
     {
+        public static void JumpTo(TaskForce type) { TaskForceJumpEvent?.Invoke(type); }
+        public static void JumpTo(ScriptType type) { ScriptTypeJumpEvent?.Invoke(type); }
+        public static void JumpTo(TeamType type) { TeamTypeJumpEvent?.Invoke(type); }
+        public static void JumpTo(AITriggerType type) { AITriggerTypeJumpEvent?.Invoke(type); }
+        public static void JumpTo(OType type) { JumpEvent?.Invoke(type); }
+
         private void HistoryItem_Click(string path)
         {
             if (path != null)
@@ -45,7 +51,7 @@ namespace RA2AI_Editor
             if (FileCloseConfirm() == MessageBoxResult.None)
                 return;
 
-            string path = SelectFileToOpen();
+            string path = Utils.SelectFileToOpen();
             if (path != null)
             {
                 if (File.Exists(path))
@@ -128,22 +134,22 @@ namespace RA2AI_Editor
         
         private void BottomAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (MainTabControl.SelectedItem == tab_taskforce)
+            if (lanc_tf.IsActive)
             {
                 TaskForce tf = taskForceDataInit.Add();
                 Jump_To_TaskForce(tf);
             }
-            else if (MainTabControl.SelectedItem == tab_scripttype)
+            else if (lanc_st.IsActive)
             {
                 ScriptType st = scriptTypeDataInit.Add();
                 Jump_To_ScriptType(st);
             }
-            else if (MainTabControl.SelectedItem == tab_teamtype)
+            else if (lanc_tt.IsActive)
             {
                 TeamType tt = teamTypeDataInit.Add();
                 Jump_To_TeamType(tt);
             }
-            else if (MainTabControl.SelectedItem == tab_aitriggers)
+            else if (lanc_at.IsActive)
             {
                 AITriggerType at = aITriggerDataInit.Add();
                 Jump_To_AITriggerType(at);
@@ -152,22 +158,22 @@ namespace RA2AI_Editor
 
         private void BottomFocus_Click(object sender, RoutedEventArgs e)
         {
-            if (MainTabControl.SelectedItem == tab_taskforce)
+            if (lanc_tf.IsActive)
             {
                 if (TaskForceList.SelectedItem != null)
                     Jump_To_TaskForce((TaskForce)TaskForceList.SelectedItem);
             }
-            else if (MainTabControl.SelectedItem == tab_scripttype)
+            else if (lanc_st.IsActive)
             {
                 if (ScriptTypeList.SelectedItem != null)
                     Jump_To_ScriptType((ScriptType)ScriptTypeList.SelectedItem);
             }
-            else if (MainTabControl.SelectedItem == tab_teamtype)
+            else if (lanc_tt.IsActive)
             {
                 if (TeamTypeList.SelectedItem != null)
                     Jump_To_TeamType((TeamType)TeamTypeList.SelectedItem);
             }
-            else if (MainTabControl.SelectedItem == tab_aitriggers)
+            else if (lanc_at.IsActive)
             {
                 if (AITriggersList.SelectedItem != null)
                     Jump_To_AITriggerType((AITriggerType)AITriggersList.SelectedItem);
@@ -480,79 +486,6 @@ namespace RA2AI_Editor
             }
         }
 
-        private void RulesImport_Click(object sender, RoutedEventArgs e)
-        {
-            string path = SelectFileToOpen(Local.Dictionary("FILE_OPENRULES"));
-            if (path != null)
-            {
-                if (File.Exists(path))
-                {
-                    IniClass rules = new IniClass(path);
-                    UnitChooseForm ucf = new UnitChooseForm(rules, searchinterval);
-                    ucf.Owner = this;
-                    ucf.ShowDialog();
-
-                    switch (ucf.MBResult)
-                    {
-                        case MessageBoxResult.Yes:
-                            if (!ucf.DontImportUnits)
-                            {
-                                units.Update(ucf.AllList, ucf.BuildingList, ucf.Units, UnitChooseForm.KeepExistedUnits);
-                                units.Save(false);
-                            }
-                            if (!ucf.KeepExistedSides)
-                                Sides.Update(ucf.SideList);
-                            if (!ucf.KeepExistedHouses)
-                                Countries.Update(ucf.HouseList);
-                            break;
-                        //case MessageBoxResult.No:
-                        //    units = new Units(alllist, buildingslist, unitslist, UnitChooseForm.KeepExistedUnits);
-                        //    units.Save(true);
-                        //    break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(Local.Dictionary("MB_FILENOTEXIST") + path + Local.Dictionary("MB_FILENOTEXIST2"),
-                        Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-
-        private void CsfImport_Click(object sender, RoutedEventArgs e)
-        {
-            string path = SelectCSFFileToOpen();
-            if (path != null)
-            {
-                if (File.Exists(path))
-                {
-                    CsfClass csf = new CsfClass(path);
-                    if (csf.IsValidCSF && csf.ElementCount > 0)
-                    {
-                        foreach (Unit u in Units.AllList)
-                        {
-                            string tmp = csf.GetString(u.UIName);
-                            if (tmp != null)
-                                u.Translation = tmp;
-                        }
-                        Units.StaticSave();
-                        Countries.LoadCsfName(csf);
-
-                        MessageBox.Show(Local.Dictionary("MB_CSFIMPORTCOMPLETE"), Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                        MessageBox.Show(Local.Dictionary("MB_INVALIDCSFFILE"), Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show(Local.Dictionary("MB_FILENOTEXIST") + path + Local.Dictionary("MB_FILENOTEXIST2"),
-                        Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-
         private void Jump_To_TaskForce(TaskForce tf)
         {
             if (tf == null || tf == AI.NullTaskForce)
@@ -560,7 +493,8 @@ namespace RA2AI_Editor
             tf = taskForceDataInit.GetTypeOfCurrent(tf);
             if (tf != null)
             {
-                MainTabControl.SelectedItem = tab_taskforce;
+                lanc_tf.Show();
+                lanc_tf.IsActive = true;
                 TaskForceList.SelectedItem = tf;
                 TaskForceList.ScrollIntoView(tf);
             }
@@ -573,7 +507,8 @@ namespace RA2AI_Editor
             st = scriptTypeDataInit.GetTypeOfCurrent(st);
             if (st != null)
             {
-                MainTabControl.SelectedItem = tab_scripttype;
+                lanc_st.Show();
+                lanc_st.IsActive = true;
                 ScriptTypeList.SelectedItem = st;
                 ScriptTypeList.ScrollIntoView(st);
             }
@@ -586,7 +521,8 @@ namespace RA2AI_Editor
             tt = teamTypeDataInit.GetTypeOfCurrent(tt);
             if (tt != null && tt != AI.NullTeamType)
             {
-                MainTabControl.SelectedItem = tab_teamtype;
+                lanc_tt.Show();
+                lanc_tt.IsActive = true;
                 TeamTypeList.SelectedItem = tt;
                 TeamTypeList.ScrollIntoView(tt);
             }
@@ -599,7 +535,8 @@ namespace RA2AI_Editor
             at = aITriggerDataInit.GetTypeOfCurrent(at);
             if (at != null)
             {
-                MainTabControl.SelectedItem = tab_aitriggers;
+                lanc_at.Show();
+                lanc_at.IsActive = true;
                 AITriggersList.SelectedItem = at;
                 AITriggersList.ScrollIntoView(at);
             }
@@ -683,7 +620,6 @@ namespace RA2AI_Editor
             else if (type is AITriggerType)
                 atgrid.Initialize(alter ? (type.CompareType as AITriggerType) : (type as AITriggerType));
         }
-
         private void TaskForceList_Search(object sender, RoutedEventArgs e)
         {
             taskForceDataInit.Filter(((SearchTextBox.SearchTextBox)sender).Text.Trim());
@@ -888,7 +824,7 @@ namespace RA2AI_Editor
         {
             if (current_ai != null)
             {
-                string fpath = SelectFileToOpen(Local.Dictionary("STR_COMPAREFILECHOOSE"));
+                string fpath = Utils.SelectFileToOpen(Local.Dictionary("STR_COMPAREFILECHOOSE"));
                 if (fpath != null && File.Exists(fpath))
                 {
                     IniAnalyse ia = new IniAnalyse(current_ai, fpath);
@@ -933,38 +869,31 @@ namespace RA2AI_Editor
             Clear_CompareReport();
         }
 
-        private void AddCustomGame_Click(object sender, RoutedEventArgs e)
+        private void MainWindow_Navigate(bool forward)
         {
-            string name = tb_customgame.Text;
-            if (name == null || name.Length == 0)
+            if (forward)
             {
-                MessageBoxShow(Local.Dictionary("MB_BLANKCUSTOMGAME"));
-                return;
+                for (int i = 0; i < ldp.Children.Count; i++)
+                {
+                    if (ldp.Children[i].IsActive)
+                    {
+                        ldp.Children[++i >= ldp.Children.Count ? 0 : i].IsActive = true;
+                        return;
+                    }
+                }
             }
-            string newdir = Environment.CurrentDirectory + @"\Custom\" + name;
-            if (Directory.Exists(newdir))
+            else
             {
-                MessageBoxShow(Local.Dictionary("MB_INVALIDCUSTOMGAME"));
-                return;
+                for (int i = 0; i < ldp.Children.Count; i++)
+                {
+                    if (ldp.Children[i].IsActive)
+                    {
+                        ldp.Children[--i < 0 ? ldp.Children.Count - 1 : i].IsActive = true;
+                        return;
+                    }
+                }
             }
-            
-            PathClass.CreateDir(newdir);
-            foreach(string file in Directory.GetFiles(Environment.CurrentDirectory + @"\"+GetGameXmlDirRelative()))
-                Utils.FileCopy(file, newdir + @"\" + Path.GetFileName(file), true);
-            configData.CreateGame(Game.CreateCustomGameType(name));
-        }
-
-        private void DeleteCustomGame_Click(object sender, RoutedEventArgs e)
-        {
-            if (!Game.IsCustomGameType())
-                return;
-            if (MessageBoxShow(Local.Dictionary("MB_DELETECUSTOMGAME"), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-            {
-                string path = Environment.CurrentDirectory + @"\" + GetGameXmlDirRelative();
-                foreach (string file in Directory.GetFiles(path))
-                    Utils.FileDelete(file);
-            }
-            configData?.DeleteCurrentGame();
+            ldp.Children[0].IsActive = true;
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -972,15 +901,13 @@ namespace RA2AI_Editor
             switch (e.Key)
             {
                 case Key.PageDown:
-                    Utils.SwitchToNextItem(MainTabControl, true);
+                    MainWindow_Navigate(true);
                     break;
                 case Key.PageUp:
-                    Utils.SwitchToNextItem(MainTabControl, false);
+                    MainWindow_Navigate(false);
                     break;
             }
         }
-
-
 
         private void SearchPopup_Opened(object sender, EventArgs e)
         {

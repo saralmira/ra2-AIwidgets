@@ -80,11 +80,11 @@
     <ApplicationIcon>ai.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonDock, Version=4.70.2.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dirkster.AvalonDock.4.70.2\lib\net40\AvalonDock.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetProjects.Input.Toolkit, Version=6.0.79.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetProjects.WpfToolkit.Input.6.0.79\lib\net40\DotNetProjects.Input.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="ListViewDragDropManager">
-      <HintPath>..\References\ListViewDragDropManager.dll</HintPath>
     </Reference>
     <Reference Include="SearchTextBox">
       <HintPath>..\References\SearchTextBox.dll</HintPath>
@@ -171,6 +171,9 @@
     </Compile>
     <Compile Include="Styles\ListViewStyle.xaml.cs">
       <DependentUpon>ListViewStyle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Styles\PageSettings.xaml.cs">
+      <DependentUpon>PageSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Styles\RadioButtonStyle.xaml.cs">
       <DependentUpon>RadioButtonStyle.xaml</DependentUpon>
@@ -268,6 +271,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\AvalonDockStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ButtonStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -297,6 +304,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ListViewStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\PageSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

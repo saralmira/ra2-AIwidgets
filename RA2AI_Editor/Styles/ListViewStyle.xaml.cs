@@ -19,7 +19,8 @@ namespace RA2AI_Editor.Styles
         private GridViewColumnHeader _sortColumn;
         private void ListViewSortOut_Click(object sender, RoutedEventArgs e)
         {
-            if (!(e.OriginalSource is GridViewColumnHeader column) || column.Column == null)
+            ListView lv = sender as ListView;
+            if (!(e.OriginalSource is GridViewColumnHeader column) || column.Column == null || lv.Items.Count < 1)
                 return;
 
             if (_sortColumn == column)
@@ -44,7 +45,7 @@ namespace RA2AI_Editor.Styles
                 header = nameof(TagType.PTag);
 
             ICollectionView resultDataView = CollectionViewSource.GetDefaultView(
-                                                       (sender as ListView).ItemsSource);
+                                                       lv.ItemsSource);
             resultDataView.SortDescriptions.Clear();
             resultDataView.SortDescriptions.Add(new SortDescription(header, _sortDirection));
         }

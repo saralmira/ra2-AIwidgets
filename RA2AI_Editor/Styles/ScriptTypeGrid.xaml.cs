@@ -146,15 +146,6 @@ namespace RA2AI_Editor.Styles
         //    e.Handled = true;
         //}
 
-        private void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            System.Windows.Controls.ListBox lb = (System.Windows.Controls.ListBox)sender;
-            if (lb.SelectedItem != null && lb.SelectedItem is TeamType)
-            {
-                MainWindow.TeamTypeJumpEvent((TeamType)lb.SelectedItem);
-            }
-        }
-
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             System.Windows.Controls.ListView lb = (System.Windows.Controls.ListView)sender;

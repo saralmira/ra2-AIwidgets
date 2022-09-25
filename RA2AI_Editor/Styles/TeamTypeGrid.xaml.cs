@@ -241,7 +241,7 @@ namespace RA2AI_Editor.Styles
         private void TaskForce_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                TaskForceJumpEvent(tt.TaskForce);
+                JumpTo(tt.TaskForce);
         }
 
         private void TaskForce_CreateClick(object sender, RoutedEventArgs e)
@@ -252,14 +252,14 @@ namespace RA2AI_Editor.Styles
                 tf.PName = tt.PName;
                 tt.TaskForce = tf;
                 acb_tf.Text = tf.PTag;
-                TaskForceJumpEvent(tf);
+                JumpTo(tf);
             }
         }
 
         private void ScriptType_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                ScriptTypeJumpEvent(tt.Script);
+                JumpTo(tt.Script);
         }
 
         private void ScriptType_CreateClick(object sender, RoutedEventArgs e)
@@ -270,7 +270,7 @@ namespace RA2AI_Editor.Styles
                 st.PName = tt.PName;
                 tt.Script = st;
                 acb_s.Text = st.PTag;
-                ScriptTypeJumpEvent(st);
+                JumpTo(st);
             }
         }
 
@@ -329,7 +329,12 @@ namespace RA2AI_Editor.Styles
             System.Windows.Controls.ListBox lb = (System.Windows.Controls.ListBox)sender;
             if (lb.SelectedItem != null && lb.SelectedItem is AITriggerType)
             {
-                MainWindow.AITriggerTypeJumpEvent((AITriggerType)lb.SelectedItem);
+                var pele = Utils.GetParent(lb, typeof(Popup));
+                if (pele != null && pele is Popup p)
+                {
+                    p.IsOpen = false;
+                }
+                MainWindow.JumpTo((AITriggerType)lb.SelectedItem);
             }
         }
 
@@ -376,14 +381,14 @@ namespace RA2AI_Editor.Styles
                 tf.PName = tt.PName + " - E";
                 tt.Ext_EasyMode_Type.TaskForce = tf;
                 ext_acb_tf.Text = tf.PTag;
-                TaskForceJumpEvent(tf);
+                JumpTo(tf);
             }
         }
 
         private void Ext_EasyMode_TaskForce_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                TaskForceJumpEvent(tt.Ext_EasyMode_Type.TaskForce);
+                JumpTo(tt.Ext_EasyMode_Type.TaskForce);
         }
 
         private void Ext_MediumMode_TaskForce_CreateClick(object sender, RoutedEventArgs e)
@@ -394,14 +399,14 @@ namespace RA2AI_Editor.Styles
                 tf.PName = tt.PName + " - M";
                 tt.Ext_MediumMode_Type.TaskForce = tf;
                 ext_m_acb_tf.Text = tf.PTag;
-                TaskForceJumpEvent(tf);
+                JumpTo(tf);
             }
         }
 
         private void Ext_MediumMode_TaskForce_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                TaskForceJumpEvent(tt.Ext_MediumMode_Type.TaskForce);
+                JumpTo(tt.Ext_MediumMode_Type.TaskForce);
         }
 
         private void Ext_HardMode_TaskForce_CreateClick(object sender, RoutedEventArgs e)
@@ -412,14 +417,14 @@ namespace RA2AI_Editor.Styles
                 tf.PName = tt.PName + " - H";
                 tt.Ext_HardMode_Type.TaskForce = tf;
                 ext_h_acb_tf.Text = tf.PTag;
-                TaskForceJumpEvent(tf);
+                JumpTo(tf);
             }
         }
 
         private void Ext_HardMode_TaskForce_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                TaskForceJumpEvent(tt.Ext_HardMode_Type.TaskForce);
+                JumpTo(tt.Ext_HardMode_Type.TaskForce);
         }
 
         private void Ext_EasyMode_ScriptType_CreateClick(object sender, RoutedEventArgs e)
@@ -430,14 +435,14 @@ namespace RA2AI_Editor.Styles
                 st.PName = tt.PName + " - E";
                 tt.Ext_EasyMode_Type.Script = st;
                 ext_acb_s.Text = st.PTag;
-                ScriptTypeJumpEvent(st);
+                JumpTo(st);
             }
         }
 
         private void Ext_EasyMode_ScriptType_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                ScriptTypeJumpEvent(tt.Ext_EasyMode_Type.Script);
+                JumpTo(tt.Ext_EasyMode_Type.Script);
         }
 
         private void Ext_MediumMode_ScriptType_CreateClick(object sender, RoutedEventArgs e)
@@ -448,14 +453,14 @@ namespace RA2AI_Editor.Styles
                 st.PName = tt.PName + " - M";
                 tt.Ext_MediumMode_Type.Script = st;
                 ext_m_acb_s.Text = st.PTag;
-                ScriptTypeJumpEvent(st);
+                JumpTo(st);
             }
         }
 
         private void Ext_MediumMode_ScriptType_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                ScriptTypeJumpEvent(tt.Ext_MediumMode_Type.Script);
+                JumpTo(tt.Ext_MediumMode_Type.Script);
         }
         
         private void Ext_HardMode_ScriptType_CreateClick(object sender, RoutedEventArgs e)
@@ -466,14 +471,14 @@ namespace RA2AI_Editor.Styles
                 st.PName = tt.PName + " - H";
                 tt.Ext_HardMode_Type.Script = st;
                 ext_h_acb_s.Text = st.PTag;
-                ScriptTypeJumpEvent(st);
+                JumpTo(st);
             }
         }
 
         private void Ext_HardMode_ScriptType_JumpClick(object sender, RoutedEventArgs e)
         {
             if (tt != null)
-                ScriptTypeJumpEvent(tt.Ext_HardMode_Type.Script);
+                JumpTo(tt.Ext_HardMode_Type.Script);
         }
     }
 }
