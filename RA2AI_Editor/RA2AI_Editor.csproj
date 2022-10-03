@@ -83,8 +83,8 @@
     <Reference Include="AvalonDock, Version=4.70.2.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Dirkster.AvalonDock.4.70.2\lib\net40\AvalonDock.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetProjects.Input.Toolkit, Version=6.0.79.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetProjects.WpfToolkit.Input.6.0.79\lib\net40\DotNetProjects.Input.Toolkit.dll</HintPath>
+    <Reference Include="DotNetProjects.Input.Toolkit, Version=6.1.94.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.WpfToolkit.Input.6.1.94\lib\net40\DotNetProjects.Input.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="SearchTextBox">
       <HintPath>..\References\SearchTextBox.dll</HintPath>
@@ -217,15 +217,15 @@
     <Compile Include="UserControls\UndoButton.xaml.cs">
       <DependentUpon>UndoButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\WPFCustomMessageBox\CustomMessageBox.cs" />
-    <Compile Include="UserControls\WPFCustomMessageBox\CustomMessageBoxWindow.xaml.cs" />
+    <Compile Include="ThirdParty\WPFCustomMessageBox\CustomMessageBox.cs" />
+    <Compile Include="ThirdParty\WPFCustomMessageBox\CustomMessageBoxWindow.xaml.cs" />
     <Compile Include="UserControls\StateButton.xaml.cs">
       <DependentUpon>StateButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ucUploadPic.xaml.cs">
       <DependentUpon>ucUploadPic.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\WPFCustomMessageBox\Util.cs" />
+    <Compile Include="ThirdParty\WPFCustomMessageBox\Util.cs" />
     <Page Include="en.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -355,7 +355,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\WPFCustomMessageBox\CustomMessageBoxWindow.xaml">
+    <Page Include="ThirdParty\WPFCustomMessageBox\CustomMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

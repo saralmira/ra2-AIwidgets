@@ -3,6 +3,7 @@ using RA2AI_Editor;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace AIcore
 {
@@ -76,9 +77,11 @@ namespace AIcore
             return null;
         }
 
+        const string customDir = @"Data\Custom\";
+
         public static GameTypeClass GetExistedCustomGameType(string name)
         {
-            string infopath = Environment.CurrentDirectory + @"\Custom\" + name + @"\info.ini";
+            string infopath = Environment.CurrentDirectory + @"\" + customDir + name + @"\info.ini";
             string gname;
             if (!File.Exists(infopath))
                 return null;
@@ -93,8 +96,8 @@ namespace AIcore
 
         public static GameTypeClass CreateCustomGameType(string name)
         {
-            PathClass.CreateDir(Environment.CurrentDirectory + @"\Custom\" + name);
-            string infopath = Environment.CurrentDirectory + @"\Custom\" + name + @"\info.ini";
+            PathClass.CreateDir(Environment.CurrentDirectory + @"\" + customDir + name);
+            string infopath = Environment.CurrentDirectory + @"\" + customDir + name + @"\info.ini";
             GameTypeClass gtype = new GameTypeClass { GameType = CurrentGame.GameType, Description = name, Digest = Utils.GetMd5OfString(name) };
             IniClass customgame = new IniClass(infopath);
             customgame.WriteValue("Info", "GameType", (int)gtype.GameType);
@@ -111,6 +114,14 @@ namespace AIcore
         public static bool IsCustomGameType()
         {
             return IsCustomGameType(CurrentGame);
+        }
+
+        public static string GetGameDirRelative()
+        {
+            if (IsCustomGameType())
+                return customDir + CurrentGame.Description;
+            else
+                return @"Data\" + App.LanguageCurrent + CurrentGameDir;
         }
     }
 }

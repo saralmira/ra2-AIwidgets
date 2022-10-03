@@ -45,7 +45,6 @@ namespace RA2AI_Editor
         public static TmpFileEventDel TmpFileEvent;
         public static TmpFileEventDel TmpFileDeleteEvent;
 
-        private static string current_lang;
         public static UInt32 searchinterval;
 
         public static ListBoxDataInit listBoxDataInit { get; private set; }
@@ -82,7 +81,6 @@ namespace RA2AI_Editor
 
         private void InitData()
         {
-            current_lang = App.LanguageCurrent;
             Config_Current = new IniClass(AppDomain.CurrentDomain.BaseDirectory + @"\config.ini");
             HideIDGridEvent = HideIDGrid;
             configData = new ConfigClass(Config_Current);
@@ -416,10 +414,7 @@ namespace RA2AI_Editor
 
         public static string GetGameXmlDirRelative()
         {
-            if (Game.IsCustomGameType())
-                return @"Custom\" + Game.CurrentGame.Description;
-            else
-                return current_lang + Game.CurrentGameDir;
+            return Game.GetGameDirRelative();
         }
 
         private static void LoadXmlOfCurrent()

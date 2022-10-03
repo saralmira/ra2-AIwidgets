@@ -70,7 +70,7 @@
                     <MenuItem Name="mi_c_at" Header="{DynamicResource MENU_CREATE_AITRIGGER}" Click="CreateAITrigger_Click"/>
                 </ContextMenu>
             </Grid.Resources>
-            
+
             <DockingManager x:Name="docking" Background="White" DocumentHeaderTemplate="{StaticResource AvalonDock_HeaderTemplate}" AnchorableTitleTemplate="{StaticResource AvalonDock_HeaderTemplate}"
                             AnchorablePaneControlStyle="{StaticResource AvalonDock_AnchorablePaneControlStyle}" DocumentPaneControlStyle="{StaticResource AvalonDock_DocumentPaneControlStyle}">
                 <LayoutRoot>
