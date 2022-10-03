@@ -24,9 +24,9 @@ namespace RA2AI_Editor
                 CurrentFile = null;
                 SearchDelay = new Duration(new TimeSpan(searchinterval * 10000));
                 
-                if (Directory.Exists(Environment.CurrentDirectory + @"\Custom"))
+                if (Directory.Exists(Environment.CurrentDirectory + @"\Data\Custom"))
                 {
-                    foreach (string game in Directory.GetDirectories(Environment.CurrentDirectory + @"\Custom"))
+                    foreach (string game in Directory.GetDirectories(Environment.CurrentDirectory + @"\Data\Custom"))
                     {
                         Game.GameTypeClass cgame = Game.GetExistedCustomGameType(Path.GetFileName(game));
                         if (cgame != null)

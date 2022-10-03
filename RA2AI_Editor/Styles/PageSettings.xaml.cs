@@ -42,7 +42,7 @@ namespace RA2AI_Editor.Styles
                 MainWindow.MessageBoxShow(Local.Dictionary("MB_BLANKCUSTOMGAME"));
                 return;
             }
-            string newdir = Environment.CurrentDirectory + @"\Custom\" + name;
+            string newdir = Environment.CurrentDirectory + @"\Data\Custom\" + name;
             if (Directory.Exists(newdir))
             {
                 MainWindow.MessageBoxShow(Local.Dictionary("MB_INVALIDCUSTOMGAME"));
