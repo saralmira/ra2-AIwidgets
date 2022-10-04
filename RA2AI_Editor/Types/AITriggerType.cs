@@ -209,7 +209,8 @@ namespace AIcore.Types
         private void OutputStr(IniClass ini, AITriggerType type, string nameappend = "")
         {
             int index = type.Name.IndexOf(",");
-            string str = NameWithExt(index >= 0 ? type.Name.Substring(0, index) : type.Name, nameappend) + ",";
+            // so you can now use any name, case a letter will automatically be added to the front if necessary.
+            string str = AutoPrefix(NameWithExt(index >= 0 ? type.Name.Substring(0, index) : type.Name, nameappend)) + ",";
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";

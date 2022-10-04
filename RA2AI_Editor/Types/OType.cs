@@ -95,6 +95,21 @@ namespace AIcore.Types
             return name + modefix;
         }
 
+        /// <summary>
+        /// Make sure a name starts from a letter.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected string AutoPrefix(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return "Auto name";
+            
+            if (!char.IsLetter(name[0]))
+                return "Pre " + name;
+
+            return name;
+        }
     }
 
     public abstract class OType : TagType
