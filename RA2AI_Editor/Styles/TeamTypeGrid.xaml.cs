@@ -107,8 +107,8 @@ namespace RA2AI_Editor.Styles
 
         public void GetToolTit()
         {
-            ControlPlace(gd_taskforce, TeamTypeInfo.GetTeamTypeInfo("TaskForce"));
-            ControlPlace(gd_scripttype, TeamTypeInfo.GetTeamTypeInfo("Script"));
+            //ControlPlace(gd_taskforce, TeamTypeInfo.GetTeamTypeInfo("TaskForce"));
+            //ControlPlace(gd_scripttype, TeamTypeInfo.GetTeamTypeInfo("Script"));
 
             ControlPlace(gd_veteranlevel, TeamTypeInfo.GetTeamTypeInfo("VeteranLevel"));
             ControlPlace(gd_techlevel, TeamTypeInfo.GetTeamTypeInfo("TechLevel"));

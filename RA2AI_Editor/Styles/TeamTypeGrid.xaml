@@ -111,6 +111,9 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Border x:Name="gd_taskforce" Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                        <Border.ToolTip>
+                            <usercon:prTaskforce Source="{Binding Path=TaskForce,Mode=OneWay}"/>
+                        </Border.ToolTip>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60"/>
@@ -135,6 +138,9 @@
                         </Grid>
                     </Border>
                     <Border x:Name="gd_scripttype" Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                        <Border.ToolTip>
+                            <usercon:prScripttype Source="{Binding Path=Script,Mode=OneWay}"/>
+                        </Border.ToolTip>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60"/>
@@ -178,6 +184,9 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prTaskforce Source="{Binding Path=Ext_EasyMode_Type.TaskForce,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>
@@ -199,6 +208,9 @@
                                     </Grid>
                                 </Border>
                                 <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prScripttype Source="{Binding Path=Ext_EasyMode_Type.Script,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>
@@ -231,6 +243,9 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prTaskforce Source="{Binding Path=Ext_MediumMode_Type.TaskForce,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>
@@ -252,6 +267,9 @@
                                     </Grid>
                                 </Border>
                                 <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prScripttype Source="{Binding Path=Ext_MediumMode_Type.Script,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>
@@ -284,6 +302,9 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prTaskforce Source="{Binding Path=Ext_HardMode_Type.TaskForce,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>
@@ -305,6 +326,9 @@
                                     </Grid>
                                 </Border>
                                 <Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" Margin="0 0 0 3">
+                                    <Border.ToolTip>
+                                        <usercon:prScripttype Source="{Binding Path=Ext_HardMode_Type.Script,Mode=OneWay}"/>
+                                    </Border.ToolTip>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="60"/>

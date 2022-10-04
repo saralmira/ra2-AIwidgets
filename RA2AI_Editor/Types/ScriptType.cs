@@ -16,7 +16,7 @@ namespace AIcore.Types
                 Name = "";
             else
                 Name = "_ScriptType_";
-            _clist = new ObservableCollection<ScriptTypeData>();
+            _clist = new NotifyList<ScriptTypeData>();
             Add("");
         }
 
@@ -32,7 +32,7 @@ namespace AIcore.Types
             PName = ini.ReadValueWithoutNotes(tag, "Name");
             string value;
             if (_clist == null)
-                _clist = new ObservableCollection<ScriptTypeData>();
+                _clist = new NotifyList<ScriptTypeData>();
             else
                 _clist.Clear();
             foreach (string key in ini.GetKeys(tag))
@@ -139,7 +139,8 @@ namespace AIcore.Types
             return true;
         }
 
-        public ObservableCollection<ScriptTypeData> _clist;
+        public NotifyList<ScriptTypeData> _clist;
+        public NotifyList<ScriptTypeData> BindList { get => _clist; set { _clist = value; PropertyChange(nameof(BindList)); } }
 
         public class ScriptTypeData : NotifyClass
         {
