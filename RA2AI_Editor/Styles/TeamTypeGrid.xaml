@@ -375,7 +375,7 @@
                             <Border x:Name="gd_prebuild" Style="{StaticResource GridBorderStyle}">
                                 <CheckBox IsChecked="{Binding Path=Prebuild,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Prebuild}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
                             </Border>
-                            <Border x:Name="gd_autocreate" Style="{StaticResource GridBorderStyleForMap}">
+                            <Border x:Name="gd_autocreate" Style="{StaticResource GridBorderStyle}">
                                 <CheckBox Content="{DynamicResource TAG_Autocreate}" IsChecked="{Binding Path=Autocreate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
                             </Border>
                             <Border x:Name="gd_guardslower" Style="{StaticResource GridBorderStyle}">

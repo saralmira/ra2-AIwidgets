@@ -141,7 +141,7 @@ namespace AIcore.Types
                         this.EasyMode = true;
                         this.NormalMode = false;
                         this.HardMode = false;
-                        OutputStr(ini, this, " - E");
+                        OutputStr(ini, this, release, " - E");
                     }
                     if (mm)
                     {
@@ -169,7 +169,7 @@ namespace AIcore.Types
                             ext.NormalMode = true;
                             ext.HardMode = false;
                         }
-                        OutputStr(ini, ext, " - M");
+                        OutputStr(ini, ext, release, " - M");
                     }
                     if (hm)
                     {
@@ -197,20 +197,21 @@ namespace AIcore.Types
                             ext.NormalMode = false;
                             ext.HardMode = true;
                         }
-                        OutputStr(ini, ext, " - H");
+                        OutputStr(ini, ext, release, " - H");
                     }
                     
                     return;
                 }
             }
-            OutputStr(ini, this);
+            OutputStr(ini, this, release);
         }
 
-        private void OutputStr(IniClass ini, AITriggerType type, string nameappend = "")
+        private void OutputStr(IniClass ini, AITriggerType type, bool release, string nameappend = "")
         {
             int index = type.Name.IndexOf(",");
+            string name = index >= 0 ? type.Name.Substring(0, index) : type.Name;
             // so you can now use any name, case a letter will automatically be added to the front if necessary.
-            string str = AutoPrefix(NameWithExt(index >= 0 ? type.Name.Substring(0, index) : type.Name, nameappend)) + ",";
+            string str = release ? AutoPrefix(NameWithExt(name, nameappend)) : name + ",";
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";

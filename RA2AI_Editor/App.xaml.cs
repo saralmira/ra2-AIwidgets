@@ -127,7 +127,7 @@ namespace RA2AI_Editor
             if (langRd != null)
             {
                 this.Resources.MergedDictionaries.Remove(langRd);
-                this.Resources.MergedDictionaries.Insert(0, langRd);
+                this.Resources.MergedDictionaries.Add(langRd);
             }
         }
     }
