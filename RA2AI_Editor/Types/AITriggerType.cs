@@ -211,7 +211,8 @@ namespace AIcore.Types
             int index = type.Name.IndexOf(",");
             string name = index >= 0 ? type.Name.Substring(0, index) : type.Name;
             // so you can now use any name, case a letter will automatically be added to the front if necessary.
-            string str = release ? AutoPrefix(NameWithExt(name, nameappend)) : name + ",";
+            // this bug is really critical!!!
+            string str = (release ? AutoPrefix(NameWithExt(name, nameappend)) : name) + ",";
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";
