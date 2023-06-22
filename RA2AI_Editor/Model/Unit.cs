@@ -38,14 +38,14 @@ namespace AIcore
             UIVisibility = Visibility.Visible;
         }
 
-        public Unit(UnitType type, int seq, string name, string key, IniClass rules)
+        public Unit(UnitType type, int seq, string name, int key, IniClass rules)
         {
             UType = type;
             SequenceIndex = seq;
             Name = name;
             if (rules != null)
             {
-                SIndex = key;
+                Index = key;
                 UIName = rules.ReadValueWithoutNotes(Name, "UIName");
                 Description = rules.ReadValueWithoutNotes(Name, "Name");
                 SCost = rules.ReadValueWithoutNotes(Name, "Cost");

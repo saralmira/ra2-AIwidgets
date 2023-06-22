@@ -468,6 +468,22 @@ namespace Library
             return list;
         }
 
+        public IList<(string, string)> GetKeyValues(string section)
+        {
+            List<(string, string)> list = new List<(string, string)>();
+            int index = sections.FindLastIndex(s => s == section);
+            if (index >= 0)
+            {
+                for (int i = 0; i < sectioninf[index].keys.Count; i++)
+                {
+                    if (!sectioninf[index].isnote[i])
+                        list.Add((sectioninf[index].keys[i], sectioninf[index].values[i]));
+                }
+                //return sectioninf[index].keys.AsReadOnly();
+            }
+            return list;
+        }
+
         public int ReadIntValue(string section, string key, int dfValue)
         {
             int ret;

@@ -27,37 +27,65 @@ namespace RA2AI_Editor.PopupForms
             SideList = new ObservableCollection<Side>();
             HouseList = new ObservableCollection<Country>();
             int i_seq = 0;
-            string name;
-            foreach (string key in rules.GetKeys("BuildingTypes"))
+            int reg_key = 0; // key start from 1
+            foreach ((string key, string name) in rules.GetKeyValues("BuildingTypes"))
             {
-                name = rules.ReadValueWithoutNotes("BuildingTypes", key);
                 if (AIcore.Units.Contains(BuildingList, name))
                     continue;
-                BuildingList.Add(new Unit(UnitType.BuildingType, i_seq++, name, key, rules));
+                if (int.TryParse(key, out int i_key))
+                {
+                    reg_key = i_key;
+                    BuildingList.Add(new Unit(UnitType.BuildingType, i_seq++, name, i_key, rules));
+                }
+                else
+                {
+                    BuildingList.Add(new Unit(UnitType.BuildingType, i_seq++, name, ++reg_key, rules));
+                }
             }
-            i_seq = 0;
-            foreach (string key in rules.GetKeys("InfantryTypes"))
+            i_seq = 0; reg_key = 0;
+            foreach ((string key, string name) in rules.GetKeyValues("InfantryTypes"))
             {
-                name = rules.ReadValueWithoutNotes("InfantryTypes", key);
                 if (AIcore.Units.Contains(InfantryList, name))
                     continue;
-                InfantryList.Add(new Unit(UnitType.InfantryType, i_seq++, name, key, rules));
+                if (int.TryParse(key, out int i_key))
+                {
+                    reg_key = i_key;
+                    InfantryList.Add(new Unit(UnitType.InfantryType, i_seq++, name, i_key, rules));
+                }
+                else
+                {
+                    InfantryList.Add(new Unit(UnitType.InfantryType, i_seq++, name, ++reg_key, rules));
+                }
             }
-            i_seq = 0;
-            foreach (string key in rules.GetKeys("VehicleTypes"))
+            i_seq = 0; reg_key = 0;
+            foreach ((string key, string name) in rules.GetKeyValues("VehicleTypes"))
             {
-                name = rules.ReadValueWithoutNotes("VehicleTypes", key);
                 if (AIcore.Units.Contains(VehicleList, name))
                     continue;
-                VehicleList.Add(new Unit(UnitType.VehicleType, i_seq++, name, key, rules));
+                if (int.TryParse(key, out int i_key))
+                {
+                    reg_key = i_key;
+                    VehicleList.Add(new Unit(UnitType.VehicleType, i_seq++, name, i_key, rules));
+                }
+                else
+                {
+                    VehicleList.Add(new Unit(UnitType.VehicleType, i_seq++, name, ++reg_key, rules));
+                }
             }
-            i_seq = 0;
-            foreach (string key in rules.GetKeys("AircraftTypes"))
+            i_seq = 0; reg_key = 0;
+            foreach ((string key, string name) in rules.GetKeyValues("AircraftTypes"))
             {
-                name = rules.ReadValueWithoutNotes("AircraftTypes", key);
                 if (AIcore.Units.Contains(AircraftList, name))
                     continue;
-                AircraftList.Add(new Unit(UnitType.AircraftType, i_seq++, name, key, rules));
+                if (int.TryParse(key, out int i_key))
+                {
+                    reg_key = i_key;
+                    AircraftList.Add(new Unit(UnitType.AircraftType, i_seq++, name, i_key, rules));
+                }
+                else
+                {
+                    AircraftList.Add(new Unit(UnitType.AircraftType, i_seq++, name, ++reg_key, rules));
+                }
             }
             Utils.AppendToList(BuildingList, ref AllList);
             Utils.AppendToList(InfantryList, ref AllList);
