@@ -88,6 +88,7 @@
     <sys:String x:Key="BTN_HIDEIDGRID">隐藏ID编辑框</sys:String>
     <sys:String x:Key="BTN_COPYAPPEND">复制时名称添加“Copy”</sys:String>
     <sys:String x:Key="BTN_AUTOTECH">自动</sys:String>
+    <sys:String x:Key="BTN_PROJECT">项目：https://github.com/saralmira/ra2-AIwidgets</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 

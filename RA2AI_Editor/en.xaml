@@ -87,6 +87,7 @@
     <sys:String x:Key="BTN_HIDEIDGRID">Hide ID edit box</sys:String>
     <sys:String x:Key="BTN_COPYAPPEND">Append "Copy" for pasted item</sys:String>
     <sys:String x:Key="BTN_AUTOTECH">Auto</sys:String>
+    <sys:String x:Key="BTN_PROJECT">Project: https://github.com/saralmira/ra2-AIwidgets</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 

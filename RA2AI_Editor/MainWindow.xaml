@@ -132,7 +132,7 @@
                                                 <RowDefinition Height="84"/>
                                                 <RowDefinition Height="10"/>
                                                 <RowDefinition Height="*"/>
-                                                <RowDefinition Height="45"/>
+                                                <RowDefinition Height="90"/>
                                                 <RowDefinition Height="5"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
@@ -184,8 +184,12 @@
                                                         <TextBlock Text="{DynamicResource FILE_CLOSE}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
                                                     </StackPanel>
                                                 </Button>
+
                                             </StackPanel>
-                                            <controls:ButtonEx Grid.Row="6" Grid.Column="1" Content="{DynamicResource BTN_RECOVER}" Margin="10 0 10 0" ButtonType="Text" HorizontalAlignment="Right" Foreground="{Binding RandomColor,Mode=OneWay}" Click="FileRecover_Click"/>
+                                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom">
+                                                <controls:ButtonEx Content="{DynamicResource BTN_PROJECT}" Margin="0 10 0 0" ButtonType="Text" HorizontalAlignment="Right" Foreground="{Binding RandomColor,Mode=OneWay}" Click="BtnProject_Click"/>
+                                                <controls:ButtonEx Content="{DynamicResource BTN_RECOVER}" Margin="0 10 0 0" ButtonType="Text" HorizontalAlignment="Right" Foreground="{Binding RandomColor,Mode=OneWay}" Click="FileRecover_Click"/>
+                                            </StackPanel>
                                         </Grid>
                                     </Grid>
                                 </LayoutAnchorable>
@@ -509,7 +513,20 @@
                                       SelectionChanged="AITriggersList_SelectionChanged">
                                                 <ListView.View>
                                                     <GridView ColumnHeaderContainerStyle="{StaticResource ListColumnHeaderStyle}">
-                                                        <GridViewColumn DisplayMemberBinding="{Binding PTag}" Header="{DynamicResource COLUMN_ID}" Width="80"/>
+                                                        <GridViewColumn Header="{DynamicResource COLUMN_ID}" Width="80">
+                                                            <GridViewColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="7"/>
+                                                                            <ColumnDefinition Width="1*"/>
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <Border Grid.Column="0" Margin="0 0 2 0" Visibility="{Binding EnableExt,Mode=OneWay,Converter={StaticResource BoolToVisible}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Background="#85D3E7"/>
+                                                                        <TextBlock Grid.Column="1" Text="{Binding Path=PTag}"/>
+                                                                    </Grid>
+                                                                </DataTemplate>
+                                                            </GridViewColumn.CellTemplate>
+                                                        </GridViewColumn>
                                                         <GridViewColumn DisplayMemberBinding="{Binding PName}" Header="{DynamicResource COLUMN_NAME}" Width="160"/>
                                                         <GridViewColumn DisplayMemberBinding="{Binding SideDes,Mode=OneWay}" Header="{DynamicResource COLUMN_SIDE}" Width="40"/>
                                                         <GridViewColumn DisplayMemberBinding="{Binding TechLevel,Mode=OneWay,Converter={StaticResource IntToString}}" Header="{DynamicResource COLUMN_TECHLEVEL}" Width="60"/>

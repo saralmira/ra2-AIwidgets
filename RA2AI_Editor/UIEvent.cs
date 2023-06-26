@@ -15,6 +15,8 @@ using System.Collections.ObjectModel;
 using RA2AI_Editor.PopupForms;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using static System.Windows.Forms.LinkLabel;
+using System.Diagnostics;
 
 namespace RA2AI_Editor
 {
@@ -123,6 +125,11 @@ namespace RA2AI_Editor
         private void FileClose_Click(object sender, RoutedEventArgs e)
         {
             CloseFile();
+        }
+
+        private void BtnProject_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/saralmira/ra2-AIwidgets"));
         }
 
         private void FileRecover_Click(object sender, RoutedEventArgs e)
