@@ -100,7 +100,15 @@ namespace RA2AI_Editor.Data
 
         private bool IsForceDataExist(TaskForce tf, string name, StringComparison sc)
         {
-            foreach (TaskForceData tfd in tf._clist)
+            return !tf.EnableExt ? IsForceDataExist(tf._clist, name, sc) : (
+                   IsForceDataExist(tf.Ext_EasyMode_Type._clist, name, sc) ||
+                   IsForceDataExist(tf.Ext_MediumMode_Type._clist, name, sc) ||
+                   IsForceDataExist(tf.Ext_HardMode_Type._clist, name, sc));
+        }
+
+        private bool IsForceDataExist(Collection<TaskForceData> clist, string name, StringComparison sc)
+        {
+            foreach (TaskForceData tfd in clist)
             {
                 if (tfd.Name.IndexOf(name, sc) >= 0)
                 {
