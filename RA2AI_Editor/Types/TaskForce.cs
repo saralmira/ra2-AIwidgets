@@ -137,6 +137,20 @@ namespace AIcore.Types
         public TaskForceBase Ext_MediumMode_Type { get; set; }
         public TaskForceBase Ext_HardMode_Type { get; set; }
 
+        public override int GetTechLevelMax()
+        {
+            if (EnableExt)
+            {
+                return Math.Max(Math.Max(Ext_EasyMode_Type.GetTechLevelMax(),
+                    Ext_MediumMode_Type.GetTechLevelMax()),
+                    Ext_HardMode_Type.GetTechLevelMax());
+            }
+            else
+            {
+                return base.GetTechLevelMax();
+            }
+        }
+
         public TaskForce CloneFromBase(TaskForceBase tfb, string tag, string modefix = "")
         {
             var ext = this.CloneType(tag);
@@ -401,7 +415,7 @@ namespace AIcore.Types
                 _clist[j].Index = j;
         }
 
-        public int GetTechLevelMax()
+        public virtual int GetTechLevelMax()
         {
             int tec = 0;
             foreach (TaskForceData d in _clist)

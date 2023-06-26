@@ -1,63 +1,95 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Windows.Controls;
 using Library;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AIcore.Types
 {
-    public class AITriggerType : OType
+    public class AITriggerType : AITriggerTypeBase
     {
-        public AITriggerType(AI _ai, string tag, TeamType teamtype1, TeamType teamtype2 = null) : base(tag)
+        public AITriggerType(AI _ai, string tag, TeamType teamtype1 = null, TeamType teamtype2 = null) : base(tag)
         {
             ai = _ai;
-            Name = "_AITriggerType_";
-            TeamType1 = teamtype1;
-            TeamType2 = teamtype2;
-            if (TeamType1 != AI.NullTeamType)
+            DerivedBase = false;
+            if (teamtype1 == null)
             {
-                TechLevel = TeamType1.GetTechLevelMax();
+                rec_tag = tag;
+                NewType = false;
+                Init(ai.ini, tag);
             }
-        }
-
-        public AITriggerType(AI _ai, string tag) : base(tag)
-        {
-            rec_tag = tag;
-            ai = _ai;
-            NewType = false;
-            Init(ai.ini, tag);
+            else
+            {
+                Init(ai.ini, tag);
+                Name = "_AITriggerType_";
+                TeamType1 = teamtype1;
+                TeamType2 = teamtype2;
+                if (TeamType1 != AI.NullTeamType)
+                {
+                    SetMaxTechLevel();
+                }
+            }
         }
 
         protected override void Init(IniClass ini, string tag)
         {
             string[] values = ini.ReadValueWithoutNotes("AITriggerTypes", tag).Split(',');
-            if (values.Length < 18)
-                return;
-            PName = values[0].Trim();
-            STeamType1 = values[1].Trim();
-            SHouse = values[2].Trim();
-            TechLevel = GetIntValue(values[3].Trim(), 0);
-            TriggerType = TriggerTypes.GetTriggerType(GetIntValue(values[4].Trim(), -1));
-            STriggerUnit = values[5].Trim();
-            string longstr = values[6].Trim();
-            CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
-            SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
-            BaseWeight = Convert.ToUInt32(GetDoubleValue(values[7].Trim(), 50));
-            MinWeight = Convert.ToUInt32(GetDoubleValue(values[8].Trim(), 10));
-            MaxWeight = Convert.ToUInt32(GetDoubleValue(values[9].Trim(), 70));
-            Skirmish = GetBoolValue(values[10].Trim(), true);
-            Unknown = GetBoolValue(values[11].Trim(), false);
-            SSide = values[12].Trim();
-            BaseDefence = GetBoolValue(values[13].Trim(), false);
-            STeamType2 = values[14].Trim();
-            EasyMode = GetBoolValue(values[15].Trim(), true);
-            NormalMode = GetBoolValue(values[16].Trim(), true);
-            HardMode = GetBoolValue(values[17].Trim(), true);
+            if (values.Length > 17)
+            {
+                PName = values[0].Trim();
+                STeamType1 = values[1].Trim();
+                SHouse = values[2].Trim();
+                TechLevel = GetIntValue(values[3].Trim(), 0);
+                //TriggerType = TriggerTypes.GetTriggerType(GetIntValue(values[4].Trim(), -1));
+                //STriggerUnit = values[5].Trim();
+                //string longstr = values[6].Trim();
+                //CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
+                //SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
+                Parse(values, 4);
+                BaseWeight = Convert.ToUInt32(GetDoubleValue(values[7].Trim(), 50));
+                MinWeight = Convert.ToUInt32(GetDoubleValue(values[8].Trim(), 10));
+                MaxWeight = Convert.ToUInt32(GetDoubleValue(values[9].Trim(), 70));
+                Skirmish = GetBoolValue(values[10].Trim(), true);
+                Unknown = GetBoolValue(values[11].Trim(), false);
+                SSide = values[12].Trim();
+                BaseDefence = GetBoolValue(values[13].Trim(), false);
+                STeamType2 = values[14].Trim();
+                EasyMode = GetBoolValue(values[15].Trim(), true);
+                NormalMode = GetBoolValue(values[16].Trim(), true);
+                HardMode = GetBoolValue(values[17].Trim(), true);
+            }
 
+            InitExt(ini, tag);
+        }
+
+        private void InitExt(IniClass ini, string tag)
+        {
             // ext
-            //TypeExt_EasyMode.TeamType=EasyMode?TeamType1:
+            string ext_tag = tag + "-Ext";
+            CountryExtList = new NotifyList<CountryExt>();
+            EnableExt = ini.ReadBoolValue(ext_tag, nameof(EnableExt), false);
+            foreach (Country country in Countries.CountryList)  // without <all>
+            {
+                CountryExtList.Add(new CountryExt { Country = country, trigger = this });
+            }
+            Ext_SelectedHouses = ini.ReadValueWithoutNotes(ext_tag, nameof(Ext_SelectedHouses), SHouse);
+            Ext_ConditionsWeight = ini.ReadBoolValue(ext_tag, nameof(Ext_ConditionsWeight), false);
+            Ext_Conditions = new NotifyList<AITriggerTypeBase>();
+            foreach (var s in ini.ReadValueWithoutNotes(ext_tag, nameof(Ext_Conditions)).Split('|'))
+            {
+                string[] ps = s.Split(',');
+                if (ps.Length < 3) continue;
+                var tb = new AITriggerTypeBase(null) { childtrigger = this };
+                tb.Parse(ps);
+                Ext_Conditions.Add(tb);
+            }
         }
 
         public override void Recover(IniClass ini)
@@ -94,7 +126,14 @@ namespace AIcore.Types
                 BaseDefence = this.BaseDefence,
                 EasyMode = this.EasyMode,
                 NormalMode = this.NormalMode,
-                HardMode = this.HardMode
+                HardMode = this.HardMode,
+
+                // ext
+                EnableExt = this.EnableExt,
+                CountryExtList = this.CountryExtList,
+                _ext_selectedhouses = this._ext_selectedhouses,
+                Ext_ConditionsWeight = this.Ext_ConditionsWeight,
+                Ext_Conditions = this.Ext_Conditions
             };
         }
 
@@ -120,90 +159,166 @@ namespace AIcore.Types
         {
             if (release)
             {
-                if (TeamType1.EnableExtInRelease || TeamType2.EnableExtInRelease)
+                // ext
+                if (EnableExt)
                 {
-                    bool ext_this = false;
-                    var ot1 = TeamType1;
-                    var ot2 = TeamType2;
-                    bool em = EasyMode, mm = NormalMode, hm = HardMode;
-
-                    FromCache(ot1, out (TeamType, TeamType, TeamType) ot1_type);
-                    FromCache(ot2, out (TeamType, TeamType, TeamType) ot2_type);
-
-                    if (em)
+                    var extended_houses = OutputExtendHouses(this);
+                    foreach(var ext_house in extended_houses)
                     {
-                        var tt1_e = ot1_type.Item1;
-                        var tt2_e = ot2_type.Item1;
-
-                        ext_this = true;
-                        this.TeamType1 = tt1_e;
-                        this.TeamType2 = tt2_e;
-                        this.EasyMode = true;
-                        this.NormalMode = false;
-                        this.HardMode = false;
-                        OutputStr(ini, this, release, " - E");
+                        var extended_conditions = OutputExtendConditions(ext_house);
+                        foreach (var ext_cond in extended_conditions)
+                        {
+                            OutputExtendTeamtype(ini, ext_cond);
+                        }
                     }
-                    if (mm)
-                    {
-                        var tt1 = ot1_type.Item2;
-                        var tt2 = ot2_type.Item2;
-
-                        AITriggerType ext;
-
-                        if (!ext_this)
-                        {
-                            ext_this = true;
-                            this.TeamType1 = tt1;
-                            this.TeamType2 = tt2;
-                            this.EasyMode = false;
-                            this.NormalMode = true;
-                            this.HardMode = false;
-                            ext = this;
-                        }
-                        else
-                        {
-                            ext = this.CloneType(ai.aITriggerTypes.GetNewTag());
-                            ext.TeamType1 = tt1;
-                            ext.TeamType2 = tt2;
-                            ext.EasyMode = false;
-                            ext.NormalMode = true;
-                            ext.HardMode = false;
-                        }
-                        OutputStr(ini, ext, release, " - M");
-                    }
-                    if (hm)
-                    {
-                        var tt1 = ot1_type.Item3;
-                        var tt2 = ot2_type.Item3;
-
-                        AITriggerType ext;
-
-                        if (!ext_this)
-                        {
-                            ext_this = true;
-                            this.TeamType1 = tt1;
-                            this.TeamType2 = tt2;
-                            this.NormalMode = false;
-                            this.EasyMode = false;
-                            this.HardMode = true;
-                            ext = this;
-                        }
-                        else
-                        {
-                            ext = this.CloneType(ai.aITriggerTypes.GetNewTag());
-                            ext.TeamType1 = tt1;
-                            ext.TeamType2 = tt2;
-                            ext.EasyMode = false;
-                            ext.NormalMode = false;
-                            ext.HardMode = true;
-                        }
-                        OutputStr(ini, ext, release, " - H");
-                    }
-                    
                     return;
                 }
+
+                OutputExtendTeamtype(ini, this);
             }
             OutputStr(ini, this, release);
+        }
+
+        private List<AITriggerType> OutputExtendHouses(AITriggerType type)
+        {
+            List<AITriggerType> ret = new List<AITriggerType>();
+            // <all>
+            if (type.Ext_SelectedHouses.Contains(Countries.All.NameOrAll))
+            {
+                ret.Add(type);
+                return ret;
+            }
+            // ext
+            bool ext_type = false;
+            foreach (var c in type.CountryExtList)
+            {
+                if (c.IsChecked)
+                {
+                    AITriggerType ext;
+                    if (ext_type)
+                    {
+                        ext = type.CloneType(ai.aITriggerTypes.GetNewTag());
+                    }
+                    else
+                    {
+                        ext_type = true;
+                        ext = type;
+                    }
+                    ext.House = c.Country;
+                    ext.Side = c.Country.Side;
+                    ret.Add(ext);
+                }
+            }
+            return ret;
+        }
+
+        private List<AITriggerType> OutputExtendConditions(AITriggerType type)
+        {
+            List<AITriggerType> ret = new List<AITriggerType>();
+            var initial_weight = Math.Max(type.Ext_ConditionsWeight ? (type.BaseWeight / (uint)(type.Ext_Conditions.Count + 1)) : type.BaseWeight, type.MinWeight);
+
+            // first 
+            type.BaseWeight = initial_weight;
+            ret.Add(type);
+
+            // ext
+            foreach (var cond in type.Ext_Conditions)
+            {
+                AITriggerType ext = type.CloneType(ai.aITriggerTypes.GetNewTag());
+                ext.TriggerType = cond.TriggerType;
+                ext.STriggerUnit = cond.STriggerUnit;
+                ext.CompareCount = cond.CompareCount;
+                ext.SelectedComparison = cond.SelectedComparison;
+                type.BaseWeight = initial_weight;
+                ret.Add(ext);
+            }
+            return ret;
+        }
+
+        private void OutputExtendTeamtype(IniClass ini, AITriggerType type)
+        {
+            if (type.TeamType1.EnableExtInRelease || type.TeamType2.EnableExtInRelease)
+            {
+                bool ext_this = false;
+                var ot1 = type.TeamType1;
+                var ot2 = type.TeamType2;
+                bool em = type.EasyMode, mm = type.NormalMode, hm = type.HardMode;
+
+                FromCache(ot1, out (TeamType, TeamType, TeamType) ot1_type);
+                FromCache(ot2, out (TeamType, TeamType, TeamType) ot2_type);
+
+                if (em)
+                {
+                    var tt1_e = ot1_type.Item1;
+                    var tt2_e = ot2_type.Item1;
+
+                    ext_this = true;
+                    type.TeamType1 = tt1_e;
+                    type.TeamType2 = tt2_e;
+                    type.EasyMode = true;
+                    type.NormalMode = false;
+                    type.HardMode = false;
+                    OutputStr(ini, type, true, " - E");
+                }
+                if (mm)
+                {
+                    var tt1 = ot1_type.Item2;
+                    var tt2 = ot2_type.Item2;
+
+                    AITriggerType ext;
+
+                    if (!ext_this)
+                    {
+                        ext_this = true;
+                        type.TeamType1 = tt1;
+                        type.TeamType2 = tt2;
+                        type.EasyMode = false;
+                        type.NormalMode = true;
+                        type.HardMode = false;
+                        ext = type;
+                    }
+                    else
+                    {
+                        ext = type.CloneType(ai.aITriggerTypes.GetNewTag());
+                        ext.TeamType1 = tt1;
+                        ext.TeamType2 = tt2;
+                        ext.EasyMode = false;
+                        ext.NormalMode = true;
+                        ext.HardMode = false;
+                    }
+                    OutputStr(ini, ext, true, " - M");
+                }
+                if (hm)
+                {
+                    var tt1 = ot1_type.Item3;
+                    var tt2 = ot2_type.Item3;
+
+                    AITriggerType ext;
+
+                    if (!ext_this)
+                    {
+                        // ext_this = true;
+                        type.TeamType1 = tt1;
+                        type.TeamType2 = tt2;
+                        type.NormalMode = false;
+                        type.EasyMode = false;
+                        type.HardMode = true;
+                        ext = type;
+                    }
+                    else
+                    {
+                        ext = type.CloneType(ai.aITriggerTypes.GetNewTag());
+                        ext.TeamType1 = tt1;
+                        ext.TeamType2 = tt2;
+                        ext.EasyMode = false;
+                        ext.NormalMode = false;
+                        ext.HardMode = true;
+                    }
+                    OutputStr(ini, ext, true, " - H");
+                }
+                return;
+            }
+            OutputStr(ini, type, true);
         }
 
         private void OutputStr(IniClass ini, AITriggerType type, bool release, string nameappend = "")
@@ -216,10 +331,11 @@ namespace AIcore.Types
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";
-            str += type.triggerType.SValue + ",";
-            str += (type.STriggerUnit.Length > 0 ? type.STriggerUnit : type._TriggerUnit.NameOrNone) + ",";
-            str += UInt32BytesToString(BitConverter.GetBytes(type.CompareCount)).PadLeft(8, '0');
-            str += Convert.ToString((byte)type.SelectedComparison.CompareTypes, 16).PadLeft(2, '0') + "000000000000000000000000000000000000000000000000000000,";
+            //str += type.TriggerType.SValue + ",";
+            //str += (type.STriggerUnit.Length > 0 ? type.STriggerUnit : type._TriggerUnit.NameOrNone) + ",";
+            //str += UInt32BytesToString(BitConverter.GetBytes(type.CompareCount)).PadLeft(8, '0');
+            //str += Convert.ToString((byte)type.SelectedComparison.CompareTypes, 16).PadLeft(2, '0') + "000000000000000000000000000000000000000000000000000000,";
+            str += type.ConditionToString() + ",";
             str += Convert.ToString(type.BaseWeight) + ".000000,";
             str += Convert.ToString(type.MinWeight) + ".000000,";
             str += Convert.ToString(type.MaxWeight) + ".000000,";
@@ -233,78 +349,25 @@ namespace AIcore.Types
             str += B(type.HardMode);
 
             ini.WriteValue("AITriggerTypes", type._tag, str);
+
+            // ext
+            string ext_tag = type._tag + "-Ext";
+            if (!release)
+            {
+                ini.WriteValue(ext_tag, nameof(EnableExt), EnableExt);
+                ini.WriteValue(ext_tag, nameof(Ext_SelectedHouses), Ext_SelectedHouses);
+                ini.WriteValue(ext_tag, nameof(Ext_ConditionsWeight), Ext_ConditionsWeight);
+                ini.WriteValue(ext_tag, nameof(Ext_Conditions), string.Join("|", Ext_Conditions.Select(s => s.ConditionToString())));
+            }
+            else
+            {
+                ini.WriteValue(ext_tag, null, null);
+            }
         }
 
         private string B(bool flag)
         {
             return flag ? "1" : "0";
-        }
-
-        private byte[] StringToUInt32Bytes(string bytes)
-        {
-            if (bytes.Length == 8)
-            {
-                byte[] ret = new byte[4];
-                for (int i = 0; i < ret.Length; ++i)
-                    ret[i] = Convert.ToByte(bytes.Substring(i * 2, 2), 16);
-                return ret;
-            }
-            return null;
-        }
-
-        private string UInt32BytesToString(byte[] bytes)
-        {
-            if (bytes.Length == 4)
-            {
-                string ret = "";
-                for (int i = 0; i < bytes.Length; ++i)
-                    ret += Convert.ToString(bytes[i], 16).PadLeft(2, '0');
-                return ret.ToUpper();
-            }
-            return null;
-        }
-
-        private int GetIntValue(string value, int dfValue)
-        {
-            int ret;
-            try
-            {
-                ret = Convert.ToInt32(value);
-            }
-            catch { return dfValue; }
-            return ret;
-        }
-
-        private double GetDoubleValue(string value, double dfValue)
-        {
-            double ret;
-            try
-            {
-                ret = Convert.ToDouble(value);
-            }
-            catch { return dfValue; }
-            return ret;
-        }
-
-        private bool GetBoolValue(string value, bool dfValue)
-        {
-            if (value == "1")
-                return true;
-            if (value == "0")
-                return false;
-            return dfValue;
-        }
-
-        private byte GetByteFromHex(string hex, byte dfValue)
-        {
-            try
-            {
-                return Convert.ToByte(hex, 16);
-            }
-            catch
-            {
-                return dfValue;
-            }
         }
 
         public bool CompareWith(AITriggerType a)
@@ -389,65 +452,11 @@ namespace AIcore.Types
 
         private int _TechLevel = 0;
         public int TechLevel { get { return _TechLevel; } set { _TechLevel = value; PropertyChange(this, "TechLevel"); } }
+        public void SetMaxTechLevel()
+        {
+            TechLevel = Math.Max(TeamType1.GetTechLevelMax(), (TeamType2 == null ? 0 : TeamType2.GetTechLevelMax()));
+        }
 
-        private TriggerType triggerType = TriggerTypes.NullTriggerType;
-        public TriggerType TriggerType { get { return triggerType; } set { triggerType = value; PropertyChange(this, "TriggerType"); /*PropertyChange(this, "STriggerCondition");*/ } }
-        public int ITriggerType
-        {
-            set
-            {
-                TriggerType = TriggerTypes.GetTriggerType(value);
-            }
-        }
-        private Unit _TriggerUnit = Units.NullUnit;
-        private string _STriggerUnit = Units.NullUnit.NameOrNone;
-        public string STriggerUnit
-        {
-            get
-            {
-                return _STriggerUnit;
-            }
-            set
-            {
-                _STriggerUnit = value;
-                _TriggerUnit = Units.FindUnitFromAll(value);
-                PropertyChange(this, "STriggerUnit");
-                PropertyChange(this, "STriggerUnitName");
-            }
-        }
-        public string STriggerUnitName
-        {
-            get
-            {
-                if (STriggerUnit.Length == 0)
-                    return Units.NullUnit.NameOrNone;
-                if (_TriggerUnit != null && _TriggerUnit != Units.NullUnit)
-                    return _TriggerUnit.Description;
-                return STriggerUnit;
-            }
-        }
-        private UInt32 _CompareCount = 0;
-        public UInt32 CompareCount { get { return _CompareCount; } set { _CompareCount = value; PropertyChange(this, "CompareCount"); } }
-        private CompareInfoClass _SelectedComparison = TriggerTypes.DefaultCompareType;
-        public CompareInfoClass SelectedComparison
-        {
-            get
-            {
-                return _SelectedComparison;
-            }
-            set
-            {
-                _SelectedComparison = value;
-                PropertyChange(this, "SelectedComparison");
-            }
-        }
-        public CompareTypes EComparison
-        { 
-            set
-            {
-                SelectedComparison = TriggerTypes.GetCompareInfo(value);
-            }
-        }
         private UInt32 _BaseWeight = 50;
         private UInt32 _MinWeight = 10;
         private UInt32 _MaxWeight = 70;
@@ -542,7 +551,75 @@ namespace AIcore.Types
         public bool NormalMode { get => _NormalMode; set { _NormalMode = value; PropertyChange(nameof(NormalMode)); } }
         public bool HardMode { get => _HardMode; set { _HardMode = value; PropertyChange(nameof(HardMode)); } }
 
-        private readonly AI ai;
+        // Extension
+        private bool _EnableExt = false;
+        public bool EnableExt
+        {
+            get => _EnableExt;
+            set
+            {
+                _EnableExt = value;
+                PropertyChange(nameof(EnableExt));
+            }
+        }
+
+        private string _ext_selectedhouses;
+        public string Ext_SelectedHouses
+        {
+            get { return _ext_selectedhouses; }
+            set { 
+                _ext_selectedhouses = value;
+                Ext_UpdateSelectedHouses(_ext_selectedhouses);
+                PropertyChange(nameof(Ext_SelectedHouses)); 
+            }
+        }
+        public string Ext_SelectedHousesUpdate
+        {
+            set
+            {
+                _ext_selectedhouses = value;
+                PropertyChange(nameof(Ext_SelectedHouses));
+            }
+        }
+        public string Ext_GetSelectedHouses()
+        {
+            List<string> selected = new List<string>();
+            foreach (var c in CountryExtList)
+            {
+                if (c.IsChecked)
+                    selected.Add(c.Country.NameOrAll);
+            }
+            return selected.Count == CountryExtList.Count ? Countries.All.NameOrAll :
+                (selected.Count == 0 ? Countries.All.NameOrNone : string.Join(",", selected));
+        }
+        public void Ext_UpdateSelectedHouses(string str)
+        {
+            var ext_countrylist = str.Split(',');
+            bool all = ext_countrylist.Contains(Countries.All.NameOrAll);
+            foreach (var country in CountryExtList)  // without <all>
+            {
+                country.IsChecked = all || ext_countrylist.Contains(country.Country.NameOrAll);
+            }
+        }
+
+        public bool Ext_ConditionsWeight { get; set; }
+
+        public NotifyList<AITriggerTypeBase> Ext_Conditions { get; set; }
+
+        protected readonly AI ai;
+
+        public class CountryExt : NotifyClass
+        {
+            private Country _country;
+            public Country Country { get { return _country; } set { _country = value; PropertyChange(nameof(Country)); } }
+
+            private bool _ischecked;
+            public bool IsChecked { get { return _ischecked; } set { _ischecked = value; PropertyChange(nameof(IsChecked)); trigger.Ext_SelectedHousesUpdate = trigger.Ext_GetSelectedHouses(); } }
+
+            public AITriggerType trigger;
+        }
+
+        public NotifyList<CountryExt> CountryExtList { get; set; }
 
         public AutoCompleteFilterPredicate<object> TeamTypeFilter
         {
@@ -553,15 +630,7 @@ namespace AIcore.Types
                     || (obj as TeamType).Name.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0;
             }
         }
-        public AutoCompleteFilterPredicate<object> TechTypeFilter
-        {
-            get
-            {
-                return (searchText, obj) =>
-                    (obj as Unit).FuzzyLogic(searchText);
-            }
-        }
-
+        
         public ObservableCollection<Country> CountryListInfo
         {
             get { return Countries.CountryListWithNone; }
@@ -571,6 +640,147 @@ namespace AIcore.Types
         {
             get { return Sides.SidesList; }
             //set { _SideListInfo = value; PropertyChange(this, "SideListInfo"); }
+        }
+        public ObservableCollection<TeamType> TeamTypeInfo
+        {
+            get { return AI.teamtypes_info; }
+            //set { _TeamTypeInfo = value; PropertyChange(this, "TeamTypeInfo"); }
+        }
+    }
+
+    public class AITriggerTypeBase : OType
+    {
+        public AITriggerTypeBase(string tag) : base(tag) { DerivedBase = true; }
+
+        private TriggerType triggerType = TriggerTypes.NullTriggerType;
+        public TriggerType TriggerType { get { return triggerType; } set { triggerType = value; PropertyChange(this, "TriggerType"); /*PropertyChange(this, "STriggerCondition");*/ } }
+        public int ITriggerType
+        {
+            set
+            {
+                TriggerType = TriggerTypes.GetTriggerType(value);
+            }
+        }
+        protected Unit _TriggerUnit = Units.NullUnit;
+        private string _STriggerUnit = Units.NullUnit.NameOrNone;
+        public string STriggerUnit
+        {
+            get
+            {
+                return _STriggerUnit;
+            }
+            set
+            {
+                _STriggerUnit = value;
+                _TriggerUnit = Units.FindUnitFromAll(value);
+                PropertyChange(this, "STriggerUnit");
+                PropertyChange(this, "STriggerUnitName");
+            }
+        }
+        public string STriggerUnitName
+        {
+            get
+            {
+                if (STriggerUnit.Length == 0)
+                    return Units.NullUnit.NameOrNone;
+                if (_TriggerUnit != null && _TriggerUnit != Units.NullUnit)
+                    return _TriggerUnit.Description;
+                return STriggerUnit;
+            }
+        }
+        private UInt32 _CompareCount = 0;
+        public UInt32 CompareCount { get { return _CompareCount; } set { _CompareCount = value; PropertyChange(this, "CompareCount"); } }
+        private CompareInfoClass _SelectedComparison = TriggerTypes.DefaultCompareType;
+        public CompareInfoClass SelectedComparison
+        {
+            get
+            {
+                return _SelectedComparison;
+            }
+            set
+            {
+                _SelectedComparison = value;
+                PropertyChange(this, nameof(SelectedComparison));
+            }
+        }
+        public CompareTypes EComparison
+        {
+            set
+            {
+                SelectedComparison = TriggerTypes.GetCompareInfo(value);
+            }
+        }
+
+        public override void Output(IniClass ini, bool release = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Init(IniClass ini, string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool _derivedbase;
+        public bool DerivedBase { get { return _derivedbase; } set { _derivedbase = value; PropertyChange(nameof(DerivedBase)); } }
+        public AITriggerType childtrigger;
+
+        public (AITriggerTypeBase, int) Ext_ConditionsAdd()
+        {
+            var tb = new AITriggerTypeBase(null);
+            int id = 1;
+            if (this is AITriggerType at)
+            {
+                tb.childtrigger = at;
+                at.Ext_Conditions.Insert(0, tb);
+            }
+            else if (DerivedBase)
+            {
+                tb.childtrigger = childtrigger;
+                int index = childtrigger.Ext_Conditions.IndexOf(this);
+                childtrigger.Ext_Conditions.Insert(index + 1, tb);
+                id = index + 2;
+            }
+            return (tb, id);
+        }
+
+        public void Ext_ConditionsDelete(AITriggerTypeBase tb)
+        {
+            if (DerivedBase)
+            {
+                childtrigger.Ext_Conditions.Remove(tb);
+            }
+        }
+
+        public string ConditionToString()
+        {
+            string str = "";
+            str += TriggerType.SValue + ",";
+            str += (STriggerUnit.Length > 0 ? STriggerUnit : _TriggerUnit.NameOrNone) + ",";
+            str += UInt32BytesToString(BitConverter.GetBytes(CompareCount)).PadLeft(8, '0');
+            str += Convert.ToString((byte)SelectedComparison.CompareTypes, 16).PadLeft(2, '0') + "000000000000000000000000000000000000000000000000000000";
+            return str;
+        }
+
+        public void Parse(string[] strs, int startindex = 0)
+        {
+            if (strs != null && strs.Length > 2)
+            {
+                TriggerType = TriggerTypes.GetTriggerType(GetIntValue(strs[startindex].Trim(), -1));
+                STriggerUnit = strs[startindex + 1].Trim();
+                string longstr = strs[startindex + 2].Trim();
+                CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
+                SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
+            }
+        }
+
+        public AutoCompleteFilterPredicate<object> TechTypeFilter
+        {
+            get
+            {
+                return (searchText, obj) =>
+                    (obj as Unit).FuzzyLogic(searchText);
+            }
         }
         public ObservableCollection<TriggerType> TriggerTypeListInfo
         {
@@ -587,10 +797,73 @@ namespace AIcore.Types
             get { return Units.AllList; }
             //set { _TechTypeInfo = value; PropertyChange(this, "TechTypeInfo"); }
         }
-        public ObservableCollection<TeamType> TeamTypeInfo
+
+        protected byte[] StringToUInt32Bytes(string bytes)
         {
-            get { return AI.teamtypes_info; }
-            //set { _TeamTypeInfo = value; PropertyChange(this, "TeamTypeInfo"); }
+            if (bytes.Length == 8)
+            {
+                byte[] ret = new byte[4];
+                for (int i = 0; i < ret.Length; ++i)
+                    ret[i] = Convert.ToByte(bytes.Substring(i * 2, 2), 16);
+                return ret;
+            }
+            return null;
         }
+
+        protected string UInt32BytesToString(byte[] bytes)
+        {
+            if (bytes.Length == 4)
+            {
+                string ret = "";
+                for (int i = 0; i < bytes.Length; ++i)
+                    ret += Convert.ToString(bytes[i], 16).PadLeft(2, '0');
+                return ret.ToUpper();
+            }
+            return null;
+        }
+
+        protected int GetIntValue(string value, int dfValue)
+        {
+            int ret;
+            try
+            {
+                ret = Convert.ToInt32(value);
+            }
+            catch { return dfValue; }
+            return ret;
+        }
+
+        protected double GetDoubleValue(string value, double dfValue)
+        {
+            double ret;
+            try
+            {
+                ret = Convert.ToDouble(value);
+            }
+            catch { return dfValue; }
+            return ret;
+        }
+
+        protected bool GetBoolValue(string value, bool dfValue)
+        {
+            if (value == "1")
+                return true;
+            if (value == "0")
+                return false;
+            return dfValue;
+        }
+
+        protected byte GetByteFromHex(string hex, byte dfValue)
+        {
+            try
+            {
+                return Convert.ToByte(hex, 16);
+            }
+            catch
+            {
+                return dfValue;
+            }
+        }
+
     }
 }

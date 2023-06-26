@@ -12,12 +12,12 @@
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ProgressBar.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/Treeview.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/RadioButtonStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ComboBoxStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/DataGrid.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ListViewStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ScrollViewer.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/Calendar.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/RadioButtonStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/DataTemplate.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/TextBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/RA2AI_Editor;component/Styles/ListBoxStyle.xaml"/>

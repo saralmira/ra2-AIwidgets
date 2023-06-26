@@ -86,6 +86,7 @@
     <sys:String x:Key="BTN_DELETECURRENT">Delete current game</sys:String>
     <sys:String x:Key="BTN_HIDEIDGRID">Hide ID edit box</sys:String>
     <sys:String x:Key="BTN_COPYAPPEND">Append "Copy" for pasted item</sys:String>
+    <sys:String x:Key="BTN_AUTOTECH">Auto</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -182,6 +183,7 @@
     <sys:String x:Key="TAG_TriggerCondition">Condition</sys:String>
     <sys:String x:Key="TAG_TechCount">TechCount (N)</sys:String>
     <sys:String x:Key="TAG_TechType">TechType (X)</sys:String>
+    <sys:String x:Key="TAG_ConditionsWeight">Same/Share weight</sys:String>
 
 
     <sys:String x:Key="COLUMN_INDEX">Id</sys:String>

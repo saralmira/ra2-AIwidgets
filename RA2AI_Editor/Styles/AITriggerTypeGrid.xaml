@@ -7,12 +7,15 @@
              xmlns:convers="clr-namespace:RA2AI_Editor.Convers"
              xmlns:misc="clr-namespace:RA2AI_Editor.Misc"
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             xmlns:uc="clr-namespace:RA2AI_Editor.UserControls"
+             xmlns:types="clr-namespace:AIcore.Types" d:DataContext="{d:DesignInstance Type=types:AITriggerType}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400">
     <Grid x:Name="grid">
         <Grid.Resources>
             <convers:UIntToString x:Key="UIntToString"/>
             <convers:IntToString x:Key="IntToString"/>
+            <convers:BoolToReverse x:Key="BoolToReverse"/>
             <ControlTemplate x:Key="ValidationErrorObject">
                 <Border BorderThickness="1" CornerRadius="1" BorderBrush="Red">
                     <Grid>
@@ -177,143 +180,247 @@
             <Border Grid.Column="3" BorderThickness="1" BorderBrush="LightBlue"/>
             <Border Grid.Column="0" Grid.ColumnSpan="5" BorderThickness="1" BorderBrush="LightBlue"/>
         </Grid>
-        <Grid Grid.Row="5" Margin="5 0 5 5">
-            <Grid Grid.Row="2" Margin="0 0 0 0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
+        <TabControl x:Name="viewtab" Grid.Row="5" Grid.RowSpan="1" Margin="0 0 0 0" Style="{StaticResource TabControlStyle}" Background="Transparent">
+            <TabItem Header="{DynamicResource MENU_AIEDIT_NORMAL}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid Margin="5 0 5 5" IsEnabled="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay,Converter={StaticResource BoolToReverse}}">
+                    <Grid Grid.Row="2" Margin="0 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
 
-                <ScrollViewer Grid.Column="0">
-                    <Border BorderBrush="#ABC8F3" BorderThickness="1" Margin="0 0 3 0" Background="#20ABC8F3">
-                        <StackPanel x:Name="stackpanel">
-                            <Border Margin="0" Background="#ABC8F3">
-                                <TextBlock Text="{DynamicResource STR_BASEITEMS}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
-                            </Border>
-                            <Border x:Name="gd_owner" Style="{StaticResource GridBorderStyle}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Owner}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
-                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding CountryListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource CountryItemCBStyle}" DisplayMemberPath="DescriptionOrAll" SelectedItem="{Binding House,Mode=TwoWay}" Margin="5 0 5 0"/>
+                        <ScrollViewer Grid.Column="0">
+                            <Border BorderBrush="#ABC8F3" BorderThickness="1" Margin="0 0 3 0" Background="#20ABC8F3">
+                                <StackPanel x:Name="stackpanel">
+                                    <Border Margin="0" Background="#ABC8F3">
+                                        <TextBlock Text="{DynamicResource STR_BASEITEMS}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_owner" Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Owner}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding CountryListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource CountryItemCBStyle}" DisplayMemberPath="DescriptionOrAll" SelectedItem="{Binding House,Mode=TwoWay}" Margin="5 0 5 0"/>
 
-                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=SHouseDes,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                            <!--<toolkit:AutoCompleteBox Text="{Binding Path=SHouseDes,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
                                              PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource CountryDataTemplate}" ItemsSource="{Binding CountryListInfo}"
                                              IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="NameOrAll" MinimumPrefixLength="0"/>-->
-                                </Grid>
-                            </Border>
-                            <Border x:Name="gd_side" Style="{StaticResource GridBorderStyle}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Side}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
-                                    <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding SideListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource SideItemCBStyle}" DisplayMemberPath="Description" SelectedItem="{Binding Side,Mode=TwoWay}" Margin="5 0 5 0"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="gd_side" Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Side}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding SideListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource SideItemCBStyle}" DisplayMemberPath="Description" SelectedItem="{Binding Side,Mode=TwoWay}" Margin="5 0 5 0"/>
 
-                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=SSide,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                            <!--<toolkit:AutoCompleteBox Text="{Binding Path=SSide,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
                                              PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource SideDataTemplate}" ItemsSource="{Binding SideListInfo}"
                                              IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="SIndex" MinimumPrefixLength="0"/>-->
-                                </Grid>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="gd_techlevel" Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechLevel}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=TechLevel,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"/>
+                                            <Button Width="36" Margin="0 2 5 2" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource BtnInfoRadiusStyle}" Content="{DynamicResource BTN_AUTOTECH}" Click="AutoTech_Click"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="gd_easymode" Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Easy}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_mediummode" Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=NormalMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Medium}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_hardmode" Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Hard}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_skirmish" Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=Skirmish,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Skirmish}" Grid.Column="1" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_basedefence" Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=BaseDefence,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_BaseDefense}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                </StackPanel>
                             </Border>
-                            <Border x:Name="gd_techlevel" Style="{StaticResource GridBorderStyle}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechLevel}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
-                                    <TextBox Text="{Binding Path=TechLevel,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue" PreviewMouseWheel="MouseWheelTechLevel_Index"/>
-                                </Grid>
-                            </Border>
-                            <Border x:Name="gd_easymode" Style="{StaticResource GridBorderStyle}">
-                                <CheckBox IsChecked="{Binding Path=EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Easy}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
-                            </Border>
-                            <Border x:Name="gd_mediummode" Style="{StaticResource GridBorderStyle}">
-                                <CheckBox IsChecked="{Binding Path=NormalMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Medium}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
-                            </Border>
-                            <Border x:Name="gd_hardmode" Style="{StaticResource GridBorderStyle}">
-                                <CheckBox IsChecked="{Binding Path=HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Hard}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
-                            </Border>
-                            <Border x:Name="gd_skirmish" Style="{StaticResource GridBorderStyle}">
-                                <CheckBox IsChecked="{Binding Path=Skirmish,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Skirmish}" Grid.Column="1" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
-                            </Border>
-                            <Border x:Name="gd_basedefence" Style="{StaticResource GridBorderStyle}">
-                                <CheckBox IsChecked="{Binding Path=BaseDefence,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_BaseDefense}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </ScrollViewer>
-                <ScrollViewer Grid.Column="1">
-                    <Border BorderBrush="#EFE4B0" BorderThickness="1" Margin="3 0 0 0" Background="#20A0A040">
-                        <StackPanel x:Name="stackpanel_formap">
-                            <StackPanel.Resources>
-                                <convers:TriggerToVisible1 x:Key="TriggerToVisible1"/>
-                                <convers:TriggerToVisible2 x:Key="TriggerToVisible2"/>
-                                <convers:TriggerToVisible3 x:Key="TriggerToVisible3"/>
-                            </StackPanel.Resources>
-                            <Border Margin="0" Background="#EFE4B0">
-                                <TextBlock Text="{DynamicResource STR_TRIGGERRELATED}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
-                            </Border>
-                            <Border x:Name="gd_triggercondition" Style="{StaticResource GridBorderStyleForMap}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
-                                    <ComboBox Grid.Column="1" Margin="5 0 5 0" IsEditable="False" ItemsSource="{Binding TriggerTypeListInfo,Mode=OneWay}" SelectedValuePath="Value" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource TriggerTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding TriggerType,Mode=TwoWay}"/>
+                        </ScrollViewer>
+                        <ScrollViewer Grid.Column="1">
+                            <Border BorderBrush="#EFE4B0" BorderThickness="1" Margin="3 0 0 0" Background="#20A0A040">
+                                <StackPanel x:Name="stackpanel_formap">
+                                    <StackPanel.Resources>
+                                        <convers:TriggerToVisible1 x:Key="TriggerToVisible1"/>
+                                        <convers:TriggerToVisible2 x:Key="TriggerToVisible2"/>
+                                        <convers:TriggerToVisible3 x:Key="TriggerToVisible3"/>
+                                    </StackPanel.Resources>
+                                    <Border Margin="0" Background="#EFE4B0">
+                                        <TextBlock Text="{DynamicResource STR_TRIGGERRELATED}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                                    </Border>
+                                    <Border x:Name="gd_triggercondition" Style="{StaticResource GridBorderStyleForMap}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                                            <ComboBox Grid.Column="1" Margin="5 0 5 0" IsEditable="False" ItemsSource="{Binding TriggerTypeListInfo,Mode=OneWay}" SelectedValuePath="Value" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource TriggerTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding TriggerType,Mode=TwoWay}"/>
 
-                                    <!--<toolkit:AutoCompleteBox Text="{Binding Path=STriggerCondition,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
+                                            <!--<toolkit:AutoCompleteBox Text="{Binding Path=STriggerCondition,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"
                                              PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource TriggerConditionDataTemplate}" ItemsSource="{Binding TriggerTypeListInfo}"
                                              IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="SValue" MinimumPrefixLength="0"/>-->
-                                </Grid>
-                            </Border>
-                            <Border x:Name="gd_techtype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible3}}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*" MinWidth="70"/>
-                                        <ColumnDefinition Width="2"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
-                                    <toolkit:AutoCompleteBox Text="{Binding Path=STriggerUnit,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 0 0 0" BorderBrush="#A0DAC049" VerticalContentAlignment="Center"
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="gd_techtype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible3}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*" MinWidth="70"/>
+                                                <ColumnDefinition Width="2"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechType}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <toolkit:AutoCompleteBox Text="{Binding Path=STriggerUnit,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 0 0 0" BorderBrush="#A0DAC049" VerticalContentAlignment="Center"
                                              PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource UnitDataTemplate}" ItemsSource="{Binding TechTypeInfo}" PreviewKeyDown="Unit_PreviewKeyDown"
                                              IsTextCompletionEnabled="False" FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" ValueMemberPath="Name" MinimumPrefixLength="0"/>
-                                    <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-1 0 -1 0" VerticalAlignment="Stretch" Background="#A0DAC049"/>
-                                    <Border Grid.Column="3" BorderThickness="1" BorderBrush="#A0DAC049" Margin="0 0 5 0">
-                                        <TextBlock Foreground="#111111" Text="{Binding STriggerUnitName, Mode=OneWay}" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2" TextTrimming="CharacterEllipsis"/>
+                                            <GridSplitter Grid.Column="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" Margin="-1 0 -1 0" VerticalAlignment="Stretch" Background="#A0DAC049"/>
+                                            <Border Grid.Column="3" BorderThickness="1" BorderBrush="#A0DAC049" Margin="0 0 5 0">
+                                                <TextBlock Foreground="#111111" Text="{Binding STriggerUnitName, Mode=OneWay}" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2" TextTrimming="CharacterEllipsis"/>
+                                            </Border>
+                                        </Grid>
                                     </Border>
-                                </Grid>
+                                    <Border x:Name="gd_comparetype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible1}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerCondition}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
+                                            <ComboBox Grid.Column="1" IsEditable="False" Margin="5 0 5 0" ItemsSource="{Binding CompareTypeListInfo,Mode=OneWay}" SelectedValuePath="CompareTypes" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource CompareTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedComparison,Mode=TwoWay}"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="gd_techcount" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible2}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechCount}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=CompareCount,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049" PreviewMouseWheel="MouseWheel_Index"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
                             </Border>
-                            <Border x:Name="gd_comparetype" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible1}}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TriggerCondition}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 5 2"/>
-                                    <ComboBox Grid.Column="1" IsEditable="False" Margin="5 0 5 0" ItemsSource="{Binding CompareTypeListInfo,Mode=OneWay}" SelectedValuePath="CompareTypes" Style="{StaticResource NewComboBoxStyle}" ItemContainerStyle="{StaticResource CompareTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedComparison,Mode=TwoWay}"/>
-                                </Grid>
-                            </Border>
-                            <Border x:Name="gd_techcount" Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible2}}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechCount}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
-                                    <TextBox Text="{Binding Path=CompareCount,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049" PreviewMouseWheel="MouseWheel_Index"/>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </ScrollViewer>
+                        </ScrollViewer>
 
-            </Grid>
-        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource MENU_AIEDIT_EXT}" Style="{StaticResource GeneralTabItemStyle}">
+                <Grid Margin="5 0 5 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Grid.Row="0" Content="{DynamicResource MENU_ENABLE_EXT}" IsChecked="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 5 2"/>
+                    <Grid x:Name="grid_ext" Grid.Row="1" Margin="0 0 0 0" IsEnabled="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ScrollViewer Grid.Column="0">
+                            <Border BorderBrush="#ABC8F3" BorderThickness="1" Margin="0 0 3 0" Background="#20ABC8F3">
+                                <StackPanel x:Name="stackpanel_ext">
+                                    <Border Margin="0" Background="#ABC8F3">
+                                        <TextBlock Text="{DynamicResource STR_BASEITEMS}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Owner}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <ComboBox Grid.Column="1" IsEditable="True" ItemsSource="{Binding CountryExtList}" Style="{StaticResource NewComboBoxStyle2}" 
+                                                      ItemContainerStyle="{StaticResource CountryItemCBStyle3}" Text="{Binding Ext_SelectedHouses,Mode=TwoWay}" Margin="5 0 5 0"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_Side}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding SideListInfo,Mode=OneWay}" SelectedValuePath="Index" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource SideItemCBStyle}" DisplayMemberPath="Description" SelectedItem="{Binding Side,Mode=TwoWay}" Margin="5 0 5 0"/>
+
+                                            <!--<toolkit:AutoCompleteBox Text="{Binding Path=SSide,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"
+                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource SideDataTemplate}" ItemsSource="{Binding SideListInfo}"
+                                             IsTextCompletionEnabled="True" FilterMode="None" ValueMemberPath="SIndex" MinimumPrefixLength="0"/>-->
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechLevel}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=TechLevel,UpdateSourceTrigger=Default,Mode=TwoWay}" VerticalContentAlignment="Center" Grid.Column="1" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="LightBlue"/>
+                                            <Button Width="36" Margin="0 2 5 2" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Style="{StaticResource BtnInfoRadiusStyle}" Content="{DynamicResource BTN_AUTOTECH}" Click="AutoTech_Click"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=EasyMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Easy}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=NormalMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Medium}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=HardMode,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Hard}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=Skirmish,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_Skirmish}" Grid.Column="1" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyle}">
+                                        <CheckBox IsChecked="{Binding Path=BaseDefence,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_BaseDefense}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </ScrollViewer>
+                        <ScrollViewer Grid.Column="1">
+                            <Border BorderBrush="#EFE4B0" BorderThickness="1" Margin="3 0 0 0" Background="#08A0A040">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.Row="0" Margin="0" Background="#EFE4B0">
+                                        <TextBlock Text="{DynamicResource STR_TRIGGERRELATED}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
+                                    </Border>
+                                    <Border Grid.Row="1" Style="{StaticResource GridBorderStyleForMap}">
+                                        <CheckBox IsChecked="{Binding Path=Ext_ConditionsWeight,Mode=TwoWay}" Content="{DynamicResource TAG_ConditionsWeight}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                    </Border>
+                                    <StackPanel x:Name="pn_triggers" Grid.Row="2">
+                                        <uc:TriggerCard/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
     </Grid>
 </UserControl>

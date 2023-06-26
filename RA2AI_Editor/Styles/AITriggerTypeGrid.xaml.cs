@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AIcore;
 using AIcore.Types;
+using RA2AI_Editor.UserControls;
 using static RA2AI_Editor.MainWindow;
 
 namespace RA2AI_Editor.Styles
@@ -26,6 +27,8 @@ namespace RA2AI_Editor.Styles
         public AITriggerTypeGrid()
         {
             InitializeComponent();
+            TriggerCard.ConditionsAddEventHandler = AddTriggerCondition;
+            TriggerCard.ConditionsDeleteEventHandler = DeleteTriggerCondition;
         }
 
         private AITriggerType at;
@@ -42,6 +45,17 @@ namespace RA2AI_Editor.Styles
 
             grid.DataContext = at;
             grid.IsEnabled = at != null;
+            pn_triggers.Children.RemoveRange(1, pn_triggers.Children.Count - 1);
+            grid_ext.DataContext = at;
+            if (at != null )
+            {
+                for (int i = 0; i < at.Ext_Conditions.Count; ++i)
+                {
+                    AddTriggerCondition(at.Ext_Conditions[i], i + 1);
+                }
+            }
+            
+            SwitchView();
         }
 
         public void HideGrid(bool hide)
@@ -70,22 +84,52 @@ namespace RA2AI_Editor.Styles
             ControlPlace(gd_maxweight, "MaximumWeight");
         }
 
+        public void SwitchView()
+        {
+            if (at != null)
+            {
+                viewtab.SelectedIndex = at.EnableExt ? 1 : 0;
+            }
+        }
+
         private void ControlPlace<T>(T c, string name) where T : FrameworkElement
         {
             c.ToolTip = TriggerTypes.GetToolTip(name);
         }
 
+        public void AddTriggerCondition(AITriggerTypeBase triggerbase, int index)
+        {
+            var tc = new TriggerCard
+            {
+                DataContext = triggerbase
+            };
+            pn_triggers.Children.Insert(index, tc);
+        }
+
+        public void DeleteTriggerCondition(AITriggerTypeBase triggerbase)
+        {
+            TriggerCard predel = null;
+            foreach (var c in pn_triggers.Children)
+            {
+                if (c is TriggerCard tc && tc.DataContext is AITriggerTypeBase b && b == triggerbase)
+                {
+                    predel = tc; break;
+                }
+            }
+            pn_triggers.Children.Remove(predel);
+        }
+
         private void AutoCompleteBox_Popup(object sender, MouseButtonEventArgs e)
         {
-            if (sender is AutoCompleteBox)
-                ((AutoCompleteBox)sender).IsDropDownOpen = true;
+            if (sender is AutoCompleteBox box)
+                box.IsDropDownOpen = true;
         }
 
         private void AutoCompleteBox_TeamTypesPopup(object sender, MouseButtonEventArgs e)
         {
-            if (sender is AutoCompleteBox && at != null)
+            if (sender is AutoCompleteBox box && at != null)
             {
-                AutoCompleteBox acb = (AutoCompleteBox)sender;
+                AutoCompleteBox acb = box;
                 //if (acb.ItemsSource == null)
                 //{
                 //    Binding b = new Binding();
@@ -99,9 +143,8 @@ namespace RA2AI_Editor.Styles
 
         private void MouseWheel_Index(object sender, MouseWheelEventArgs e)
         {
-            if (sender is System.Windows.Controls.TextBox)
+            if (sender is System.Windows.Controls.TextBox tb)
             {
-                System.Windows.Controls.TextBox tb = (System.Windows.Controls.TextBox)sender;
                 if (tb.IsFocused)
                 {
                     try
@@ -144,7 +187,7 @@ namespace RA2AI_Editor.Styles
         {
             if (at != null)
             {
-                AITriggerType aITrigger = at;
+                // AITriggerType aITrigger = at;
                 TeamType tt = teamTypeDataInit.Add();
                 tt.PName = at.PName + " 2";
                 at.TeamType2 = tt;
@@ -302,5 +345,10 @@ namespace RA2AI_Editor.Styles
             }
         }
 
+        private void AutoTech_Click(object sender, RoutedEventArgs e)
+        {
+            if (at != null)
+                at.SetMaxTechLevel();
+        }
     }
 }

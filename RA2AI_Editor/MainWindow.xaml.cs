@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using AvalonDock;
+using AvalonDock.Layout;
 
 namespace RA2AI_Editor
 {
@@ -91,11 +92,11 @@ namespace RA2AI_Editor
             ttgrid.GetToolTit();
             atgrid.GetToolTit();
 
-            lanc_tf.Hide(false);
-            lanc_st.Hide(false);
-            lanc_tt.Hide(false);
-            lanc_at.Hide(false);
-            lanc_analyse.Hide(false);
+            lanc_tf.Hide();
+            lanc_st.Hide();
+            lanc_tt.Hide();
+            lanc_at.Hide();
+            lanc_analyse.Hide();
 
             TaskForceJumpEvent = Jump_To_TaskForce;
             ScriptTypeJumpEvent = Jump_To_ScriptType;
@@ -201,8 +202,6 @@ namespace RA2AI_Editor
             TeamTypeList.ItemsSource = teamTypeDataInit.ItemList;
 
             aITriggerDataInit = new AITriggerDataInit(current_ai);
-            //if (AITriggersList.ItemsSource == null && AITriggersList.Items != null)
-            //    AITriggersList.Items.Clear();
             AITriggersList.ItemsSource = aITriggerDataInit.ItemList;
 
             InitGrid();
@@ -254,11 +253,11 @@ namespace RA2AI_Editor
             current_ai = null;
             Title = configData.TitleText;
 
-            lanc_tf.Hide(false);
-            lanc_st.Hide(false);
-            lanc_tt.Hide(false);
-            lanc_at.Hide(false);
-            lanc_analyse.Hide(false);
+            lanc_tf.Hide();
+            lanc_st.Hide();
+            lanc_tt.Hide();
+            lanc_at.Hide();
+            lanc_analyse.Hide();
             TaskForceList.ItemsSource = null;
             ScriptTypeList.ItemsSource = null;
             TeamTypeList.ItemsSource = null;

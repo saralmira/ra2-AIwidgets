@@ -87,6 +87,7 @@
     <sys:String x:Key="BTN_DELETECURRENT">删除当前自定义游戏</sys:String>
     <sys:String x:Key="BTN_HIDEIDGRID">隐藏ID编辑框</sys:String>
     <sys:String x:Key="BTN_COPYAPPEND">复制时名称添加“Copy”</sys:String>
+    <sys:String x:Key="BTN_AUTOTECH">自动</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -184,6 +185,7 @@
     <sys:String x:Key="TAG_TriggerCondition">触发条件</sys:String>
     <sys:String x:Key="TAG_TechCount">数量（N）</sys:String>
     <sys:String x:Key="TAG_TechType">科技类型（X）</sys:String>
+    <sys:String x:Key="TAG_ConditionsWeight">触发分量一致/均分</sys:String>
 
 
     <sys:String x:Key="COLUMN_INDEX">序号</sys:String>

@@ -485,4 +485,125 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ComboCheckBoxStyle1" TargetType="CheckBox">
+        <Style.Resources>
+            <RadialGradientBrush  x:Key="rgbrush" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                <GradientStop Color="#EAEAEA" Offset="1" />
+                <GradientStop Color="#F3F3F3" Offset="0" />
+            </RadialGradientBrush>
+            <RadialGradientBrush  x:Key="rgbrush2" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                <GradientStop Color="#E1E1E1" Offset="1" />
+                <GradientStop Color="#EAEAEA" Offset="0" />
+            </RadialGradientBrush>
+            <RadialGradientBrush  x:Key="rgbrush3" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                <GradientStop Color="#D8D8D8" Offset="1" />
+                <GradientStop Color="#E1E1E1" Offset="0" />
+            </RadialGradientBrush>
+            <Style x:Key="FocusVisualStyle">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border Margin="-2" BorderThickness="1" CornerRadius="3" BorderBrush="#AA3778FF">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="7" ShadowDepth="0" Opacity="0.8" Color="#3778FF"/>
+                                </Border.Effect>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Foreground" Value="#303030"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" Background="Transparent">
+                        <Border x:Name="border" Background="{StaticResource rgbrush}" BorderThickness="1" BorderBrush="#BFBFBF" Width="16" Height="16" Margin="5 2 0 2">
+                            <Image x:Name="img" Width="16" Height="16"/>
+                        </Border>
+                        <ContentPresenter Margin="5 0 8 0" VerticalAlignment="Center" Content="{TemplateBinding Content}" SnapsToDevicePixels="True"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="img" Property="Source" Value="/Images/checked3.png"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource rgbrush2}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter Property="Foreground" Value="#1D1D1D"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource rgbrush3}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#A0A0A0"/>
+                            <Setter Property="Foreground" Value="#0E0E0E"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="#F8F8F8"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DEDEDE"/>
+                            <Setter Property="Foreground" Value="#0E0E0E"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CountryItemCBStyle3" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ComboItemFocusVisual}"/>
+        <EventSetter Event="PreviewKeyDown" Handler="ComboBoxItem_KeyDown"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Grid Background="{TemplateBinding Background}" Margin="0">
+                        <CheckBox Content="{Binding Path=Country.DescriptionOrAll}" Foreground="#111111" IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Style="{StaticResource ComboCheckBoxStyle1}" Margin="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#73ABE3" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#C5D8F3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CountryItemCBStyle4" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ComboItemFocusVisual}"/>
+        <EventSetter Event="PreviewKeyDown" Handler="ComboBoxItem_KeyDown"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Grid Background="{TemplateBinding Background}" Margin="0,0.5">
+                        <CheckBox Content="{Binding Path=Country.DescriptionOrAll}" Foreground="#111111" IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5 0 5 0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#E2CF74" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#EFE4B0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

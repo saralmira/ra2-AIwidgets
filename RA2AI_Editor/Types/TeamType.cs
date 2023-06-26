@@ -105,9 +105,18 @@ namespace AIcore.Types
 
         }
 
-        public int GetTechLevelMax()
+        public override int GetTechLevelMax()
         {
-            return TaskForce != null && TaskForce != AI.NullTaskForce ? TaskForce.GetTechLevelMax() : 0;
+            if (EnableExt)
+            {
+                return Math.Max(Math.Max(Ext_EasyMode_Type.GetTechLevelMax(),
+                    Ext_MediumMode_Type.GetTechLevelMax()),
+                    Ext_HardMode_Type.GetTechLevelMax());
+            }
+            else
+            {
+                return TaskForce != null && TaskForce != AI.NullTaskForce ? TaskForce.GetTechLevelMax() : 0;
+            }
         }
 
         public override void Output(IniClass ini, bool release)
@@ -689,6 +698,11 @@ namespace AIcore.Types
         {
             SScript = ini.ReadValueWithoutNotes(tag, "Script");
             STaskForce = ini.ReadValueWithoutNotes(tag, "TaskForce");
+        }
+
+        public virtual int GetTechLevelMax()
+        {
+            return TaskForce == null ? 0 : TaskForce.GetTechLevelMax();
         }
     }
 
