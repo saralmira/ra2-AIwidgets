@@ -28,6 +28,11 @@
     - 【#REF:Countries#】导入的国家信息
     - 【#REF:BuildingsID#】导入的建筑清单
     - 【#REF:Parameters#】与另一脚本使用同种参数，使用Value2属性指定脚本号
+### 界面
+![](https://github.com/saralmira/ra2-AIwidgets/pics/prtsc01.jpg)
+![](https://github.com/saralmira/ra2-AIwidgets/pics/prtsc02.jpg)
+![](https://github.com/saralmira/ra2-AIwidgets/pics/prtsc03.jpg)
+![](https://github.com/saralmira/ra2-AIwidgets/pics/prtsc04.jpg)
 
 ## ini 文件合并工具
 可以方便地将多个ini合并为一个，也可以简易查看不同版本间ini文件存在的区别
