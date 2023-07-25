@@ -108,7 +108,7 @@ namespace AIcore.Types
 
         public AITriggerType CloneType(string tag)
         {
-            return new AITriggerType(ai, tag, TeamType1, TeamType2)
+            var ret = new AITriggerType(ai, tag, TeamType1, TeamType2)
             {
                 PName = this.PName,
                 SHouse = this.SHouse,
@@ -130,11 +130,24 @@ namespace AIcore.Types
 
                 // ext
                 EnableExt = this.EnableExt,
-                CountryExtList = this.CountryExtList,
+                // CountryExtList = this.CountryExtList,
                 _ext_selectedhouses = this._ext_selectedhouses,
                 Ext_ConditionsWeight = this.Ext_ConditionsWeight,
-                Ext_Conditions = this.Ext_Conditions
+                // Ext_Conditions = this.Ext_Conditions
             };
+
+            if (EnableExt)
+            {
+                foreach (var ce in this.CountryExtList)  // without <all>
+                {
+                    ret.CountryExtList.Add(ce.GetCopy());
+                }
+                foreach (var cd in this.Ext_Conditions)
+                {
+                    ret.Ext_Conditions.Add(cd.GetCopy(ret));
+                }
+            }
+            return ret;
         }
 
         private void FromCache(TeamType t, out (TeamType, TeamType, TeamType) out_type)
@@ -352,7 +365,7 @@ namespace AIcore.Types
 
             // ext
             string ext_tag = type._tag + "-Ext";
-            if (!release)
+            if (!release && EnableExt)
             {
                 ini.WriteValue(ext_tag, nameof(EnableExt), EnableExt);
                 ini.WriteValue(ext_tag, nameof(Ext_SelectedHouses), Ext_SelectedHouses);
@@ -617,6 +630,17 @@ namespace AIcore.Types
             public bool IsChecked { get { return _ischecked; } set { _ischecked = value; PropertyChange(nameof(IsChecked)); trigger.Ext_SelectedHousesUpdate = trigger.Ext_GetSelectedHouses(); } }
 
             public AITriggerType trigger;
+
+            public CountryExt GetCopy()
+            {
+                var ce = new CountryExt
+                {
+                    _country = this.Country,
+                    _ischecked = this.IsChecked,
+                    trigger = this.trigger
+                };
+                return ce;
+            }
         }
 
         public NotifyList<CountryExt> CountryExtList { get; set; }
@@ -772,6 +796,18 @@ namespace AIcore.Types
                 CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
                 SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
             }
+        }
+
+        public AITriggerTypeBase GetCopy(AITriggerType child_trigger = null)
+        {
+            return new AITriggerTypeBase(null)
+            {
+                childtrigger = child_trigger,
+                ITriggerType = (int)this.TriggerType.Value,
+                STriggerUnit = this.STriggerUnit,
+                CompareCount = this.CompareCount,
+                EComparison = this.SelectedComparison.CompareTypes
+            };
         }
 
         public AutoCompleteFilterPredicate<object> TechTypeFilter

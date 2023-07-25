@@ -173,29 +173,27 @@ namespace AIcore.Types
                 ini.WriteValue(_tag, "Tag", Tag);
             }
 
-            if (!release)
+            // ext
+            if (!release && EnableExt)
             {
                 ini.WriteValue(_tag, nameof(EnableExt), EnableExt);
-                if (EnableExt)
+                ini.WriteValue(_tag, nameof(Ext_EasyMode), Ext_EasyMode);
+                ini.WriteValue(_tag, nameof(Ext_MediumMode), Ext_MediumMode);
+                ini.WriteValue(_tag, nameof(Ext_HardMode), Ext_HardMode);
+                if (Ext_EasyMode)
                 {
-                    ini.WriteValue(_tag, nameof(Ext_EasyMode), Ext_EasyMode);
-                    ini.WriteValue(_tag, nameof(Ext_MediumMode), Ext_MediumMode);
-                    ini.WriteValue(_tag, nameof(Ext_HardMode), Ext_HardMode);
-                    if (Ext_EasyMode)
-                    {
-                        ini.WriteValue(_tag, "Ext_EasyMode_Type.TaskForce", Ext_EasyMode_Type.STaskForce);
-                        ini.WriteValue(_tag, "Ext_EasyMode_Type.Script", Ext_EasyMode_Type.SScript);
-                    }
-                    if (Ext_MediumMode)
-                    {
-                        ini.WriteValue(_tag, "Ext_MediumMode_Type.TaskForce", Ext_MediumMode_Type.STaskForce);
-                        ini.WriteValue(_tag, "Ext_MediumMode_Type.Script", Ext_MediumMode_Type.SScript);
-                    }
-                    if (Ext_HardMode)
-                    {
-                        ini.WriteValue(_tag, "Ext_HardMode_Type.TaskForce", Ext_HardMode_Type.STaskForce);
-                        ini.WriteValue(_tag, "Ext_HardMode_Type.Script", Ext_HardMode_Type.SScript);
-                    }
+                    ini.WriteValue(_tag, "Ext_EasyMode_Type.TaskForce", Ext_EasyMode_Type.STaskForce);
+                    ini.WriteValue(_tag, "Ext_EasyMode_Type.Script", Ext_EasyMode_Type.SScript);
+                }
+                if (Ext_MediumMode)
+                {
+                    ini.WriteValue(_tag, "Ext_MediumMode_Type.TaskForce", Ext_MediumMode_Type.STaskForce);
+                    ini.WriteValue(_tag, "Ext_MediumMode_Type.Script", Ext_MediumMode_Type.SScript);
+                }
+                if (Ext_HardMode)
+                {
+                    ini.WriteValue(_tag, "Ext_HardMode_Type.TaskForce", Ext_HardMode_Type.STaskForce);
+                    ini.WriteValue(_tag, "Ext_HardMode_Type.Script", Ext_HardMode_Type.SScript);
                 }
             }
 
@@ -227,7 +225,7 @@ namespace AIcore.Types
 
         public TeamType CloneType(string tag)
         {
-            return new TeamType(ai, tag, this.Script, this.TaskForce)
+            var ret = new TeamType(ai, tag, this.Script, this.TaskForce)
             {
                 PName = this.PName,
                 VeteranLevel = this.VeteranLevel,
@@ -236,8 +234,8 @@ namespace AIcore.Types
                 Max = this.Max,
                 TechLevel = this.TechLevel,
                 Group = this.Group,
-                Waypoint = this.Waypoint,
-                TransportWaypoint = this.TransportWaypoint,
+                SWaypoint = this.SWaypoint,
+                STransportWaypoint = this.STransportWaypoint,
 
                 Loadable = this.Loadable,
                 Full = this.Full,
@@ -261,8 +259,27 @@ namespace AIcore.Types
                 IsBaseDefense = this.IsBaseDefense,
                 OnlyTargetHouseEnemy = this.OnlyTargetHouseEnemy,
                 SHouse = this.SHouse,
-                Tag = this.Tag
+                Tag = this.Tag,
+
+                // ext
+                EnableExt = this.EnableExt,
+                Ext_EasyMode = this.Ext_EasyMode,
+                Ext_MediumMode = this.Ext_MediumMode,
+                Ext_HardMode = this.Ext_HardMode
             };
+
+            // ext
+            if (EnableExt)
+            {
+                ret.Ext_EasyMode_Type.STaskForce = this.Ext_EasyMode_Type.STaskForce;
+                ret.Ext_EasyMode_Type.SScript = this.Ext_EasyMode_Type.SScript;
+                ret.Ext_MediumMode_Type.STaskForce = this.Ext_MediumMode_Type.STaskForce;
+                ret.Ext_MediumMode_Type.SScript = this.Ext_MediumMode_Type.SScript;
+                ret.Ext_HardMode_Type.STaskForce = this.Ext_HardMode_Type.STaskForce;
+                ret.Ext_HardMode_Type.SScript = this.Ext_HardMode_Type.SScript;
+            }
+            
+            return ret;
         }
 
         public bool Find(TaskForce tf)

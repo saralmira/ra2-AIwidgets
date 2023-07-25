@@ -61,6 +61,15 @@ namespace AIcore.Types
                 PName = this.PName
             };
             t.CloneFrom(_clist);
+
+            //ext
+            t.EnableExt = this.EnableExt;
+            if (EnableExt)
+            {
+                t.Ext_EasyMode_Type.CloneFrom(this.Ext_EasyMode_Type._clist);
+                t.Ext_MediumMode_Type.CloneFrom(this.Ext_MediumMode_Type._clist);
+                t.Ext_HardMode_Type.CloneFrom(this.Ext_HardMode_Type._clist);
+            }
             return t;
         }
 
@@ -72,7 +81,7 @@ namespace AIcore.Types
             ini.WriteValue(_tag, "Group", PGroup);
 
             // ext
-            if (!release)
+            if (!release && EnableExt)
             {
                 ini.WriteValue(_tag, nameof(EnableExt), EnableExt);
                 ini.WriteValue(_tag, nameof(Ext_EasyMode_Type), Ext_EasyMode_Type.toString());
