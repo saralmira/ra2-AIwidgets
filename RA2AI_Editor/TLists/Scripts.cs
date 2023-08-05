@@ -31,47 +31,28 @@ namespace AIcore
             xmlDoc = XmlClass.XmlOpen(xmlpath);
 
             XmlNode xn = xmlDoc.SelectSingleNode("Scripts");
+            scriptItems = new Dictionary<int, ScriptItem>();
+
             if (xn != null && xn.ChildNodes != null)
             {
                 var count = xn.ChildNodes.Count;
-                if (count > 1)
+                for (int i = 0; i < count; ++i)
                 {
-                    var startitem = InitFromNode(xn.ChildNodes[0]);
-                    var enditem = InitFromNode(xn.ChildNodes[count - 1]);
-                    scriptItems = new IndexList<ScriptItem>(Math.Max(startitem.scriptAction + 1, enditem.scriptAction + 1))
-                    {
-                        [startitem.scriptAction] = startitem,
-                        [enditem.scriptAction] = enditem
-                    };
-
-                    for (int i = 1; i < count - 1; ++i)
-                    {
-                        ScriptItem item = InitFromNode(xn.ChildNodes[i]);
-                        scriptItems[item.scriptAction] = item;
-                    }
-                }
-                else
-                {
-                    scriptItems = new IndexList<ScriptItem>(count);
-                    if (count == 1)
-                    {
-                        ScriptItem item = InitFromNode(xn.ChildNodes[0]);
-                        scriptItems[item.scriptAction] = item;
-                    }
+                    ScriptItem item = InitFromNode(xn.ChildNodes[i]);
+                    scriptItems[item.scriptAction] = item;
                 }
             }
             
             ScriptInfo = new ObservableCollection<ScriptItem>();
             ScriptInfoOnlySkirmish = new ObservableCollection<ScriptItem>();
-            
-            for (int i = 0; i < scriptItems.Length; ++i)
+
+            var sq_scripts = scriptItems.OrderBy((v) => v.Key).ToList();
+            for (int i = 0; i < sq_scripts.Count; ++i)
             {
-                if (scriptItems[i] != null)
-                {
-                    if (scriptItems[i].IsAllowedInSkirmish)
-                        ScriptInfoOnlySkirmish.Add(scriptItems[i]);
-                    ScriptInfo.Add(scriptItems[i]);
-                }
+                var item = sq_scripts[i].Value;
+                if (item.IsAllowedInSkirmish)
+                    ScriptInfoOnlySkirmish.Add(item);
+                ScriptInfo.Add(item);
             }
         }
 
@@ -130,33 +111,33 @@ namespace AIcore
         }
 
         // Currently useless
-        public void Save()
-        {
-            XmlElement ele = xmlDoc.CreateElement("Scripts");
-            foreach (ScriptItem item in scriptItems)
-            {
-                if (item != null)
-                {
-                    XmlElement elec = xmlDoc.CreateElement(item.Name);
-                    XmlElement eledes = xmlDoc.CreateElement("Description");
-                    XmlElement eleski = xmlDoc.CreateElement("IsAllowedInSkirmish");
-                    eledes.InnerText = item.Description;
-                    eleski.InnerText = item.IsAllowedInSkirmish.ToString();
-                    foreach (ScriptItem.Parameter p in item.ParamAllowed)
-                    {
-                        XmlElement elepar = xmlDoc.CreateElement("Parameter");
-                        elepar.SetAttribute("Value", p.Param);
-                        elepar.InnerText = p.Description;
-                        ele.AppendChild(elepar);
-                    }
-                    elec.AppendChild(eledes);
-                    elec.AppendChild(eleski);
-                    ele.AppendChild(elec);
-                }
-            }
-            xmlDoc.AppendChild(ele);
-            xmlDoc.Save(xmlpath);
-        }
+        //public void Save()
+        //{
+        //    XmlElement ele = xmlDoc.CreateElement("Scripts");
+        //    foreach (ScriptItem item in scriptItems)
+        //    {
+        //        if (item != null)
+        //        {
+        //            XmlElement elec = xmlDoc.CreateElement(item.Name);
+        //            XmlElement eledes = xmlDoc.CreateElement("Description");
+        //            XmlElement eleski = xmlDoc.CreateElement("IsAllowedInSkirmish");
+        //            eledes.InnerText = item.Description;
+        //            eleski.InnerText = item.IsAllowedInSkirmish.ToString();
+        //            foreach (ScriptItem.Parameter p in item.ParamAllowed)
+        //            {
+        //                XmlElement elepar = xmlDoc.CreateElement("Parameter");
+        //                elepar.SetAttribute("Value", p.Param);
+        //                elepar.InnerText = p.Description;
+        //                ele.AppendChild(elepar);
+        //            }
+        //            elec.AppendChild(eledes);
+        //            elec.AppendChild(eleski);
+        //            ele.AppendChild(elec);
+        //        }
+        //    }
+        //    xmlDoc.AppendChild(ele);
+        //    xmlDoc.Save(xmlpath);
+        //}
 
         public static ScriptItem IndexOf(int index)
         {
@@ -233,7 +214,7 @@ namespace AIcore
 
         private static string xmlpath;
         private static XmlDocument xmlDoc;
-        private static IndexList<ScriptItem> scriptItems;
+        private static Dictionary<int, ScriptItem> scriptItems;
         public static bool HideScripts = true;
 
         public static ObservableCollection<ScriptItem> scriptItemsList;

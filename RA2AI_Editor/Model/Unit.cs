@@ -166,6 +166,7 @@ namespace AIcore
 
         public bool FuzzyLogic(string search)
         {
+            if (string.IsNullOrEmpty(search)) return false;
             return Name.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0
                         || description.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) >= 0
                         || (trans && translation.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) >= 0);

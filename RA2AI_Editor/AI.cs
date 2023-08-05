@@ -276,6 +276,7 @@ namespace AIcore
 
         public static bool FuzzyLogic<T>(T t, string search) where T : TagType
         {
+            if (string.IsNullOrEmpty(search)) return false;
             return t._tag.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0
                         || t.Name.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) >= 0;
         }

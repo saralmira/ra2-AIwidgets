@@ -650,8 +650,9 @@ namespace AIcore.Types
             get
             {
                 return (searchText, obj) =>
+                    !string.IsNullOrEmpty(searchText) && (
                     (obj as TeamType)._tag.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0
-                    || (obj as TeamType).Name.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0;
+                    || (obj as TeamType).Name.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0);
             }
         }
         
