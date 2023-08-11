@@ -105,10 +105,14 @@ namespace RA2AI_Editor.Styles
                                 Units.Update(ucf.AllList, ucf.BuildingList, ucf.Units, UnitChooseForm.KeepExistedUnits);
                                 Units.Save(false);
                             }
-                            if (!ucf.KeepExistedSides)
-                                Sides.Update(ucf.SideList);
+                            if (!ucf.KeepExistedSides) 
+                            { 
+                                Sides.Update(ucf.SideList); 
+                            }
                             if (!ucf.KeepExistedHouses)
+                            { 
                                 Countries.Update(ucf.HouseList);
+                            }
                             break;
                         //case MessageBoxResult.No:
                         //    units = new Units(alllist, buildingslist, unitslist, UnitChooseForm.KeepExistedUnits);
@@ -167,5 +171,15 @@ namespace RA2AI_Editor.Styles
             }
         }
 
+        private void FixTechLevel_Click(object sender, RoutedEventArgs e)
+        {
+            if (current_ai == null)
+                return;
+
+            foreach (var ai in current_ai.aITriggerTypes.aITriggerTypes)
+            {
+                ai.SetMaxTechLevel();
+            }
+        }
     }
 }

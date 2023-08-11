@@ -1,6 +1,7 @@
 ﻿using AIcore;
 using AIcore.TLists;
 using AIcore.Types;
+using RA2AI_Editor.UserControls;
 using System;
 using System.Collections.ObjectModel;
 
@@ -187,19 +188,19 @@ namespace RA2AI_Editor.Data
             public AddTeamTypeCommand(AI ai, TaskForce taskForce, int _index) : base(ai.teamTypes, _index)
             {
                 Name = Local.Dictionary("CMD_ADDTT");
-                TypeObject = new TeamType(ai, tlist.GetNewTag(), AI.NullScriptType, taskForce);
+                TypeObject = new TeamType(ai, tlist.GetNewTag(), AI.NullScriptType, taskForce) { Name = taskForce.Name };
             }
 
             public AddTeamTypeCommand(AI ai, ScriptType scriptType, int _index) : base(ai.teamTypes, _index)
             {
                 Name = Local.Dictionary("CMD_ADDTT");
-                TypeObject = new TeamType(ai, tlist.GetNewTag(), scriptType, AI.NullTaskForce);
+                TypeObject = new TeamType(ai, tlist.GetNewTag(), scriptType, AI.NullTaskForce) { Name = scriptType.Name };
             }
 
             public AddTeamTypeCommand(AI ai, TaskForce taskForce, ScriptType scriptType, int _index) : base(ai.teamTypes, _index)
             {
                 Name = Local.Dictionary("CMD_ADDTT");
-                TypeObject = new TeamType(ai, tlist.GetNewTag(), scriptType, taskForce);
+                TypeObject = new TeamType(ai, tlist.GetNewTag(), scriptType, taskForce) { Name = taskForce.Name };
             }
         }
 

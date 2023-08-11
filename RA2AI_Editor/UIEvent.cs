@@ -409,7 +409,8 @@ namespace RA2AI_Editor
                 {
                     so.TeamType1 = sel as TeamType;
                     so.TaskForce1 = so.TeamType1.TaskForce == AI.NullTaskForce ? null : so.TeamType1.TaskForce;
-                    so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
+                    // unnecessary 
+                    // so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
                     SavedObject = so;
                 }
                 else if (sel is AITriggerType)
@@ -420,12 +421,14 @@ namespace RA2AI_Editor
                     if (so.TeamType1 != null)
                     {
                         so.TaskForce1 = so.TeamType1.TaskForce == AI.NullTaskForce ? null : so.TeamType1.TaskForce;
-                        so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
+                        // unnecessary 
+                        // so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
                     }
                     if (so.TeamType2 != null)
                     {
                         so.TaskForce2 = so.TeamType2.TaskForce == AI.NullTaskForce ? null : so.TeamType2.TaskForce;
-                        so.ScriptType2 = so.TeamType2.Script == AI.NullScriptType ? null : so.TeamType2.Script;
+                        // unnecessary 
+                        // so.ScriptType2 = so.TeamType2.Script == AI.NullScriptType ? null : so.TeamType2.Script;
                     }
                     SavedObject = so;
                 }

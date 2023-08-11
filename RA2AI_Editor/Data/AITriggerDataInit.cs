@@ -1,6 +1,7 @@
 ﻿using AIcore;
 using AIcore.TLists;
 using AIcore.Types;
+using RA2AI_Editor.UserControls;
 using System;
 using System.Collections.ObjectModel;
 
@@ -152,7 +153,7 @@ namespace RA2AI_Editor.Data
             public AddTriggerCommand(AI ai, TeamType teamType1, int _index) : base(ai.aITriggerTypes, _index)
             {
                 Name = Local.Dictionary("CMD_ADDAT");
-                TypeObject = new AITriggerType(ai, tlist.GetNewTag(), teamType1, AI.NullTeamType);
+                TypeObject = new AITriggerType(ai, tlist.GetNewTag(), teamType1, AI.NullTeamType) { Name = teamType1.Name };
             }
         }
 

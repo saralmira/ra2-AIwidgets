@@ -135,7 +135,7 @@
                                                         <ColumnDefinition Width="auto" MinWidth="80"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
+                                                    <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
                                                              MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
                                                              FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown"/>
                                                     <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>

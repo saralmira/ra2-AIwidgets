@@ -45,8 +45,8 @@
                         <TextBlock Grid.Column="0" Text="{DynamicResource STR_GAMETYPE}" Foreground="#111111" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 2 5 2"/>
                         <ComboBox Grid.Column="1" IsEditable="False" ItemsSource="{Binding GameTypesInfo,Mode=OneWay}" Style="{StaticResource NewComboBoxStyle2}" ItemContainerStyle="{StaticResource GameTypeItemStyle}" DisplayMemberPath="Description" SelectedItem="{Binding SelectedGameType,Mode=TwoWay}" Margin="5 2 5 2"/>
                     </Grid>
-                    <Button Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADRULES}" Height="32" Margin="5" Click="RulesImport_Click" ToolTip="{DynamicResource TIP_IMPORTRULES}"/>
-                    <Button Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADCSF}" Height="32" Margin="5" Click="CsfImport_Click" ToolTip="{DynamicResource TIP_IMPORTCSF}"/>
+                    <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADRULES}" Height="32" Margin="5" Click="RulesImport_Click" ToolTip="{DynamicResource TIP_IMPORTRULES}"/>
+                    <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADCSF}" Height="32" Margin="5" Click="CsfImport_Click" ToolTip="{DynamicResource TIP_IMPORTCSF}"/>
                     <Expander Header="{DynamicResource BTN_ADDCUSTOMGAME}" IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}">
                         <Grid Margin="5">
                             <Grid.ColumnDefinitions>
@@ -79,6 +79,7 @@
             <CheckBox Content="{DynamicResource BTN_HIDESCRIPTS}" IsChecked="{Binding HideScripts,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
             <CheckBox Content="{DynamicResource BTN_HIDEIDGRID}" IsChecked="{Binding HideIDGrid,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
             <CheckBox Content="{DynamicResource BTN_COPYAPPEND}" IsChecked="{Binding Append_WhileCopy,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+            <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBool}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_FIXTECHLEVEL}" Height="32" Margin="5" Click="FixTechLevel_Click" ToolTip="{DynamicResource TIP_FIXTECHLEVEL}"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="7">
             <Border BorderBrush="Gray" BorderThickness="1">

@@ -89,6 +89,7 @@
     <sys:String x:Key="BTN_COPYAPPEND">复制时名称添加“Copy”</sys:String>
     <sys:String x:Key="BTN_AUTOTECH">自动</sys:String>
     <sys:String x:Key="BTN_PROJECT">项目：https://github.com/saralmira/ra2-AIwidgets</sys:String>
+    <sys:String x:Key="BTN_FIXTECHLEVEL">重设全部AI触发TechLevel</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -310,6 +311,7 @@
     <sys:String x:Key="TIP_COMPAREFILE">选择另一个ai文件，生成比较报告</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">名称中不能包含英文逗号！</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">有文件正在编辑时请不要切换游戏类型！</sys:String>
+    <sys:String x:Key="TIP_FIXTECHLEVEL">重设全部AI触发的TechLevel为该触发第一（或第二）小队成员的最大TechLevel</sys:String>
 
     <sys:String x:Key="CMD_COMMAND">命令</sys:String>
     <sys:String x:Key="CMD_ADDITEM">添加项</sys:String>

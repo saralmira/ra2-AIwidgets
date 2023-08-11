@@ -1,6 +1,7 @@
 ﻿using AIcore.Types;
 using System;
 using System.Collections.ObjectModel;
+using static AIcore.TeamTypeInfo;
 
 namespace AIcore.TLists
 {

@@ -151,7 +151,8 @@ namespace RA2AI_Editor
             private byte[] Decode(byte[] bytes)
             {
                 for (int i = 0; i < bytes.Length; ++i)
-                    bytes[i] = (byte)~bytes[i];
+                    //bytes[i] = (byte)~bytes[i];
+                    bytes[i] = (byte)(0xFF - bytes[i]);
                 return bytes;
             }
 

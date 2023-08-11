@@ -88,6 +88,7 @@
     <sys:String x:Key="BTN_COPYAPPEND">Append "Copy" for pasted item</sys:String>
     <sys:String x:Key="BTN_AUTOTECH">Auto</sys:String>
     <sys:String x:Key="BTN_PROJECT">Project: https://github.com/saralmira/ra2-AIwidgets</sys:String>
+    <sys:String x:Key="BTN_FIXTECHLEVEL">Reset AI triggers' techlevel</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -308,6 +309,7 @@
     <sys:String x:Key="TIP_COMPAREFILE">Compare to another AI file</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">Comma (,) cannot be included</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">Do not switch game types when editing!</sys:String>
+    <sys:String x:Key="TIP_FIXTECHLEVEL">Reset the TechLevel of each trigger to the highest TechLevel of the first (or the second) teamtype in the trigger.</sys:String>
 
     <sys:String x:Key="CMD_COMMAND">Command</sys:String>
     <sys:String x:Key="CMD_ADDITEM">Add item</sys:String>
