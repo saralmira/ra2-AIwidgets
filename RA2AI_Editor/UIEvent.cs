@@ -409,8 +409,7 @@ namespace RA2AI_Editor
                 {
                     so.TeamType1 = sel as TeamType;
                     so.TaskForce1 = so.TeamType1.TaskForce == AI.NullTaskForce ? null : so.TeamType1.TaskForce;
-                    // unnecessary 
-                    // so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
+                    so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
                     SavedObject = so;
                 }
                 else if (sel is AITriggerType)
@@ -421,14 +420,12 @@ namespace RA2AI_Editor
                     if (so.TeamType1 != null)
                     {
                         so.TaskForce1 = so.TeamType1.TaskForce == AI.NullTaskForce ? null : so.TeamType1.TaskForce;
-                        // unnecessary 
-                        // so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
+                        so.ScriptType1 = so.TeamType1.Script == AI.NullScriptType ? null : so.TeamType1.Script;
                     }
                     if (so.TeamType2 != null)
                     {
                         so.TaskForce2 = so.TeamType2.TaskForce == AI.NullTaskForce ? null : so.TeamType2.TaskForce;
-                        // unnecessary 
-                        // so.ScriptType2 = so.TeamType2.Script == AI.NullScriptType ? null : so.TeamType2.Script;
+                        so.ScriptType2 = so.TeamType2.Script == AI.NullScriptType ? null : so.TeamType2.Script;
                     }
                     SavedObject = so;
                 }
@@ -453,8 +450,10 @@ namespace RA2AI_Editor
                     SavedObjectClass so = SavedObject as SavedObjectClass;
                     if (so.TaskForce1 != null)
                         so.TaskForce1 = taskForceDataInit.Duplicate(so.TaskForce1);
-                    if (so.ScriptType1 != null)
-                        so.ScriptType1 = scriptTypeDataInit.Duplicate(so.ScriptType1);
+                    //unnecessary
+                    //if (so.ScriptType1 != null)
+                    //    so.ScriptType1 = scriptTypeDataInit.Duplicate(so.ScriptType1);
+
                     TeamType teamType = teamTypeDataInit.Duplicate(so.TeamType1, lv.SelectedIndex);
                     teamType.Script = so.ScriptType1;
                     teamType.TaskForce = so.TaskForce1;
@@ -472,10 +471,11 @@ namespace RA2AI_Editor
                         so.TaskForce1=taskForceDataInit.Duplicate(so.TaskForce1);
                     if (so.TaskForce2 != null)
                         so.TaskForce2 = taskForceDataInit.Duplicate(so.TaskForce2);
-                    if (so.ScriptType1 != null)
-                        so.ScriptType1 = scriptTypeDataInit.Duplicate(so.ScriptType1);
-                    if(so.ScriptType2 != null)
-                        so.ScriptType2 = scriptTypeDataInit.Duplicate(so.ScriptType2);
+                    //unnecessary
+                    //if (so.ScriptType1 != null)
+                    //    so.ScriptType1 = scriptTypeDataInit.Duplicate(so.ScriptType1);
+                    //if(so.ScriptType2 != null)
+                    //    so.ScriptType2 = scriptTypeDataInit.Duplicate(so.ScriptType2);
                     if (so.TeamType1 != null)
                     { 
                         so.TeamType1 = teamTypeDataInit.Duplicate(so.TeamType1);
