@@ -468,7 +468,7 @@ namespace Library
             return list;
         }
 
-        public IList<(string, string)> GetKeyValues(string section)
+        public IList<(string, string)> GetKeyValues(string section, bool include_notes = false)
         {
             List<(string, string)> list = new List<(string, string)>();
             int index = sections.FindLastIndex(s => s == section);
@@ -477,7 +477,17 @@ namespace Library
                 for (int i = 0; i < sectioninf[index].keys.Count; i++)
                 {
                     if (!sectioninf[index].isnote[i])
-                        list.Add((sectioninf[index].keys[i], sectioninf[index].values[i]));
+                    {
+                        var key = sectioninf[index].keys[i];
+                        var value = sectioninf[index].values[i];
+                        if (!include_notes)
+                        {
+                            var id = value.IndexOf(';');
+                            if (id >= 0)
+                                value = value.Substring(0, id).TrimEnd();
+                        }
+                        list.Add((key, value));
+                    }
                 }
                 //return sectioninf[index].keys.AsReadOnly();
             }
