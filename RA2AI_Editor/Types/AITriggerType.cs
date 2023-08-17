@@ -138,6 +138,8 @@ namespace AIcore.Types
 
             if (EnableExt)
             {
+                ret.CountryExtList.Clear();
+                ret.Ext_Conditions.Clear();
                 foreach (var ce in this.CountryExtList)  // without <all>
                 {
                     ret.CountryExtList.Add(ce.GetCopy());
