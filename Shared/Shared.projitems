@@ -10,5 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Audio\AudioClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MixFile\Cblowfish.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MixFile\Ccrc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MixFile\MixFileClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MixFile\UnsafeClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MixFile\WSkeyCal.cs" />
   </ItemGroup>
 </Project>
