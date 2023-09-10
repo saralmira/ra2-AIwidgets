@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using word = System.UInt16;
+﻿using word = System.UInt16;
 using dword = System.UInt32;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System;
 
 namespace MixFileClass
 {
@@ -493,36 +488,6 @@ namespace MixFileClass
             }
             init_bignum(n_tmp, 0, n4_len);
             clear_tmp_vars(len);
-        }
-
-        void memmove(dword[] dest, byte[] src, dword len, dword i_dest, dword i_src)
-        {
-            dword i;
-            for (i = 0; i < len; )
-            {
-                dest[i_dest + i / 4] = ((dword)src[i_src + i] | 
-                                       (i + 1 < len ? ((dword)src[i_src + i + 1] << 8) : 0) | 
-                                       (i + 2 < len ? ((dword)src[i_src + i + 2] << 16) : 0) | 
-                                       (i + 3 < len ? ((dword)src[i_src + i + 3] << 24) : 0));
-                i += 4;
-            }
-        }
-
-        void memmove(byte[] dest, dword[] src, dword len, dword i_dest, dword i_src)
-        {
-            dword i;
-            for (i = 0; i < len;)
-            {
-                dword sv = src[i_src + i / 4];
-                dest[i_dest + i] = (byte)(sv & 0xFF);
-                if (i + 1 < len)
-                    dest[i_dest + i + 1] = (byte)(sv & 0xFF00);
-                if (i + 2 < len)
-                    dest[i_dest + i + 2] = (byte)(sv & 0xFF0000);
-                if (i + 3 < len)
-                    dest[i_dest + i + 3] = (byte)(sv & 0xFF000000);
-                i += 4;
-            }
         }
 
         unsafe void process_predata(byte* pre, dword pre_len, byte* buf)

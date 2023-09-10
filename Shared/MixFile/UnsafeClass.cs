@@ -11,16 +11,17 @@ namespace MixFileClass
             System.Diagnostics.Debug.Assert(dst != null);
             System.Diagnostics.Debug.Assert(src != null);
 
-            void* ret = dst;
+            byte* dp = (byte*)dst;
+            byte* sp = (byte*)src;
 
             while (count-- > 0)
             {
-                *(char*)dst = *(char*)src;
-                dst = (char*)dst + 1;
-                src = (char*)src + 1;
+                *dp = *sp;
+                dp++;
+                sp++;
             }
 
-            return (ret);
+            return dp;
         }
 
         unsafe public static void* memmove(void* dst, void* src, uint count)
@@ -28,30 +29,31 @@ namespace MixFileClass
             System.Diagnostics.Debug.Assert(dst != null);
             System.Diagnostics.Debug.Assert(src != null);
 
-            void* ret = dst;
+            byte* dp = (byte*)dst;
+            byte* sp = (byte*)src;
 
-            if (dst <= src || (char*)dst >= ((char*)src + count))
+            if (dp <= sp || dp >= (sp + count))
             {
                 while (count-- > 0)
                 {
-                    *(char*)dst = *(char*)src;
-                    dst = (char*)dst + 1;
-                    src = (char*)src + 1;
+                    *dp = *sp;
+                    dp++;
+                    sp++;
                 }
             }
             else
             {
-                dst = (char*)dst + count - 1;
-                src = (char*)src + count - 1;
+                dp += count - 1;
+                sp += count - 1;
                 while (count-- > 0)
                 {
-                    *(char*)dst = *(char*)src;
-                    dst = (char*)dst - 1;
-                    src = (char*)src - 1;
+                    *dp = *sp;
+                    dp--;
+                    sp--;
                 }
             }
 
-            return (ret);
+            return dp;
         }
 
         unsafe public static void* memset(void* s, int c, uint n)

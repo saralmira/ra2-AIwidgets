@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -75,44 +76,45 @@ namespace MixFileClass
                     {
                         WSkeyCal wskeyCal = new WSkeyCal();
                         wskeyCal.get_blowfish_key(srckey, outputkey);
-                    }
-                }
+                        //UnsafeClass.memmove(outputkey, srckey, 56);
 
-                Cblowfish cblowfish = new Cblowfish();
-                cblowfish.set_key(key_output, key_output.Length);
+                        Cblowfish cblowfish = new Cblowfish();
+                        cblowfish.set_key(key_output, key_output.Length);
 
-                byte[] decrypted = new byte[8];
-                List<byte> decrypted_entry = new List<byte>();
-                fixed (byte* decrypted_p = decrypted)
-                {
-                    byte[] encrypted_segment = br.ReadBytes(8);
-                    fixed (byte* encrypted_seg_p = encrypted_segment)
-                    {
-                        cblowfish.decipher(encrypted_seg_p, decrypted_p, 8);
-                    }
-                    FilesCount = BitConverter.ToInt16(decrypted, 0);
-                    BodySize = BitConverter.ToInt32(decrypted, 2);
-                    if (FilesCount > 0)
-                    {
-                        decrypted_entry.AddRange(decrypted);
-                        int enc_seg_res = (int)Math.Ceiling((double)(6 + 12 * FilesCount) / 8) - 1;
-                        for (int i = 0; i < enc_seg_res; ++i)
+                        byte[] decrypted = new byte[8];
+                        List<byte> decrypted_entry = new List<byte>();
+                        fixed (byte* decrypted_p = decrypted)
                         {
-                            len -= 8;
-                            if (len < 0) return false;
-                            encrypted_segment = br.ReadBytes(8);
+                            byte[] encrypted_segment = br.ReadBytes(8);
                             fixed (byte* encrypted_seg_p = encrypted_segment)
                             {
                                 cblowfish.decipher(encrypted_seg_p, decrypted_p, 8);
                             }
-                            decrypted_entry.AddRange(decrypted);
+                            FilesCount = BitConverter.ToInt16(decrypted, 0);
+                            BodySize = BitConverter.ToInt32(decrypted, 2);
+                            if (FilesCount > 0)
+                            {
+                                decrypted_entry.AddRange(decrypted);
+                                int enc_seg_res = (int)Math.Ceiling((double)(6 + 12 * FilesCount) / 8) - 1;
+                                for (int i = 0; i < enc_seg_res; ++i)
+                                {
+                                    len -= 8;
+                                    if (len < 0) return false;
+                                    encrypted_segment = br.ReadBytes(8);
+                                    fixed (byte* encrypted_seg_p = encrypted_segment)
+                                    {
+                                        cblowfish.decipher(encrypted_seg_p, decrypted_p, 8);
+                                    }
+                                    decrypted_entry.AddRange(decrypted);
+                                }
+                                BodyOffset = 92 + enc_seg_res * 8;
+                                decrypted = decrypted_entry.ToArray();
+                                BytesToEntry(decrypted, 6);
+                            }
+                            if (FilesCount < 0)
+                                return false;
                         }
-                        BodyOffset = 92 + enc_seg_res * 8;
-                        decrypted = decrypted_entry.ToArray();
-                        BytesToEntry(decrypted, 6);
                     }
-                    if (FilesCount < 0)
-                        return false;
                 }
             }
             else
@@ -131,19 +133,36 @@ namespace MixFileClass
             return true;
         }
 
-        unsafe void BytesToEntry(byte[] entry_buffer, int index = 0, int length = 0)
+        //unsafe void BytesToEntry(byte[] entry_buffer, int index = 0, int length = 0)
+        //{
+        //    fixed (byte* entry_p = entry_buffer)
+        //    {
+        //        byte* ent_ptr = entry_p + index;
+        //        length = length <= 0 ? (entry_buffer.Length - index) : length;
+        //        int entry_len = Marshal.SizeOf<MixFileEntry>();
+        //        while (length >= entry_len)
+        //        {
+        //            length -= entry_len;
+        //            var entry = Marshal.PtrToStructure<MixFileEntry>((IntPtr)ent_ptr);
+        //            MixFileEntries.Add(entry.ID, entry);
+        //            ent_ptr += entry_len;
+        //        }
+        //    }
+        //}
+
+        void BytesToEntry(byte[] entry_buffer, int index = 0, int length = 0)
         {
-            fixed (byte* entry_p = entry_buffer)
+            length = length <= 0 ? (entry_buffer.Length - index) : length;
+            int entry_len = Marshal.SizeOf<MixFileEntry>();
+            using (MemoryStream ms = new MemoryStream(entry_buffer))
             {
-                byte* ent_ptr = entry_p + index;
-                length = length <= 0 ? (entry_buffer.Length - index) : length;
-                int entry_len = Marshal.SizeOf<MixFileEntry>();
+                ms.Seek(index, SeekOrigin.Begin);
+                using BinaryReader br = new BinaryReader(ms);
                 while (length >= entry_len)
                 {
                     length -= entry_len;
-                    var entry = Marshal.PtrToStructure<MixFileEntry>((IntPtr)ent_ptr);
+                    var entry = new MixFileEntry { ID = br.ReadUInt32(), Offset = br.ReadInt32(), Size = br.ReadInt32() };
                     MixFileEntries.Add(entry.ID, entry);
-                    ent_ptr += entry_len;
                 }
             }
         }
@@ -175,13 +194,13 @@ namespace MixFileClass
                 }
             }
             byte[] nbytes = Encoding.Default.GetBytes(name);
-            Ccrc ccrc = new Ccrc();
-            ccrc.init();
             fixed (byte* p = nbytes)
             {
+                Ccrc ccrc = new Ccrc();
+                ccrc.init();
                 ccrc.do_block(p, nbytes.Length);
+                return ccrc.get_crc();
             }
-            return ccrc.get_crc();
         }
     }
 }

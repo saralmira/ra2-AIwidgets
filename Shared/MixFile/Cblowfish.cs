@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using word = System.UInt16;
+﻿using word = System.UInt16;
 using dword = System.UInt32;
+using System;
 
 namespace MixFileClass
 {
