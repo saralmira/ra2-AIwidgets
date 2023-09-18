@@ -63,14 +63,16 @@
     <sys:String x:Key="FILE_NEW">New file</sys:String>
     <sys:String x:Key="FILE_OPEN">Open file</sys:String>
     <sys:String x:Key="FILE_OPENRULES">Open rules</sys:String>
-    <sys:String x:Key="FILE_OPENCSF">Open .CSF file</sys:String>
+    <sys:String x:Key="FILE_OPENCSF">Open .csf file</sys:String>
+    <sys:String x:Key="FILE_OPENMIX">Open .mix file</sys:String>
     <sys:String x:Key="FILE_SAVE">Save</sys:String>
     <sys:String x:Key="FILE_SAVEAS">Save as...</sys:String>
     <sys:String x:Key="FILE_CLOSE">Close</sys:String>
     <sys:String x:Key="FILE_RELEASE">Save &amp; release</sys:String>
 
-    <sys:String x:Key="BTN_LOADRULES">Import rules</sys:String>
-    <sys:String x:Key="BTN_LOADCSF">Import .CSF file</sys:String>
+    <sys:String x:Key="BTN_LOADRULES">Import rules*.ini</sys:String>
+    <sys:String x:Key="BTN_LOADCSF">Import .csf file</sys:String>
+    <sys:String x:Key="BTN_LOADMIX">Import .mix file</sys:String>
     <sys:String x:Key="BTN_RECOVER">Find &amp; recover</sys:String>
     <sys:String x:Key="BTN_SAVEAS">Save as...</sys:String>
     <sys:String x:Key="BTN_DELETE">Delete</sys:String>
@@ -118,6 +120,7 @@
     <sys:String x:Key="MB_BLANKCUSTOMGAME">The name cannot be empty!</sys:String>
     <sys:String x:Key="MB_INVALIDCUSTOMGAME">This name is not available!</sys:String>
     <sys:String x:Key="MB_DELETECUSTOMGAME">Are you sure to delete the custom game? All related files will be deleted!</sys:String>
+    <sys:String x:Key="MB_INVALIDMIXFILE">Cannot find rules*.ini in selected mix.</sys:String>
 
     <sys:String x:Key="FRM_BUILDINGID">Choose buildings</sys:String>
     <sys:String x:Key="FRM_CHOOSE">Choose</sys:String>
@@ -306,6 +309,7 @@
     <sys:String x:Key="TIP_RELEASE">Save and relase current file (without marks)</sys:String>
     <sys:String x:Key="TIP_IMPORTRULES">Import houses/sides/buildings/units</sys:String>
     <sys:String x:Key="TIP_IMPORTCSF">Import names of buildings/units in .csf file</sys:String>
+    <sys:String x:Key="TIP_IMPORTMIX">Import rules*.ini from .mix file</sys:String>
     <sys:String x:Key="TIP_COMPAREFILE">Compare to another AI file</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">Comma (,) cannot be included</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">Do not switch game types when editing!</sys:String>

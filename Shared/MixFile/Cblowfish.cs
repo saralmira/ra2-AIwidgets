@@ -16,34 +16,37 @@ namespace MixFileClass
             Array.Copy(t_bf_p, m_p, m_p.Length);
             Array.Copy(t_bf_s, m_s, m_s.Length);
 
-            j = 0;
-            for (i = 0; i < 18; i++)
+            unchecked
             {
-                int a = key[j++]; j %= cb_key;
-                int b = key[j++]; j %= cb_key;
-                int c = key[j++]; j %= cb_key;
-                int d = key[j++]; j %= cb_key;
-                m_p[i] ^= (dword)(a << 24 | b << 16 | c << 8 | d);
-            }
+                j = 0;
+                for (i = 0; i < 18; i++)
+                {
+                    int a = key[j++]; j %= cb_key;
+                    int b = key[j++]; j %= cb_key;
+                    int c = key[j++]; j %= cb_key;
+                    int d = key[j++]; j %= cb_key;
+                    m_p[i] ^= (dword)(a << 24 | b << 16 | c << 8 | d);
+                }
 
-            datal = datar = 0;
+                datal = datar = 0;
 
-            for (i = 0; i < 18;)
-            {
-                encipher(ref datal, ref datar);
-
-                m_p[i++] = datal;
-                m_p[i++] = datar;
-            }
-
-            for (i = 0; i < 4; i++)
-            {
-                for (j = 0; j < 256;)
+                for (i = 0; i < 18;)
                 {
                     encipher(ref datal, ref datar);
 
-                    m_s[i * 256 + j++] = datal;
-                    m_s[i * 256 + j++] = datar;
+                    m_p[i++] = datal;
+                    m_p[i++] = datar;
+                }
+
+                for (i = 0; i < 4; i++)
+                {
+                    for (j = 0; j < 256;)
+                    {
+                        encipher(ref datal, ref datar);
+
+                        m_s[i * 256 + j++] = datal;
+                        m_s[i * 256 + j++] = datar;
+                    }
                 }
             }
         }
@@ -120,12 +123,18 @@ namespace MixFileClass
 
         dword S(dword x, int i)
         {
-            return m_s[i * 256 + ((x >> ((3 - i) << 3)) & 0xff)];
+            unchecked
+            {
+                return m_s[i * 256 + ((x >> ((3 - i) << 3)) & 0xff)];
+            }
         }
 
         dword bf_f(dword x)
         {
-            return ((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3);
+            unchecked
+            {
+                return ((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3);
+            }
         }
 
         void ROUND(ref dword a, dword b, int n)

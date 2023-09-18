@@ -65,6 +65,7 @@
     <sys:String x:Key="FILE_OPEN">打开文件</sys:String>
     <sys:String x:Key="FILE_OPENRULES">打开rules文件</sys:String>
     <sys:String x:Key="FILE_OPENCSF">打开csf文件</sys:String>
+    <sys:String x:Key="FILE_OPENMIX">打开mix文件</sys:String>
     <sys:String x:Key="FILE_SAVE">保存文件</sys:String>
     <sys:String x:Key="FILE_SAVEAS">另存为</sys:String>
     <sys:String x:Key="FILE_CLOSE">关闭文件</sys:String>
@@ -72,6 +73,7 @@
 
     <sys:String x:Key="BTN_LOADRULES">导入rules文件</sys:String>
     <sys:String x:Key="BTN_LOADCSF">导入csf文件</sys:String>
+    <sys:String x:Key="BTN_LOADMIX">导入mix文件</sys:String>
     <sys:String x:Key="BTN_RECOVER">想找早期版本文件？试试这个</sys:String>
     <sys:String x:Key="BTN_SAVEAS">另存为</sys:String>
     <sys:String x:Key="BTN_DELETE">删除</sys:String>
@@ -119,6 +121,7 @@
     <sys:String x:Key="MB_BLANKCUSTOMGAME">自定义游戏名称不能为空！</sys:String>
     <sys:String x:Key="MB_INVALIDCUSTOMGAME">不能使用此自定义游戏名称！</sys:String>
     <sys:String x:Key="MB_DELETECUSTOMGAME">确定要删除所选自定义游戏吗？所有相关文件将会删除！</sys:String>
+    <sys:String x:Key="MB_INVALIDMIXFILE">无法从所选mix文件中找到rules*.ini！</sys:String>
 
 
     <sys:String x:Key="FRM_BUILDINGID">建筑选择</sys:String>
@@ -308,6 +311,7 @@
     <sys:String x:Key="TIP_RELEASE">去除文件中的所有标记，生成发布版的文件。注意，必须保存文件后才可以发布</sys:String>
     <sys:String x:Key="TIP_IMPORTRULES">导入国家、阵营、建筑、单位信息</sys:String>
     <sys:String x:Key="TIP_IMPORTCSF">导入csf中的建筑、单位名称</sys:String>
+    <sys:String x:Key="TIP_IMPORTMIX">从mix文件中导入rules*.ini</sys:String>
     <sys:String x:Key="TIP_COMPAREFILE">选择另一个ai文件，生成比较报告</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">名称中不能包含英文逗号！</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">有文件正在编辑时请不要切换游戏类型！</sys:String>

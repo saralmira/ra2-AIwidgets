@@ -47,6 +47,7 @@
                     </Grid>
                     <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADRULES}" Height="32" Margin="5" Click="RulesImport_Click" ToolTip="{DynamicResource TIP_IMPORTRULES}"/>
                     <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADCSF}" Height="32" Margin="5" Click="CsfImport_Click" ToolTip="{DynamicResource TIP_IMPORTCSF}"/>
+                    <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_LOADMIX}" Height="32" Margin="5" Click="MixImport_Click" ToolTip="{DynamicResource TIP_IMPORTMIX}"/>
                     <Expander Header="{DynamicResource BTN_ADDCUSTOMGAME}" IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBoolR}}">
                         <Grid Margin="5">
                             <Grid.ColumnDefinitions>

@@ -25,6 +25,14 @@ namespace Library
             readsections();
         }
 
+        public IniClass(Stream stream)
+        {
+            StreamReader sr = new StreamReader(stream, Encoding.Default);
+            lines = new List<string>(sr.ReadToEnd().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
+            sr.Close();
+            readsections();
+        }
+
         /// <summary>
         /// 读取键值（包含注释），若不存在则返回空字符串
         /// </summary>

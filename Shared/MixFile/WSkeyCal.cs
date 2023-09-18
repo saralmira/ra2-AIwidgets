@@ -216,18 +216,21 @@ namespace MixFileClass
         {
             dword i1, i2;
 
-            int ilen = (int)len + (int)len;
-            while (--ilen != -1)
+            unchecked
             {
-                i1 = *(word*)src1;
-                i2 = *(word*)src2;
-                *(word*)dest = (word)(i1 - i2 - carry);
-                src1 = (dword*)(((word*)src1) + 1);
-                src2 = (dword*)(((word*)src2) + 1);
-                dest = (dword*)(((word*)dest) + 1);
-                if (((i1 - i2 - carry) & 0x10000) != 0) carry = 1; else carry = 0;
+                int ilen = (int)len + (int)len;
+                while (--ilen != -1)
+                {
+                    i1 = *(word*)src1;
+                    i2 = *(word*)src2;
+                    *(word*)dest = (word)(i1 - i2 - carry);
+                    src1 = (dword*)(((word*)src1) + 1);
+                    src2 = (dword*)(((word*)src2) + 1);
+                    dest = (dword*)(((word*)dest) + 1);
+                    if (((i1 - i2 - carry) & 0x10000) != 0) carry = 1; else carry = 0;
+                }
+                return carry;
             }
-            return carry;
         }
 
         unsafe void inv_bignum(dword* n1, dword* n2, dword len)
@@ -303,15 +306,18 @@ namespace MixFileClass
             dword i, tmp;
 
             tmp = 0;
-            for (i = 0; i < len; i++)
+            unchecked
             {
-                tmp = mul * (*(word*)n2) + *(word*)n1 + tmp;
-                *(word*)n1 = (word)tmp;
-                n1 = (dword*)(((word*)n1) + 1);
-                n2 = (dword*)(((word*)n2) + 1);
-                tmp >>= 16;
+                for (i = 0; i < len; i++)
+                {
+                    tmp = mul * (*(word*)n2) + *(word*)n1 + tmp;
+                    *(word*)n1 = (word)tmp;
+                    n1 = (dword*)(((word*)n1) + 1);
+                    n2 = (dword*)(((word*)n2) + 1);
+                    tmp >>= 16;
+                }
+                *(word*)n1 += (word)tmp;
             }
-            *(word*)n1 += (word)tmp;
         }
 
         unsafe void mul_bignum(dword* dest, dword* src1, dword* src2, dword len)

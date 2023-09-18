@@ -85,6 +85,38 @@ namespace RA2AI_Editor.Styles
             cd.Dispose();
         }
 
+        private void LoadRules(IniClass rules)
+        {
+            UnitChooseForm ucf = new UnitChooseForm(rules, MainWindow.searchinterval);
+            ucf.Owner = MainWindow.Window;
+            ucf.ShowDialog();
+
+            switch (ucf.MBResult)
+            {
+                case MessageBoxResult.Yes:
+                    if (!ucf.DontImportUnits)
+                    {
+                        Units.Update(ucf.AllList, ucf.BuildingList, ucf.Units, UnitChooseForm.KeepExistedUnits);
+                        Units.Save(false);
+                    }
+                    if (!ucf.KeepExistedSides)
+                    {
+                        Sides.Update(ucf.SideList);
+                    }
+                    if (!ucf.KeepExistedHouses)
+                    {
+                        Countries.Update(ucf.HouseList);
+                    }
+                    break;
+                //case MessageBoxResult.No:
+                //    units = new Units(alllist, buildingslist, unitslist, UnitChooseForm.KeepExistedUnits);
+                //    units.Save(true);
+                //    break;
+                default:
+                    break;
+            }
+        }
+
         private void RulesImport_Click(object sender, RoutedEventArgs e)
         {
             string path = Utils.SelectFileToOpen(Local.Dictionary("FILE_OPENRULES"));
@@ -92,35 +124,7 @@ namespace RA2AI_Editor.Styles
             {
                 if (File.Exists(path))
                 {
-                    IniClass rules = new IniClass(path);
-                    UnitChooseForm ucf = new UnitChooseForm(rules, MainWindow.searchinterval);
-                    ucf.Owner = MainWindow.Window;
-                    ucf.ShowDialog();
-
-                    switch (ucf.MBResult)
-                    {
-                        case MessageBoxResult.Yes:
-                            if (!ucf.DontImportUnits)
-                            {
-                                Units.Update(ucf.AllList, ucf.BuildingList, ucf.Units, UnitChooseForm.KeepExistedUnits);
-                                Units.Save(false);
-                            }
-                            if (!ucf.KeepExistedSides) 
-                            { 
-                                Sides.Update(ucf.SideList); 
-                            }
-                            if (!ucf.KeepExistedHouses)
-                            { 
-                                Countries.Update(ucf.HouseList);
-                            }
-                            break;
-                        //case MessageBoxResult.No:
-                        //    units = new Units(alllist, buildingslist, unitslist, UnitChooseForm.KeepExistedUnits);
-                        //    units.Save(true);
-                        //    break;
-                        default:
-                            break;
-                    }
+                    LoadRules(new IniClass(path));
                 }
                 else
                 {
@@ -130,15 +134,15 @@ namespace RA2AI_Editor.Styles
             }
         }
 
-        private string SelectCSFFileToOpen()
+        private string SelectCSFFileToOpen(string title, string filter)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 RestoreDirectory = true,
                 Multiselect = false
             };
-            openFileDialog.Title = Local.Dictionary("FILE_OPENCSF");
-            openFileDialog.Filter = "Csf Files(*.csf)| *.csf|ALL Files.| *";
+            openFileDialog.Title = Local.Dictionary(title);
+            openFileDialog.Filter = filter;
             openFileDialog.CheckFileExists = openFileDialog.CheckPathExists = true;
             if (openFileDialog.ShowDialog() == true)
             {
@@ -149,7 +153,7 @@ namespace RA2AI_Editor.Styles
 
         private void CsfImport_Click(object sender, RoutedEventArgs e)
         {
-            string path = SelectCSFFileToOpen();
+            string path = SelectCSFFileToOpen("FILE_OPENCSF", "Csf Files(*.csf)| *.csf|ALL Files.| *");
             if (path != null)
             {
                 if (File.Exists(path))
@@ -162,6 +166,34 @@ namespace RA2AI_Editor.Styles
                     }
                     else
                         MessageBox.Show(Local.Dictionary("MB_INVALIDCSFFILE"), Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(Local.Dictionary("MB_FILENOTEXIST") + path + Local.Dictionary("MB_FILENOTEXIST2"),
+                        Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void MixImport_Click(object sender, RoutedEventArgs e)
+        {
+            string path = SelectCSFFileToOpen("FILE_OPENMIX", "Mix Files(*.mix)| *.mix|ALL Files.| *");
+            if (path != null)
+            {
+                if (File.Exists(path))
+                {
+                    var mix = new MixFileClass.MixFileClass(path);
+                    byte[] rules;
+                    if (mix.IsValid && (mix.ReadFile("rulesmd.ini", out rules) || mix.ReadFile("rules.ini", out rules) ||
+                        mix.ReadFile("localmd.mix/rulesmd.ini", out rules) || mix.ReadFile("local.mix/rules.ini", out rules)))
+                    {
+                        using (MemoryStream ms = new MemoryStream(rules))
+                        {
+                            LoadRules(new IniClass(ms));
+                        }
+                        return;
+                    }
+                    MessageBox.Show(Local.Dictionary("MB_INVALIDMIXFILE"), Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {

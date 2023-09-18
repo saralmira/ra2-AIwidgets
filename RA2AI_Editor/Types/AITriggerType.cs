@@ -15,7 +15,7 @@ namespace AIcore.Types
 {
     public class AITriggerType : AITriggerTypeBase
     {
-        public AITriggerType(AI _ai, string tag, TeamType teamtype1 = null, TeamType teamtype2 = null) : base(tag)
+        public AITriggerType(AI _ai, string tag, TeamType teamtype1 = null, TeamType teamtype2 = null, bool init_ext = true) : base(tag)
         {
             ai = _ai;
             DerivedBase = false;
@@ -24,10 +24,14 @@ namespace AIcore.Types
                 rec_tag = tag;
                 NewType = false;
                 Init(ai.ini, tag);
+                if (init_ext)
+                    InitExt(ai.ini, tag);
             }
             else
             {
                 Init(ai.ini, tag);
+                if (init_ext)
+                    InitExt(ai.ini, tag);
                 Name = "_AITriggerType_";
                 TeamType1 = teamtype1;
                 TeamType2 = teamtype2;
@@ -65,8 +69,6 @@ namespace AIcore.Types
                 NormalMode = GetBoolValue(values[16].Trim(), true);
                 HardMode = GetBoolValue(values[17].Trim(), true);
             }
-
-            InitExt(ini, tag);
         }
 
         private void InitExt(IniClass ini, string tag)
@@ -108,7 +110,7 @@ namespace AIcore.Types
 
         public AITriggerType CloneType(string tag)
         {
-            var ret = new AITriggerType(ai, tag, TeamType1, TeamType2)
+            var ret = new AITriggerType(ai, tag, TeamType1, TeamType2, false)
             {
                 PName = this.PName,
                 SHouse = this.SHouse,
@@ -138,8 +140,6 @@ namespace AIcore.Types
 
             if (EnableExt)
             {
-                ret.CountryExtList.Clear();
-                ret.Ext_Conditions.Clear();
                 foreach (var ce in this.CountryExtList)  // without <all>
                 {
                     ret.CountryExtList.Add(ce.GetCopy());

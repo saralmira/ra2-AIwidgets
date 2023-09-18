@@ -14,8 +14,9 @@ namespace MixFileClass
             byte* dp = (byte*)dst;
             byte* sp = (byte*)src;
 
-            while (count-- > 0)
+            while (count > 0)
             {
+                --count;
                 *dp = *sp;
                 dp++;
                 sp++;
@@ -34,9 +35,10 @@ namespace MixFileClass
 
             if (dp <= sp || dp >= (sp + count))
             {
-                while (count-- > 0)
+                while (count > 0)
                 {
-                    *dp = *sp;
+                    --count;
+                    * dp = *sp;
                     dp++;
                     sp++;
                 }
@@ -45,8 +47,9 @@ namespace MixFileClass
             {
                 dp += count - 1;
                 sp += count - 1;
-                while (count-- > 0)
+                while (count > 0)
                 {
+                    --count;
                     *dp = *sp;
                     dp--;
                     sp--;

@@ -32,39 +32,61 @@ namespace MixFileClass
                 return;
         }
 
+        public MixFileClass(Stream stream, long offset = 0, long length = -1)
+        {
+            mixFilePath = null;
+            mixFile = stream;
+            IsValid = ParseHeader(stream, offset, length);
+        }
+
         ~MixFileClass()
         { 
-            if (mixFile == null) return;
+            if (mixFilePath == null || mixFile == null) return;
             mixFile.Dispose();
             mixFile = null;
         }
 
         public bool GetFileEntry(string filename, out MixFileEntry entry)
         {
-            var id = GetID(filename);
-            if (MixFileEntries.TryGetValue(id, out entry))
-            {
-                return true;
-            }
-            return false;
+            return MixFileEntries.TryGetValue(GetID(filename), out entry);
         }
 
         public bool ReadFile(string filename, out byte[] bytes)
         {
-            if (GetFileEntry(filename, out var entry))
+            int name_split = filename.IndexOf('/');
+            if (name_split >= 0)
             {
-                bytes = new byte[entry.Size];
-                mixFile.Seek(BodyOffset + entry.Offset, SeekOrigin.Begin);
-                mixFile.Read(bytes, 0, bytes.Length);
-                return true;
+                var layer = filename.Substring(0, name_split);
+                filename = filename.Substring(name_split + 1);
+                if (MixFileEntries.TryGetValue(GetID(layer), out MixFileEntry layer_entry))
+                {
+                    MixFileClass mix = new MixFileClass(mixFile, BodyOffset + layer_entry.Offset, layer_entry.Size);
+                    if (mix.IsValid)
+                    {
+                        if (mix.ReadFile(filename, out bytes))
+                            return true;
+                    }
+                }
+            }
+            else
+            {
+                if (GetFileEntry(filename, out var entry))
+                {
+                    bytes = new byte[entry.Size];
+                    mixFile.Seek(BodyOffset + entry.Offset, SeekOrigin.Begin);
+                    mixFile.Read(bytes, 0, bytes.Length);
+                    return true;
+                }
             }
             bytes = Array.Empty<byte>();
             return false;
         }
 
-        unsafe bool ParseHeader(Stream stream)
+        unsafe bool ParseHeader(Stream stream, long offset = 0, long length = -1)
         {
-            var len = stream.Length - 10;
+            if (offset > 0)
+                stream.Seek(offset, SeekOrigin.Begin);
+            var len = (length < 0 ? (stream.Length - offset) : length) - 10;
             if (len <= 0) return false;
             BinaryReader br = new BinaryReader(stream);
             IsEncrypted = (br.ReadUInt32() & mix_encrypted) != 0;
@@ -99,7 +121,7 @@ namespace MixFileClass
                         FilesCount = BitConverter.ToInt16(decrypted, 0);
                         BodySize = BitConverter.ToInt32(decrypted, 2);
                         int enc_seg_res = (int)Math.Ceiling((double)(6 + 12 * FilesCount) / 8) - 1;
-                        BodyOffset = 92 + enc_seg_res * 8;
+                        BodyOffset = (int)offset + 92 + enc_seg_res * 8;
                         if (FilesCount > 0)
                         {
                             decrypted_entry.AddRange(decrypted);
@@ -132,7 +154,7 @@ namespace MixFileClass
                 int entry_off = FilesCount * entry_len;
                 len -= entry_off;
                 if (len < 0) return false;
-                BodyOffset = 10 + entry_off;
+                BodyOffset = (int)offset + 10 + entry_off;
 
                 byte[] entry_buffer = br.ReadBytes(FilesCount * entry_len);
                 BytesToEntry(entry_buffer);
@@ -168,7 +190,7 @@ namespace MixFileClass
 
         protected Dictionary<UInt32, MixFileEntry> MixFileEntries = new Dictionary<UInt32, MixFileEntry>();
 
-        protected FileStream? mixFile;
+        protected Stream mixFile;
 
         public unsafe UInt32 GetID(string filename)
         {
