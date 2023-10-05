@@ -460,6 +460,14 @@ namespace AIcore
             return null;
         }
 
+        public static InfoValueClass GetMindControlDecision(int value)
+        {
+            foreach (InfoValueClass c in MindControlDecisionInfo)
+                if (Convert.ToInt32(c.Value) == value)
+                    return c;
+            return null;
+        }
+
         public static ObservableCollection<InfoValueClass> MindControlDecisionInfo;
 
         public static InfoValueClass DefaultMindControlDecision;

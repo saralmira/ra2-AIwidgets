@@ -56,7 +56,7 @@ namespace AIcore.Types
         {
             PName = ini.ReadValueWithoutNotes(tag, "Name");
             VeteranLevel = ini.ReadUIntValue(tag, "VeteranLevel", 1);
-            MindControlDecision = AIcore.MindControlDecision.GetMindControlDecision(ini.ReadValueWithoutNotes(tag, "MindControlDecision"));
+            MindControlDecision = AIcore.MindControlDecision.GetMindControlDecision(ini.ReadIntValue(tag, "MindControlDecision", 0));
             Priority = ini.ReadUIntValue(tag, "Priority", 10);
             Max = ini.ReadUIntValue(tag, "Max", 2);
             TechLevel = ini.ReadIntValue(tag, "TechLevel", 0);

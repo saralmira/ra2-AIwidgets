@@ -110,7 +110,7 @@ namespace RA2AI_Editor.Data
         {
             foreach (TaskForceData tfd in clist)
             {
-                if (tfd.Name.IndexOf(name, sc) >= 0)
+                if (tfd.Name.IndexOf(name, sc) >= 0 || tfd.Description.IndexOf(name, sc) >= 0 || tfd.Translation.IndexOf(name, sc) >= 0)
                 {
                     return true;
                 }
