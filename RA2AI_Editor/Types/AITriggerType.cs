@@ -140,6 +140,8 @@ namespace AIcore.Types
 
             if (EnableExt)
             {
+                ret.CountryExtList = new NotifyList<CountryExt>();
+                ret.Ext_Conditions = new NotifyList<AITriggerTypeBase>();
                 foreach (var ce in this.CountryExtList)  // without <all>
                 {
                     ret.CountryExtList.Add(ce.GetCopy());
