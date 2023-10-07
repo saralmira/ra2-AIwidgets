@@ -546,6 +546,20 @@ namespace Library
             return dfValue;
         }
 
+        public double ReadDoubleValue(string section, string key, double dfValue)
+        {
+            double ret;
+            try
+            {
+                ret = Convert.ToDouble(this.ReadValueWithoutNotes(section, key));
+            }
+            catch
+            {
+                return dfValue;
+            }
+            return ret;
+        }
+
         public bool IsSectionExist(string section)
         {
             return sections.Contains(section);

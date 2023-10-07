@@ -428,6 +428,7 @@ namespace RA2AI_Editor
             TriggerTypes.Load(infodir);
             TeamTypeInfo.Load(infodir);
             Scripts.Load(infodir);
+            GameInfo.Load(infodir);
         }
 
         private void HideIDGrid(bool hide)

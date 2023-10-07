@@ -40,7 +40,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="43"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="gd_id" Height="26" Grid.Row="1" Margin="5 0 0 5">
             <Grid.ColumnDefinitions>
@@ -96,72 +96,86 @@
         <Grid Grid.Row="3">
             <TabControl x:Name="viewtab" Grid.Row="3" Grid.RowSpan="2" Margin="0 0 0 0" Style="{StaticResource TabControlStyle}" Background="Transparent">
                 <TabItem Header="{DynamicResource MENU_AIEDIT_NORMAL}" Style="{StaticResource GeneralTabItemStyle}">
-                    <ListView x:Name="list" ContextMenu="{StaticResource cm}" BorderBrush="Black" BorderThickness="1"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="36"/>
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="list" ContextMenu="{StaticResource cm}" BorderBrush="Black" BorderThickness="1"
                     Margin="10 5 10 5" Style="{StaticResource ListViewStyleB}" ItemsSource="{Binding Path=BindList}">
-                        <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
-                                <GridViewColumn Header="{DynamicResource COLUMN_INDEX}" Width="0" x:Name="gvcolumn1">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border  MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn1}">
-                                                <TextBlock Text="{Binding SIndex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 5 0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#A0A0A0"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="{DynamicResource COLUMN_COUNT}" Width="80" x:Name="gvcolumn2">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn2}" MinHeight="{Binding Path=ActualHeight,ElementName=gvcolumn2}">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="15"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <toolkit:AutoCompleteBox Text="{Binding Count,Mode=TwoWay}" Grid.Column="0"
-                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                    <GridViewColumn Header="{DynamicResource COLUMN_INDEX}" Width="0" x:Name="gvcolumn1">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border  MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn1}">
+                                                    <TextBlock Text="{Binding SIndex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 5 0" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#A0A0A0"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{DynamicResource COLUMN_COUNT}" Width="80" x:Name="gvcolumn2">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn2}" MinHeight="{Binding Path=ActualHeight,ElementName=gvcolumn2}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="15"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <toolkit:AutoCompleteBox Text="{Binding Count,Mode=TwoWay}" Grid.Column="0"
+                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}" TextChanged="ACB_TextChanged_Update"
                                                  PreviewMouseWheel="TextBox_PreviewMouseWheel"/>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="{DynamicResource COLUMN_UNIT}"  Width="180" x:Name="gvcolumn3">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn3}">
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{DynamicResource COLUMN_UNIT}"  Width="180" x:Name="gvcolumn3">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border MinWidth="{Binding Path=ActualWidth,ElementName=gvcolumn3}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="auto" MinWidth="80"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
+                                                             MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
+                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown" TextChanged="ACB_TextChanged_Update"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="60">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="auto" MinWidth="80"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="6"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
-                                                             MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
-                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown"/>
-                                                    <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>
+                                                    <Button Style="{StaticResource ButtonImageStyle_Plus}" Grid.Column="0" Tag="{Binding Path=DataContext,ElementName=list,Mode=OneWay}" Click="ButtonAdd_Click"/>
+                                                    <Button Style="{StaticResource ButtonImageStyle_Minus}" Grid.Column="1" Tag="{Binding Path=DataContext,ElementName=list,Mode=OneWay}" Click="ButtonDelete_Click"/>
                                                 </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Width="60">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="6"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button Style="{StaticResource ButtonImageStyle_Plus}" Grid.Column="0" Tag="{Binding Path=DataContext,ElementName=list,Mode=OneWay}" Click="ButtonAdd_Click"/>
-                                                <Button Style="{StaticResource ButtonImageStyle_Minus}" Grid.Column="1" Tag="{Binding Path=DataContext,ElementName=list,Mode=OneWay}" Click="ButtonDelete_Click"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" x:Name="tb_cost" Foreground="#111111" VerticalAlignment="Center" TextAlignment="Left" Margin="5 0 0 0"/>
+                            <TextBlock Grid.Column="1" x:Name="tb_ct" Foreground="#111111" VerticalAlignment="Center" TextAlignment="Left" Margin="5 0 0 0"/>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="{DynamicResource MENU_AIEDIT_EXT}" Style="{StaticResource GeneralTabItemStyle}">
                     <Grid Margin="0 5 0 0">
@@ -172,8 +186,15 @@
                         <CheckBox Content="{DynamicResource MENU_ENABLE_EXT}" IsChecked="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="0 0 0 5"/>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                             <StackPanel Orientation="Vertical" IsEnabled="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                <Expander x:Name="ext_easy" Header="{DynamicResource COLUMN_EASY}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
+                                <Expander x:Name="ext_easy" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
                                       Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                                    <Expander.Header>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{DynamicResource COLUMN_EASY}" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="tb_cost_e" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                            <TextBlock x:Name="tb_ct_e" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                        </StackPanel>
+                                    </Expander.Header>
                                     <ListView x:Name="ext_list_e" ContextMenu="{StaticResource cm}" BorderBrush="Black" BorderThickness="1"
                                 Margin="10 5 10 5" DataContext="{Binding Path=Ext_EasyMode_Type}" Style="{StaticResource ListViewStyleB}" ItemsSource="{Binding Path=BindList}">
                                         <ListView.View>
@@ -197,7 +218,7 @@
                                                                         <ColumnDefinition Width="15"/>
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Count,Mode=TwoWay}" Grid.Column="0"
-                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
+                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}" TextChanged="ACB_TextChanged_Update"
                                                  PreviewMouseWheel="TextBox_PreviewMouseWheel"/>
                                                                 </Grid>
                                                             </Border>
@@ -215,7 +236,7 @@
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
                                                              MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
-                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown"/>
+                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown" TextChanged="ACB_TextChanged_Update"/>
                                                                     <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>
                                                                 </Grid>
                                                             </Border>
@@ -241,8 +262,15 @@
                                         </ListView.View>
                                     </ListView>
                                 </Expander>
-                                <Expander x:Name="ext_medium" Header="{DynamicResource COLUMN_MEDIUM}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
+                                <Expander x:Name="ext_medium" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
                                       Style="{StaticResource ExpanderStyleBlue}" Margin="0 0 0 5">
+                                    <Expander.Header>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{DynamicResource COLUMN_MEDIUM}" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="tb_cost_m" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                            <TextBlock x:Name="tb_ct_m" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                        </StackPanel>
+                                    </Expander.Header>
                                     <ListView x:Name="ext_list_m" ContextMenu="{StaticResource cm}" BorderBrush="Black" BorderThickness="1"
                                 Margin="10 5 10 5" DataContext="{Binding Path=Ext_MediumMode_Type}" Style="{StaticResource ListViewStyleB}" ItemsSource="{Binding Path=BindList}">
                                         <ListView.View>
@@ -266,7 +294,7 @@
                                                                         <ColumnDefinition Width="15"/>
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Count,Mode=TwoWay}" Grid.Column="0"
-                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
+                                                 Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}" TextChanged="ACB_TextChanged_Update"
                                                  PreviewMouseWheel="TextBox_PreviewMouseWheel"/>
                                                                 </Grid>
                                                             </Border>
@@ -284,7 +312,7 @@
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
                                                              MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
-                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown"/>
+                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown" TextChanged="ACB_TextChanged_Update"/>
                                                                     <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>
                                                                 </Grid>
                                                             </Border>
@@ -310,8 +338,15 @@
                                         </ListView.View>
                                     </ListView>
                                 </Expander>
-                                <Expander x:Name="ext_hard" Header="{DynamicResource COLUMN_HARD}" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
+                                <Expander x:Name="ext_hard" IsExpanded="{Binding EnableExt,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
                                       Style="{StaticResource ExpanderStyleBlue}" Margin="0">
+                                    <Expander.Header>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{DynamicResource COLUMN_HARD}" VerticalAlignment="Center"/>
+                                            <TextBlock x:Name="tb_cost_h" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                            <TextBlock x:Name="tb_ct_h" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Left" Margin="20 0 0 0"/>
+                                        </StackPanel>
+                                    </Expander.Header>
                                     <ListView x:Name="ext_list_h" ContextMenu="{StaticResource cm}" BorderBrush="Black" BorderThickness="1"
                                 Margin="10 5 10 5" DataContext="{Binding Path=Ext_HardMode_Type}" Style="{StaticResource ListViewStyleB}" ItemsSource="{Binding Path=BindList}">
                                         <ListView.View>
@@ -336,7 +371,7 @@
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Count,Mode=TwoWay}" Grid.Column="0"
                                                  Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
-                                                 PreviewMouseWheel="TextBox_PreviewMouseWheel"/>
+                                                 PreviewMouseWheel="TextBox_PreviewMouseWheel" TextChanged="ACB_TextChanged_Update"/>
                                                                 </Grid>
                                                             </Border>
                                                         </DataTemplate>
@@ -353,7 +388,7 @@
                                                                     </Grid.ColumnDefinitions>
                                                                     <toolkit:AutoCompleteBox Text="{Binding Name,Mode=TwoWay}" Grid.Column="0" ValueMemberPath="Name" ItemsSource="{Binding TechTypeInfo,Mode=OneWay}"
                                                              MinimumPrefixLength="0" ItemTemplate="{StaticResource UnitDataTemplate}" Margin="0 2 0 2" Height="20" Style="{StaticResource AutoBoxInListStyle}"
-                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown"/>
+                                                             FilterMode="Custom" ItemFilter="{Binding TechTypeFilter}" PreviewKeyDown="AutoCompleteBox_PreviewKeyDown" TextChanged="ACB_TextChanged_Update"/>
                                                                     <TextBlock Grid.Column="1" Text="{Binding Translation,Mode=OneWay}" Foreground="#909090" VerticalAlignment="Top" Margin="5 5 0 5"/>
                                                                 </Grid>
                                                             </Border>
@@ -385,16 +420,17 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        <Grid Grid.Row="4" Height="26" Margin="5 0 20 0">
+        <Grid Grid.Row="4" Height="36" Margin="5 5 10 5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_GROUP}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="0 0 5 0"/>
-            <toolkit:AutoCompleteBox Text="{Binding Path=PGroup,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Grid.Column="1" Margin="5 0 0 0" Style="{StaticResource AutoEditorBoxStyleB}"
+            <TextBlock Foreground="#111111" Text="{DynamicResource TAG_GROUP}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center" Margin="0 3 5 3"/>
+            <toolkit:AutoCompleteBox Text="{Binding Path=PGroup,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Grid.Column="1" Grid.ColumnSpan="3" Margin="5 3 0 3" Style="{StaticResource AutoEditorBoxStyleB}"
                                             PreviewMouseLeftButtonDown="AutoCompleteBox_Popup" ItemTemplate="{StaticResource InfoItemDataTemplate}" ItemsSource="{Binding GroupInfo,Mode=OneWay}"
                                             FilterMode="None" ValueMemberPath="Value" MinimumPrefixLength="0" PreviewKeyDown="Group_PreviewKeyDown"/>
-            <!--<TextBox x:Name="tb_group" Text="{Binding Path=PGroup,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left" Margin="5 5 20 15" BorderBrush="LightBlue"/>-->
         </Grid>
 
     </Grid>

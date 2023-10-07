@@ -107,6 +107,7 @@ namespace RA2AI_Editor.Styles
                     {
                         Countries.Update(ucf.HouseList);
                     }
+                    GameInfo.Update(rules);
                     break;
                 //case MessageBoxResult.No:
                 //    units = new Units(alllist, buildingslist, unitslist, UnitChooseForm.KeepExistedUnits);

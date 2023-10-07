@@ -160,6 +160,24 @@ namespace AIcore.Types
             }
         }
 
+        public int TotalCost {  get { return GetTotalCost(this); } }
+        public int TotalCost_Ext_EasyMode { get { return GetTotalCost(Ext_EasyMode_Type); } }
+        public int TotalCost_Ext_MediumMode { get { return GetTotalCost(Ext_MediumMode_Type); } }
+        public int TotalCost_Ext_HardMode { get { return GetTotalCost(Ext_HardMode_Type); } }
+
+        public int GetTotalCost<T>(T tb) where T : TaskForceBase
+        {
+            int cost = 0;
+            if (tb != null)
+            {
+                foreach (var t in tb._clist)
+                {
+                    cost += Units.FindUnit(t.Name).Cost * t.Count;
+                }
+            }
+            return cost;
+        }
+
         public TaskForce CloneFromBase(TaskForceBase tfb, string tag, string modefix = "")
         {
             var ext = this.CloneType(tag);

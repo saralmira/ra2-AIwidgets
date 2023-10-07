@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using RA2AI_Editor;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace AIcore
 {
@@ -518,6 +519,32 @@ namespace AIcore
         }
 
         public static ObservableCollection<InfoValueClass> Group;
+    }
+
+    public class GameInfo
+    {
+        public static void Load(string folder = null)
+        {
+            if (folder == null || folder.Length == 0)
+                folder = Environment.CurrentDirectory + @"\gameinfo.ini";
+            else
+                folder = Environment.CurrentDirectory + @"\" + folder + @"\gameinfo.ini";
+
+            gameinfo = new IniClass(folder);
+        }
+
+        public static void Update(IniClass rules)
+        {
+            BuildSpeed = rules.ReadDoubleValue(SECTION, nameof(BuildSpeed), 0.7);
+            DissolveUnfilledTeamDelay = rules.ReadIntValue(SECTION, nameof(DissolveUnfilledTeamDelay), 5000);
+            gameinfo.Save();
+        }
+
+        private const string SECTION = "General";
+
+        private static IniClass gameinfo;
+        public static double BuildSpeed { get { return gameinfo.ReadDoubleValue(SECTION, nameof(BuildSpeed), 0.7); } set { gameinfo.WriteValue(SECTION, nameof(BuildSpeed), value.ToString()); } }
+        public static int DissolveUnfilledTeamDelay { get { return gameinfo.ReadIntValue(SECTION, nameof(DissolveUnfilledTeamDelay), 5000); } set { gameinfo.WriteValue(SECTION, nameof(DissolveUnfilledTeamDelay), value.ToString()); } }
     }
 
 }

@@ -191,6 +191,8 @@
     <sys:String x:Key="TAG_TechCount">数量（N）</sys:String>
     <sys:String x:Key="TAG_TechType">科技类型（X）</sys:String>
     <sys:String x:Key="TAG_ConditionsWeight">触发分量一致/均分</sys:String>
+    <sys:String x:Key="TAG_TeamCost">花费</sys:String>
+    <sys:String x:Key="TAG_TeamCreateTime">建造时间</sys:String>
 
 
     <sys:String x:Key="COLUMN_INDEX">序号</sys:String>
@@ -235,6 +237,9 @@
     <sys:String x:Key="STR_NAME">名称</sys:String>
     <sys:String x:Key="STR_FORMAPONLY">仅用于地图</sys:String>
     <sys:String x:Key="STR_BASEITEMS">基本项</sys:String>
+    <sys:String x:Key="STR_EXTRAITEMS">其他项</sys:String>
+    <sys:String x:Key="STR_GLOBALS">全局控制</sys:String>
+    <sys:String x:Key="STR_LOCALS">微观控制</sys:String>
     <sys:String x:Key="STR_TRIGGERRELATED">触发相关</sys:String>
     <sys:String x:Key="STR_RECRUITMENTRELATED">小队招募相关：</sys:String>
     <sys:String x:Key="STR_ENGAGEMENTRELATED">行进/战斗相关：</sys:String>
@@ -283,7 +288,9 @@
     <sys:String x:Key="STR_REPLACE">替换</sys:String>
     <sys:String x:Key="STR_REPLACEUNIT">替换单位</sys:String>
     <sys:String x:Key="STR_REPLACEINFO">完成了 {0} 处替换。</sys:String>
-    
+    <sys:String x:Key="STR_SPLITBYCOUNT">小队切分</sys:String>
+    <sys:String x:Key="STR_SEC">秒</sys:String>
+
     <sys:String x:Key="TREENODE_SAME">相同项</sys:String>
     <sys:String x:Key="TREENODE_DIFF">不同项</sys:String>
     <sys:String x:Key="TREENODE_SOUR">多出项</sys:String>
@@ -316,6 +323,8 @@
     <sys:String x:Key="TIP_NOCOMMA">名称中不能包含英文逗号！</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">有文件正在编辑时请不要切换游戏类型！</sys:String>
     <sys:String x:Key="TIP_FIXTECHLEVEL">重设全部AI触发的TechLevel为该触发第一（或第二）小队成员的最大TechLevel</sys:String>
+    <sys:String x:Key="TIP_CONDITIONSWEIGHT">触发分量一致：各触发条件初始分量与原初始分量一致&#13;&#10;触发分量均分：各触发条件初始分量为原初始分量的均分，总和等于原初始分量</sys:String>
+    <sys:String x:Key="TIP_SPLITBYCOUNT">说明：根据小队成员数量自动划分小队，如填入“5”代表将小队成员按数量“5”切分成多个小队，组合成最后的部队，类似战斗要塞小队触发方式&#13;&#10;作用：避免小队过大而一直生产不进攻</sys:String>
 
     <sys:String x:Key="CMD_COMMAND">命令</sys:String>
     <sys:String x:Key="CMD_ADDITEM">添加项</sys:String>

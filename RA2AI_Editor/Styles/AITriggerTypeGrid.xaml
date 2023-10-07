@@ -394,6 +394,7 @@
                                     <Border Style="{StaticResource GridBorderStyle}">
                                         <CheckBox IsChecked="{Binding Path=BaseDefence,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Content="{DynamicResource TAG_BaseDefense}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
                                     </Border>
+                                    
                                 </StackPanel>
                             </Border>
                         </ScrollViewer>
@@ -409,7 +410,7 @@
                                         <TextBlock Text="{DynamicResource STR_TRIGGERRELATED}" Foreground="#111111" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="5 2 5 2"/>
                                     </Border>
                                     <Border Grid.Row="1" Style="{StaticResource GridBorderStyleForMap}">
-                                        <CheckBox IsChecked="{Binding Path=Ext_ConditionsWeight,Mode=TwoWay}" Content="{DynamicResource TAG_ConditionsWeight}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2"/>
+                                        <CheckBox IsChecked="{Binding Path=Ext_ConditionsWeight,Mode=TwoWay}" Content="{DynamicResource TAG_ConditionsWeight}" Style="{StaticResource SliderCheckBox}" VerticalAlignment="Center" Margin="5 2 0 2" ToolTip="{DynamicResource TIP_CONDITIONSWEIGHT }"/>
                                     </Border>
                                     <StackPanel x:Name="pn_triggers" Grid.Row="2">
                                         <uc:TriggerCard/>

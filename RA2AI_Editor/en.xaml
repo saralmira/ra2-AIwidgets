@@ -189,6 +189,8 @@
     <sys:String x:Key="TAG_TechCount">TechCount (N)</sys:String>
     <sys:String x:Key="TAG_TechType">TechType (X)</sys:String>
     <sys:String x:Key="TAG_ConditionsWeight">Same/Share weight</sys:String>
+    <sys:String x:Key="TAG_TeamCost">Total Cost</sys:String>
+    <sys:String x:Key="TAG_TeamCreateTime">Build Time</sys:String>
 
 
     <sys:String x:Key="COLUMN_INDEX">Id</sys:String>
@@ -232,12 +234,15 @@
 
     <sys:String x:Key="STR_NAME">Name</sys:String>
     <sys:String x:Key="STR_FORMAPONLY">For maps only</sys:String>
-    <sys:String x:Key="STR_BASEITEMS">Basic:</sys:String>
-    <sys:String x:Key="STR_TRIGGERRELATED">Trigger related:</sys:String>
-    <sys:String x:Key="STR_RECRUITMENTRELATED">Recruitment related:</sys:String>
-    <sys:String x:Key="STR_ENGAGEMENTRELATED">Engagement related:</sys:String>
-    <sys:String x:Key="STR_TRANSPORTRELATED">Transport related:</sys:String>
-    <sys:String x:Key="STR_OTHERS">Others:</sys:String>
+    <sys:String x:Key="STR_BASEITEMS">Basic</sys:String>
+    <sys:String x:Key="STR_EXTRAITEMS">Extra</sys:String>
+    <sys:String x:Key="STR_GLOBALS">Global control</sys:String>
+    <sys:String x:Key="STR_LOCALS">Local control</sys:String>
+    <sys:String x:Key="STR_TRIGGERRELATED">Trigger related</sys:String>
+    <sys:String x:Key="STR_RECRUITMENTRELATED">Recruitment related</sys:String>
+    <sys:String x:Key="STR_ENGAGEMENTRELATED">Engagement related</sys:String>
+    <sys:String x:Key="STR_TRANSPORTRELATED">Transport related</sys:String>
+    <sys:String x:Key="STR_OTHERS">Others</sys:String>
     <sys:String x:Key="STR_TARGETCHOOSE">Target choose mode</sys:String>
     <sys:String x:Key="STR_BUILDINGID">SN</sys:String>
     <sys:String x:Key="STR_RESULT">Result</sys:String>
@@ -281,6 +286,8 @@
     <sys:String x:Key="STR_REPLACE">Replace</sys:String>
     <sys:String x:Key="STR_REPLACEUNIT">Replace unit</sys:String>
     <sys:String x:Key="STR_REPLACEINFO">{0} substitutions were made.</sys:String>
+    <sys:String x:Key="STR_SPLITBYCOUNT">Split team</sys:String>
+    <sys:String x:Key="STR_SEC">sec</sys:String>
 
     <sys:String x:Key="TREENODE_SAME">Similar</sys:String>
     <sys:String x:Key="TREENODE_DIFF">Different</sys:String>
@@ -314,6 +321,8 @@
     <sys:String x:Key="TIP_NOCOMMA">Comma (,) cannot be included</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">Do not switch game types when editing!</sys:String>
     <sys:String x:Key="TIP_FIXTECHLEVEL">Reset the TechLevel of each trigger to the highest TechLevel of the first (or the second) teamtype in the trigger.</sys:String>
+    <sys:String x:Key="TIP_CONDITIONSWEIGHT">Same weight: Make the initial weight of each trigger condition be consistent with the original's&#13;&#10;Share weight: Make the initial weights of each condition divide from the original's, which is the sum of all conditions' initial weight</sys:String>
+    <sys:String x:Key="TIP_SPLITBYCOUNT">Description: Automatically divide teams according to the number of team members, such as filling in "5" means that the team members are divided into multiple teams according to the number of "5", then combined into the final troops, similar to the battle fortress team trigger way&#13;&#10;Usage: Avoid large troops are always in production without executing the scripts</sys:String>
 
     <sys:String x:Key="CMD_COMMAND">Command</sys:String>
     <sys:String x:Key="CMD_ADDITEM">Add item</sys:String>

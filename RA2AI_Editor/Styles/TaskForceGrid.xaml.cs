@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using AIcore.Types;
 using AIcore;
+using System.Threading.Tasks;
 //using WPF.JoshSmith.ServiceProviders.UI;
 
 namespace RA2AI_Editor.Styles
@@ -78,6 +79,7 @@ namespace RA2AI_Editor.Styles
                 TaskForceData tfd = btn.DataContext as TaskForceData;
                 TaskForceBase tfb = btn.Tag as TaskForceBase;
                 tfb.Delete(tfd);
+                UpdateInfo();
             }
         }
 
@@ -86,6 +88,7 @@ namespace RA2AI_Editor.Styles
             if (tf != null)
             {
                 viewtab.SelectedIndex = tf.EnableExt ? 1 : 0;
+                UpdateInfo();
             }
         }
 
@@ -129,6 +132,8 @@ namespace RA2AI_Editor.Styles
         private void TextBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             AutoCompleteBox tb = (AutoCompleteBox)sender;
+            if (!tb.IsFocused)
+                return;
             try
             {
                 tb.Text = (e.Delta > 0 ? Convert.ToInt32(tb.Text) + 1 : Math.Max(0, Convert.ToInt32(tb.Text) - 1)).ToString();
@@ -224,6 +229,63 @@ namespace RA2AI_Editor.Styles
             return tmp;
         }
 
+        private string TimeSpanToStr(TimeSpan ts)
+        {
+            string ret = "";
+            if (ts.Hours > 0)
+                ret += ts.Hours + "h";
+            if (ts.Minutes > 0)
+                ret += ts.Minutes + "m";
+            ret += ts.Seconds + "s";
+            return ret;
+        }
+
+        private async void UpdateInfo()
+        {
+            if (tf == null)
+                return;
+
+            await Task.Run(() =>
+            {
+                string tag_teamcost = Local.Dictionary("TAG_TeamCost");
+                string tag_teamcreatetime = Local.Dictionary("TAG_TeamCreateTime");
+
+                if (tf.EnableExt)
+                {
+                    int cost_e = tf.TotalCost_Ext_EasyMode;
+                    int cost_m = tf.TotalCost_Ext_MediumMode;
+                    int cost_h = tf.TotalCost_Ext_HardMode;
+                    string t_cost_e = string.Format("{0}: ${1}", tag_teamcost, cost_e);
+                    string t_cost_m = string.Format("{0}: ${1}", tag_teamcost, cost_m);
+                    string t_cost_h = string.Format("{0}: ${1}", tag_teamcost, cost_h);
+                    string t_ct_e = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_e / 1000 * GameInfo.BuildSpeed)));
+                    string t_ct_m = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_m / 1000 * GameInfo.BuildSpeed)));
+                    string t_ct_h = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_h / 1000 * GameInfo.BuildSpeed)));
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        tb_cost_e.Text = t_cost_e;
+                        tb_cost_m.Text = t_cost_m;
+                        tb_cost_h.Text = t_cost_h;
+                        tb_ct_e.Text = t_ct_e;
+                        tb_ct_m.Text = t_ct_m;
+                        tb_ct_h.Text = t_ct_h;
+                    });
+                }
+                else
+                {
+                    int cost = tf.TotalCost;
+                    string t_cost = string.Format("{0}: ${1}", tag_teamcost, cost);
+                    string t_ct = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost / 1000 * GameInfo.BuildSpeed)));
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        tb_cost.Text = t_cost;
+                        tb_ct.Text = t_ct;
+                    });
+                }
+            });
+        }
+
         private void AutoCompleteBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             AutoCompleteBox acb = sender as AutoCompleteBox;
@@ -308,5 +370,9 @@ namespace RA2AI_Editor.Styles
             btn_pop.Focus();
         }
 
+        private void ACB_TextChanged_Update(object sender, RoutedEventArgs e)
+        {
+            UpdateInfo();
+        }
     }
 }
