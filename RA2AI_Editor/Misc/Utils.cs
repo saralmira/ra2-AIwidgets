@@ -266,19 +266,38 @@ namespace AIcore
         }
         public static string SelectFileToOpen(string title = null)
         {
+            if (title == null)
+                title = Local.Dictionary("FILE_OPEN");
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 RestoreDirectory = true,
-                Multiselect = false
+                Multiselect = false,
+                Title = title,
+                Filter = "RA2 Files(*.ini,*.mpr,*.yrm,*.map)| *.ini;*.mpr;*.yrm;*.map|ALL Files.| *"
             };
-            if (title == null)
-                title = Local.Dictionary("FILE_OPEN");
-            openFileDialog.Title = title;
-            openFileDialog.Filter = "RA2 Files(*.ini,*.mpr,*.yrm,*.map)| *.ini;*.mpr;*.yrm;*.map|ALL Files.| *";
             openFileDialog.CheckFileExists = openFileDialog.CheckPathExists = true;
             if (openFileDialog.ShowDialog() == true)
             {
                 return openFileDialog.FileName;
+            }
+            return null;
+        }
+
+        public static string SelectFileToSave(string title = null)
+        {
+            if (title == null)
+                title = Local.Dictionary("FILE_SAVE");
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = title,
+                Filter = "RA2 Files(*.ini,*.mpr,*.yrm,*.map)| *.ini;*.mpr;*.yrm;*.map|ALL Files.| *.*",
+                DefaultExt = ".ini",
+                AddExtension = true
+            };
+            bool? bl = sfd.ShowDialog();
+            if (bl == true)
+            {
+                return sfd.FileName;
             }
             return null;
         }

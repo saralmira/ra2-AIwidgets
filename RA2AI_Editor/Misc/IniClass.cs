@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AIcore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -338,8 +339,16 @@ namespace Library
 
         public void Save()
         {
-            if (!File.Exists(path))
-                _createfile(path);
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                string new_save_path = Utils.SelectFileToSave();
+                if (string.IsNullOrEmpty(new_save_path))
+                {
+                    return;
+                }
+                //_createfile(path);
+                SaveAs(new_save_path);
+            }
             int i, j;
             StreamWriter sw = new StreamWriter(path, false, Encoding.Default);
             if (sectionindex.Count > 0)

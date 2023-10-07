@@ -318,7 +318,7 @@
     <sys:String x:Key="TIP_RELEASE">去除文件中的所有标记，生成发布版的文件。注意，必须保存文件后才可以发布</sys:String>
     <sys:String x:Key="TIP_IMPORTRULES">导入国家、阵营、建筑、单位信息</sys:String>
     <sys:String x:Key="TIP_IMPORTCSF">导入csf中的建筑、单位名称</sys:String>
-    <sys:String x:Key="TIP_IMPORTMIX">从mix文件中导入rules*.ini</sys:String>
+    <sys:String x:Key="TIP_IMPORTMIX">从mix文件中导入ai*.ini和rules*.ini</sys:String>
     <sys:String x:Key="TIP_COMPAREFILE">选择另一个ai文件，生成比较报告</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">名称中不能包含英文逗号！</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">有文件正在编辑时请不要切换游戏类型！</sys:String>

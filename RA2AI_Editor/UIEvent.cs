@@ -28,6 +28,8 @@ namespace RA2AI_Editor
         public static void JumpTo(AITriggerType type) { AITriggerTypeJumpEvent?.Invoke(type); }
         public static void JumpTo(OType type) { JumpEvent?.Invoke(type); }
 
+
+
         private void HistoryItem_Click(string path)
         {
             if (path != null)
@@ -36,8 +38,7 @@ namespace RA2AI_Editor
                 {
                     if (FileCloseConfirm() == MessageBoxResult.None)
                         return;
-                    current_file = path;
-                    OpenFile(current_file);
+                    OpenFile(path);
                 }
                 else
                 {
@@ -58,8 +59,7 @@ namespace RA2AI_Editor
             {
                 if (File.Exists(path))
                 {
-                    current_file = path;
-                    OpenFile(current_file);
+                    OpenFile(path);
                 }
                 else
                 {
@@ -108,7 +108,10 @@ namespace RA2AI_Editor
             {
                 string path;
                 if ((path = SelectFileToSave()) != null)
+                { 
                     SaveToFile(path);
+                    listBoxDataInit.Add(path);
+                }
             }
         }
 

@@ -258,9 +258,9 @@ namespace RA2AI_Editor.Styles
                     string t_cost_e = string.Format("{0}: ${1}", tag_teamcost, cost_e);
                     string t_cost_m = string.Format("{0}: ${1}", tag_teamcost, cost_m);
                     string t_cost_h = string.Format("{0}: ${1}", tag_teamcost, cost_h);
-                    string t_ct_e = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_e / 1000 * GameInfo.BuildSpeed)));
-                    string t_ct_m = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_m / 1000 * GameInfo.BuildSpeed)));
-                    string t_ct_h = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_h / 1000 * GameInfo.BuildSpeed)));
+                    string t_ct_e = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_e / 1000.0 * GameInfo.BuildSpeed)));
+                    string t_ct_m = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_m / 1000.0 * GameInfo.BuildSpeed)));
+                    string t_ct_h = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost_h / 1000.0 * GameInfo.BuildSpeed)));
 
                     this.Dispatcher.Invoke(() =>
                     {
@@ -276,7 +276,7 @@ namespace RA2AI_Editor.Styles
                 {
                     int cost = tf.TotalCost;
                     string t_cost = string.Format("{0}: ${1}", tag_teamcost, cost);
-                    string t_ct = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost / 1000 * GameInfo.BuildSpeed)));
+                    string t_ct = string.Format("{0}: {1}", tag_teamcreatetime, TimeSpanToStr(TimeSpan.FromMinutes(cost / 1000.0 * GameInfo.BuildSpeed)));
                     this.Dispatcher.Invoke(() =>
                     {
                         tb_cost.Text = t_cost;

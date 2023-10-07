@@ -316,7 +316,7 @@
     <sys:String x:Key="TIP_RELEASE">Save and relase current file (without marks)</sys:String>
     <sys:String x:Key="TIP_IMPORTRULES">Import houses/sides/buildings/units</sys:String>
     <sys:String x:Key="TIP_IMPORTCSF">Import names of buildings/units in .csf file</sys:String>
-    <sys:String x:Key="TIP_IMPORTMIX">Import rules*.ini from .mix file</sys:String>
+    <sys:String x:Key="TIP_IMPORTMIX">Import ai*.ini and rules*.ini from .mix file</sys:String>
     <sys:String x:Key="TIP_COMPAREFILE">Compare to another AI file</sys:String>
     <sys:String x:Key="TIP_NOCOMMA">Comma (,) cannot be included</sys:String>
     <sys:String x:Key="TIP_DONOTCHANGEGAME">Do not switch game types when editing!</sys:String>

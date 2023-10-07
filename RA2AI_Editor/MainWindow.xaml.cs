@@ -46,6 +46,9 @@ namespace RA2AI_Editor
         public static TmpFileEventDel TmpFileEvent;
         public static TmpFileEventDel TmpFileDeleteEvent;
 
+        public delegate void OpenAIEventDel(AI ai_open, string p);
+        public static OpenAIEventDel OpenAIEvent;
+
         public static UInt32 searchinterval;
 
         public static ListBoxDataInit listBoxDataInit { get; private set; }
@@ -75,8 +78,7 @@ namespace RA2AI_Editor
 
             if (Program.FileToOpen != null && File.Exists(Program.FileToOpen))
             {
-                current_file = Program.FileToOpen;
-                OpenFile(current_file);
+                OpenFile(Program.FileToOpen);
             }
         }
 
@@ -108,6 +110,7 @@ namespace RA2AI_Editor
             //TeamTypeFromTriggersEvent = SearchFromAITriggers;
             TmpFileEvent = TmpFileEventHandler;
             TmpFileDeleteEvent = TmpFileDeleteEventHandler;
+            OpenAIEvent = OpenAIClean;
             InitGridEvent = InitGrid;
             InitPageEvent = InitPage;
             SwitchTypeViewEvent = SwitchTypeView;
@@ -178,13 +181,20 @@ namespace RA2AI_Editor
         /// <param name="path"></param>
         private void OpenFile(string path)
         {
+            current_file = path;
             Clear_CompareReport();
             Local.GlobalCommandStack.Clear();
 
             listBoxDataInit.Add(path);
-            current_ai = new AI(path);
+
+            OpenAIClean(new AI(path), path);
+        }
+
+        private void OpenAIClean(AI ai, string path)
+        {
             configData.CurrentFile = path;
             Title = configData.TitleText;
+            current_ai = ai;
 
             lanc_tf.Show();
             lanc_st.Show();
@@ -228,7 +238,17 @@ namespace RA2AI_Editor
 
         private void SaveToFile(string path)
         {
-            tmpFileDataInit.Add(current_ai.FilePath);
+            if (string.IsNullOrEmpty(current_ai.FilePath))
+            {
+                if ((path = SelectFileToSave()) == null)
+                    return;
+
+                listBoxDataInit.Add(path);
+            }
+            else
+            {
+                tmpFileDataInit.Add(current_ai.FilePath);
+            }
             current_ai.SaveAI(path);
             configData.CurrentFile = path;
             Title = configData.TitleText;

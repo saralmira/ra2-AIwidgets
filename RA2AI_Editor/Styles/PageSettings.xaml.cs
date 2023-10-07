@@ -192,6 +192,15 @@ namespace RA2AI_Editor.Styles
                         {
                             LoadRules(new IniClass(ms));
                         }
+                        byte[] aimd;
+                        if ((mix.ReadFile("aimd.ini", out aimd) || mix.ReadFile("ai.ini", out aimd) ||
+                        mix.ReadFile("localmd.mix/aimd.ini", out aimd) || mix.ReadFile("local.mix/ai.ini", out aimd)))
+                        {
+                            using (MemoryStream ms = new MemoryStream(aimd))
+                            {
+                                OpenAIEvent?.Invoke(new AI(new IniClass(ms)), path);
+                            }
+                        }
                         return;
                     }
                     MessageBox.Show(Local.Dictionary("MB_INVALIDMIXFILE"), Local.Dictionary("MB_HINT"), MessageBoxButton.OK, MessageBoxImage.Information);

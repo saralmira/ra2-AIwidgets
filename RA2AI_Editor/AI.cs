@@ -12,14 +12,18 @@ namespace AIcore
 {
     public class AI : INotifyPropertyChanged
     {
-        public AI(string inipath, bool fakemode = false)
+        public AI(string inipath, bool fakemode = false) : this(new IniClass(inipath), fakemode)
         {
-            ini = new IniClass(inipath);
+        }
+
+        public AI(IniClass ai_ini, bool fakemode = false)
+        {
+            ini = ai_ini;
             IsFakeAI = fakemode;
 
             if (!fakemode)
             {
-                IsMapFile = IsMapExtension(Path.GetExtension(inipath));
+                IsMapFile = IsMapExtension(Path.GetExtension(ini.GetPath()));
                 Init_Hints();
 
                 TagPost = ini.ReadValueWithoutNotes("MarkSection", "TagPost");
@@ -120,6 +124,7 @@ namespace AIcore
 
         private bool IsMapExtension(string ext)
         {
+            if (string.IsNullOrEmpty(ext)) return false;
             ext = ext.ToLower();
             return ext == ".map" || ext == ".mpr" || ext == ".yrm";
         }
