@@ -91,6 +91,7 @@
     <sys:String x:Key="BTN_AUTOTECH">Auto</sys:String>
     <sys:String x:Key="BTN_PROJECT">Project: https://github.com/saralmira/ra2-AIwidgets</sys:String>
     <sys:String x:Key="BTN_FIXTECHLEVEL">Reset AI triggers' techlevel</sys:String>
+    <sys:String x:Key="BTN_ALLSIDES">Generate triggers for all sides</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -323,7 +324,8 @@
     <sys:String x:Key="TIP_FIXTECHLEVEL">Reset the TechLevel of each trigger to the highest TechLevel of the first (or the second) teamtype in the trigger.</sys:String>
     <sys:String x:Key="TIP_CONDITIONSWEIGHT">Same weight: Make the initial weight of each trigger condition be consistent with the original's&#13;&#10;Share weight: Make the initial weights of each condition divide from the original's, which is the sum of all conditions' initial weight</sys:String>
     <sys:String x:Key="TIP_SPLITBYCOUNT">Description: Automatically divide teams according to the number of team members, such as filling in "5" means that the team members are divided into multiple teams according to the number of "5", then combined into the final troops, similar to the battle fortress team trigger way&#13;&#10;Usage: Avoid large troops are always in production without executing the scripts</sys:String>
-
+    <sys:String x:Key="TIP_ALLSIDES">Generate AI triggers of condition=1 for all sides</sys:String>
+    
     <sys:String x:Key="CMD_COMMAND">Command</sys:String>
     <sys:String x:Key="CMD_ADDITEM">Add item</sys:String>
     <sys:String x:Key="CMD_CLONEITEM">Clone item</sys:String>

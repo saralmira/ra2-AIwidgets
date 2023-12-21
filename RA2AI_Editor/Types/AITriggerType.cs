@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using Library;
+using RA2AI_Editor;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -185,13 +187,13 @@ namespace AIcore.Types
                         var extended_conditions = OutputExtendConditions(ext_house);
                         foreach (var ext_cond in extended_conditions)
                         {
-                            OutputExtendTeamtype(ini, ext_cond);
+                            OutputFinal(ini, ext_cond);
                         }
                     }
                     return;
                 }
 
-                OutputExtendTeamtype(ini, this);
+                OutputFinal(ini, this);
             }
             OutputStr(ini, this, release);
         }
@@ -202,6 +204,7 @@ namespace AIcore.Types
             // <all>
             if (type.Ext_SelectedHouses.Contains(Countries.All.NameOrAll))
             {
+                type.House = Countries.All;
                 ret.Add(type);
                 return ret;
             }
@@ -250,6 +253,25 @@ namespace AIcore.Types
                 ret.Add(ext);
             }
             return ret;
+        }
+
+        private void OutputFinal(IniClass ini, AITriggerType type)
+        {
+            if (MainWindow.configData.GenerateTriggersForAllSides 
+                && type.House == Countries.All 
+                && type.TriggerType.Value == TriggerTypeEnum.SelfCondition)
+            {
+                foreach (var side in Sides.SidesList)
+                {
+                    if (type.Side.Index == side.Index || side.Index == Sides.AllSide.Index)
+                        continue;
+                    AITriggerType ext = type.CloneType(ai.aITriggerTypes.GetNewTag());
+                    ext.Side = side;
+                    OutputExtendTeamtype(ini, ext);
+                }
+            }
+
+            OutputExtendTeamtype(ini, type);
         }
 
         private void OutputExtendTeamtype(IniClass ini, AITriggerType type)

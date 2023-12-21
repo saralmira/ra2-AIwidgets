@@ -80,6 +80,7 @@
             <CheckBox Content="{DynamicResource BTN_HIDESCRIPTS}" IsChecked="{Binding HideScripts,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
             <CheckBox Content="{DynamicResource BTN_HIDEIDGRID}" IsChecked="{Binding HideIDGrid,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
             <CheckBox Content="{DynamicResource BTN_COPYAPPEND}" IsChecked="{Binding Append_WhileCopy,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center"/>
+            <CheckBox Content="{DynamicResource BTN_ALLSIDES}" IsChecked="{Binding GenerateTriggersForAllSides,Mode=TwoWay}" Style="{StaticResource SliderCheckBox}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource TIP_ALLSIDES}"/>
             <Button IsEnabled="{Binding CurrentFile,Converter={StaticResource ObjectToBool}}" Style="{StaticResource BtnInfoStyle}" Content="{DynamicResource BTN_FIXTECHLEVEL}" Height="32" Margin="5" Click="FixTechLevel_Click" ToolTip="{DynamicResource TIP_FIXTECHLEVEL}"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="7">

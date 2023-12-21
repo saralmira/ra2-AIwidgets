@@ -92,6 +92,7 @@
     <sys:String x:Key="BTN_AUTOTECH">自动</sys:String>
     <sys:String x:Key="BTN_PROJECT">项目：https://github.com/saralmira/ra2-AIwidgets</sys:String>
     <sys:String x:Key="BTN_FIXTECHLEVEL">重设全部AI触发TechLevel</sys:String>
+    <sys:String x:Key="BTN_ALLSIDES">为全阵营生成触发</sys:String>
 
     <sys:String x:Key="DATE_FORMAT">yyyy/MM/dd HH:mm:ss</sys:String>
 
@@ -325,6 +326,7 @@
     <sys:String x:Key="TIP_FIXTECHLEVEL">重设全部AI触发的TechLevel为该触发第一（或第二）小队成员的最大TechLevel</sys:String>
     <sys:String x:Key="TIP_CONDITIONSWEIGHT">触发分量一致：各触发条件初始分量与原初始分量一致&#13;&#10;触发分量均分：各触发条件初始分量为原初始分量的均分，总和等于原初始分量</sys:String>
     <sys:String x:Key="TIP_SPLITBYCOUNT">说明：根据小队成员数量自动划分小队，如填入“5”代表将小队成员按数量“5”切分成多个小队，组合成最后的部队，类似战斗要塞小队触发方式&#13;&#10;作用：避免小队过大而一直生产不进攻</sys:String>
+    <sys:String x:Key="TIP_ALLSIDES">将触发条件为1（本方科技满足条件）的AI触发复制为全阵营</sys:String>
 
     <sys:String x:Key="CMD_COMMAND">命令</sys:String>
     <sys:String x:Key="CMD_ADDITEM">添加项</sys:String>

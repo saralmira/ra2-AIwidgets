@@ -72,6 +72,7 @@ namespace RA2AI_Editor
                 Search_InCase = cfg.ReadBoolValue("Config", "Search_InCase", false);
                 Search_Unit = cfg.ReadBoolValue("Config", "Search_Unit", true);
                 Append_WhileCopy = cfg.ReadBoolValue("Config", "Append_WhileCopy", false);
+                GenerateTriggersForAllSides = cfg.ReadBoolValue("Config", "GenerateTriggersForAllSides", false);
 
                 PropertyChanged += PropertyChangedEvent;
             }
@@ -111,6 +112,7 @@ namespace RA2AI_Editor
                 cfg.WriteValue("Config", "Search_InCase", Search_InCase);
                 cfg.WriteValue("Config", "Search_Unit", Search_Unit);
                 cfg.WriteValue("Config", "Append_WhileCopy", Append_WhileCopy);
+                cfg.WriteValue("Config", "GenerateTriggersForAllSides", GenerateTriggersForAllSides);
             }
 
             private readonly IniClass cfg;
@@ -305,6 +307,8 @@ namespace RA2AI_Editor
             public bool Search_Unit { get { return _Search_Unit; } set { _Search_Unit = value; PropertyChange("Search_Unit"); } }
 
             public bool Append_WhileCopy { get; set; }
+
+            public bool GenerateTriggersForAllSides { get; set; }
 
             public CommandStack CommandStack { get { return Local.GlobalCommandStack; } }
             public ObservableCollection<CommandClass> ExecutedCommand { get { return Local.GlobalCommandStack.ExecutedCommand; } }
