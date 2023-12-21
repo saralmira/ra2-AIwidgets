@@ -259,7 +259,8 @@ namespace AIcore.Types
         {
             if (MainWindow.configData.GenerateTriggersForAllSides 
                 && type.House == Countries.All 
-                && type.TriggerType.Value == TriggerTypeEnum.SelfCondition)
+                && type.TriggerType.Value == TriggerTypeEnum.SelfCondition
+                && (type.SelectedComparison.CompareTypes == CompareTypes.GreaterOrEqualThan || type.SelectedComparison.CompareTypes == CompareTypes.GreaterThan))
             {
                 foreach (var side in Sides.SidesList)
                 {
