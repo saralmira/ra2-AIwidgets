@@ -47,7 +47,7 @@ namespace RA2AI_Editor.Styles
             grid.IsEnabled = at != null;
             pn_triggers.Children.RemoveRange(1, pn_triggers.Children.Count - 1);
             grid_ext.DataContext = at;
-            if (at != null )
+            if (at != null && at.EnableExt)
             {
                 for (int i = 0; i < at.Ext_Conditions.Count; ++i)
                 {
