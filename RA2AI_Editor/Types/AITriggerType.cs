@@ -76,7 +76,7 @@ namespace AIcore.Types
         private void InitExt(IniClass ini, string tag)
         {
             // ext
-            string ext_tag = tag + "-Ext";
+            string ext_tag = GetExtTag(tag);
             CountryExtList = new NotifyList<CountryExt>();
             EnableExt = ini.ReadBoolValue(ext_tag, nameof(EnableExt), false);
             foreach (Country country in Countries.CountryList)  // without <all>
@@ -102,6 +102,7 @@ namespace AIcore.Types
             {
                 PTag = rec_tag;
                 Init(ini, rec_tag);
+                InitExt(ini, rec_tag);
             }
         }
 
@@ -391,7 +392,7 @@ namespace AIcore.Types
             ini.WriteValue("AITriggerTypes", type._tag, str);
 
             // ext
-            string ext_tag = type._tag + "-Ext";
+            string ext_tag = GetExtTag(type._tag);
             if (!release && EnableExt)
             {
                 ini.WriteValue(ext_tag, nameof(EnableExt), EnableExt);
@@ -408,6 +409,11 @@ namespace AIcore.Types
         private string B(bool flag)
         {
             return flag ? "1" : "0";
+        }
+
+        public static string GetExtTag(string tag)
+        {
+            return tag + "-Ext";
         }
 
         public bool CompareWith(AITriggerType a)

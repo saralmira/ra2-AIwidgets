@@ -54,7 +54,7 @@ namespace RA2AI_Editor.Styles
                     AddTriggerCondition(at.Ext_Conditions[i], i + 1);
                 }
             }
-            
+
             SwitchView();
         }
 

@@ -22,15 +22,15 @@ namespace RA2AI_Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-        public delegate void AITriggerTypeJumpEventDel(AITriggerType at);
+        public delegate void AITriggerTypeJumpEventDel(AITriggerType at, bool pushstack = true);
         private static AITriggerTypeJumpEventDel AITriggerTypeJumpEvent;
-        public delegate void TeamTypeJumpEventDel(TeamType tf);
+        public delegate void TeamTypeJumpEventDel(TeamType tf, bool pushstack = true);
         private static TeamTypeJumpEventDel TeamTypeJumpEvent;
-        public delegate void TaskForceJumpEventDel(TaskForce tf);
+        public delegate void TaskForceJumpEventDel(TaskForce tf, bool pushstack = true);
         private static TaskForceJumpEventDel TaskForceJumpEvent;
-        public delegate void ScriptTypeJumpEventDel(ScriptType st);
+        public delegate void ScriptTypeJumpEventDel(ScriptType st, bool pushstack = true);
         private static ScriptTypeJumpEventDel ScriptTypeJumpEvent;
-        public delegate void JumpEventDel(OType type);
+        public delegate void JumpEventDel(OType type, bool pushstack = true);
         private static JumpEventDel JumpEvent;
 
         public delegate void SwitchTypeViewDel(OType type, bool alter);
@@ -184,6 +184,7 @@ namespace RA2AI_Editor
             current_file = path;
             Clear_CompareReport();
             Local.GlobalCommandStack.Clear();
+            Local.NavigationCommandStack.Clear();
 
             listBoxDataInit.Add(path);
 
@@ -269,6 +270,7 @@ namespace RA2AI_Editor
 
             Clear_CompareReport();
             Local.GlobalCommandStack.Clear();
+            Local.NavigationCommandStack.Clear();
             configData.CurrentFile = null;
             current_ai = null;
             Title = configData.TitleText;
@@ -298,6 +300,12 @@ namespace RA2AI_Editor
             ScriptTypeList.SelectedIndex = -1;
             TeamTypeList.SelectedIndex = -1;
             AITriggersList.SelectedIndex = -1;
+
+            TaskForceList.Tag = new LayoutTagClass();
+            ScriptTypeList.Tag = new LayoutTagClass();
+            TeamTypeList.Tag = new LayoutTagClass();
+            AITriggersList.Tag = new LayoutTagClass();
+
             InitPage();
         }
 

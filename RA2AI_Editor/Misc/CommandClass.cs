@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AIcore.Types;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,6 +15,28 @@ namespace AIcore
         public abstract void Undo();
 
         public string Name { get; set; }
+    }
+
+    public class LayoutCommandClass : CommandClass
+    {
+        public LayoutCommandClass(OType from, OType to)
+        {
+            LastObject = from;
+            NextObject = to;
+        }
+
+        public override void Do()
+        {
+            RA2AI_Editor.MainWindow.JumpTo(NextObject, false);
+        }
+
+        public override void Undo()
+        {
+            RA2AI_Editor.MainWindow.JumpTo(LastObject, false);
+        }
+
+        public OType NextObject { get; protected set; }
+        public OType LastObject { get; protected set; }
     }
 
     public abstract class TypeCommandClass<TList, T> : CommandClass where TList : TLists.TTypeLists<T> where T : Types.OType
@@ -86,12 +109,13 @@ namespace AIcore
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CommandStack()
+        public CommandStack(int maxStackSize = 1024)
         {
             ExecutedCommand = new ObservableCollection<CommandClass>();
             UndoCommand = new ObservableCollection<CommandClass>();
             IsUndoEnabled = false;
             IsRedoEnabled = false;
+            MaxStackSize = maxStackSize;
         }
 
         public void Clear()
@@ -105,6 +129,8 @@ namespace AIcore
         public void Push(CommandClass c)
         {
             ExecutedCommand.Add(c);
+            if (ExecutedCommand.Count > MaxStackSize)
+                ExecutedCommand.RemoveAt(0);
             if (UndoCommand.Count > 0)
                 UndoCommand.Clear();
             c.Do();
@@ -138,5 +164,7 @@ namespace AIcore
 
         public bool IsRedoEnabled { get { return UndoCommand.Count > 0; } private set { OnPropertyChanged(nameof(IsRedoEnabled)); } }
         public bool IsUndoEnabled { get { return ExecutedCommand.Count > 0; } private set { OnPropertyChanged(nameof(IsUndoEnabled)); } }
+
+        protected int MaxStackSize;
     }
 }

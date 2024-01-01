@@ -17,16 +17,18 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using static System.Windows.Forms.LinkLabel;
 using System.Diagnostics;
+using AvalonDock.Layout;
+using RA2AI_Editor.Data;
 
 namespace RA2AI_Editor
 {
     public partial class MainWindow : Window
     {
-        public static void JumpTo(TaskForce type) { TaskForceJumpEvent?.Invoke(type); }
-        public static void JumpTo(ScriptType type) { ScriptTypeJumpEvent?.Invoke(type); }
-        public static void JumpTo(TeamType type) { TeamTypeJumpEvent?.Invoke(type); }
-        public static void JumpTo(AITriggerType type) { AITriggerTypeJumpEvent?.Invoke(type); }
-        public static void JumpTo(OType type) { JumpEvent?.Invoke(type); }
+        public static void JumpTo(TaskForce type, bool pushstack = true) { TaskForceJumpEvent?.Invoke(type, pushstack); }
+        public static void JumpTo(ScriptType type, bool pushstack = true) { ScriptTypeJumpEvent?.Invoke(type, pushstack); }
+        public static void JumpTo(TeamType type, bool pushstack = true) { TeamTypeJumpEvent?.Invoke(type, pushstack); }
+        public static void JumpTo(AITriggerType type, bool pushstack = true) { AITriggerTypeJumpEvent?.Invoke(type, pushstack); }
+        public static void JumpTo(OType type, bool pushstack = true) { JumpEvent?.Invoke(type, pushstack); }
 
 
 
@@ -198,6 +200,16 @@ namespace RA2AI_Editor
         private void BottomRedo_Click(object sender, RoutedEventArgs e)
         {
             Local.GlobalCommandStack.Redo();
+        }
+
+        private void BottomBackward_Click(object sender, RoutedEventArgs e)
+        {
+            Local.NavigationCommandStack.Undo();
+        }
+
+        private void BottomForward_Click(object sender, RoutedEventArgs e)
+        {
+            Local.NavigationCommandStack.Redo();
         }
 
         private void BottomUnitReplace_Click(object sender, RoutedEventArgs e)
@@ -499,126 +511,117 @@ namespace RA2AI_Editor
             }
         }
 
-        private void Jump_To_TaskForce(TaskForce tf)
+        private void Jump_To_Function<Data, T>(Data data, T type, LayoutAnchorable layout, ListView lv, bool pushstack = true) where Data : GeneralDataInit<T> where T : OType
         {
-            if (tf == null || tf == AI.NullTaskForce)
+            if (type == null || type == AI.NullTaskForce)
                 return;
-            tf = taskForceDataInit.GetTypeOfCurrent(tf);
-            if (tf != null)
+            type = data.GetTypeOfCurrent(type);
+            if (type == null || (layout.IsActive && lv.SelectedItem != null && type == lv.SelectedItem as T))
+                return;
+
+            layout.Show();
+            layout.IsActive = true;
+
+            if (lv.Tag is LayoutTagClass tag)
             {
-                lanc_tf.Show();
-                lanc_tf.IsActive = true;
-                TaskForceList.SelectedItem = tf;
-                TaskForceList.ScrollIntoView(tf);
+                tag.ShouldPushStack = pushstack;
             }
+            lv.SelectedItem = type;
+            lv.ScrollIntoView(type);
         }
 
-        private void Jump_To_ScriptType(ScriptType st)
+        private void Jump_To_TaskForce(TaskForce tf, bool pushstack = true)
         {
-            if (st == null || st == AI.NullScriptType)
-                return;
-            st = scriptTypeDataInit.GetTypeOfCurrent(st);
-            if (st != null)
-            {
-                lanc_st.Show();
-                lanc_st.IsActive = true;
-                ScriptTypeList.SelectedItem = st;
-                ScriptTypeList.ScrollIntoView(st);
-            }
+            Jump_To_Function(taskForceDataInit, tf, lanc_tf, TaskForceList, pushstack);
         }
 
-        private void Jump_To_TeamType(TeamType tt)
+        private void Jump_To_ScriptType(ScriptType st, bool pushstack = true)
         {
-            if (tt == null || tt == AI.NullTeamType)
-                return;
-            tt = teamTypeDataInit.GetTypeOfCurrent(tt);
-            if (tt != null && tt != AI.NullTeamType)
-            {
-                lanc_tt.Show();
-                lanc_tt.IsActive = true;
-                TeamTypeList.SelectedItem = tt;
-                TeamTypeList.ScrollIntoView(tt);
-            }
+            Jump_To_Function(scriptTypeDataInit, st, lanc_st, ScriptTypeList, pushstack);
         }
 
-        private void Jump_To_AITriggerType(AITriggerType at)
+        private void Jump_To_TeamType(TeamType tt, bool pushstack = true)
         {
-            if (at == null)
-                return;
-            at = aITriggerDataInit.GetTypeOfCurrent(at);
-            if (at != null)
-            {
-                lanc_at.Show();
-                lanc_at.IsActive = true;
-                AITriggersList.SelectedItem = at;
-                AITriggersList.ScrollIntoView(at);
-            }
+            Jump_To_Function(teamTypeDataInit, tt, lanc_tt, TeamTypeList, pushstack);
         }
 
-        private void Jump_To(OType type)
+        private void Jump_To_AITriggerType(AITriggerType at, bool pushstack = true)
+        {
+            Jump_To_Function(aITriggerDataInit, at, lanc_at, AITriggersList, pushstack);
+        }
+
+        private void Jump_To(OType type, bool pushstack = true)
         {
             if (type != null)
             {
                 if (type is TaskForce)
-                    Jump_To_TaskForce(type as TaskForce);
+                    Jump_To_TaskForce(type as TaskForce, pushstack);
                 else if (type is ScriptType)
-                    Jump_To_ScriptType(type as ScriptType);
+                    Jump_To_ScriptType(type as ScriptType, pushstack);
                 else if (type is TeamType)
-                    Jump_To_TeamType(type as TeamType);
+                    Jump_To_TeamType(type as TeamType, pushstack);
                 else if (type is AITriggerType)
-                    Jump_To_AITriggerType(type as AITriggerType);
+                    Jump_To_AITriggerType(type as AITriggerType, pushstack);
             }
         }
 
         private void TaskForceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox lb = (ListBox)sender;
-            if (lb.SelectedItem != null && lb.SelectedItem is TaskForce)
+            var lb = (ListView)sender;
+            if (lb.SelectedItem != null && lb.SelectedItem is TaskForce tf)
             {
-                TaskForce tf = (TaskForce)lb.SelectedItem;
                 if (tf.ShowCompareResult && tf.SwitchType && tf.CompareType != null)
                     tfgrid.Initialize(tf.CompareType as TaskForce);
                 else
+                { 
                     tfgrid.Initialize(tf);
+                    PushLayout(lb);
+                }
             }
         }
 
         private void ScriptTypeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox lb = (ListBox)sender;
-            if (lb.SelectedItem != null && lb.SelectedItem is ScriptType)
+            var lb = (ListView)sender;
+            if (lb.SelectedItem != null && lb.SelectedItem is ScriptType st)
             {
-                ScriptType st = (ScriptType)lb.SelectedItem;
                 if (st.ShowCompareResult && st.SwitchType && st.CompareType != null)
                     stgrid2.Initialize(st.CompareType as ScriptType);
                 else
+                { 
                     stgrid2.Initialize(st);
+                    PushLayout(lb);
+                }
             }
         }
 
         private void TeamTypeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListView lv = (ListView)sender;
-            if (lv.SelectedItem != null && lv.SelectedItem is TeamType)
+            var lv = (ListView)sender;
+            if (lv.SelectedItem != null && lv.SelectedItem is TeamType t)
             {
-                TeamType t = (TeamType)lv.SelectedItem;
                 if (t.ShowCompareResult && t.SwitchType && t.CompareType != null)
                     ttgrid.Initialize(t.CompareType as TeamType);
                 else
+                {
                     ttgrid.Initialize(t);
+                    PushLayout(lv);
+                }
             }
         }
 
         private void AITriggersList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView lv = (ListView)sender;
-            if (lv.SelectedItem != null && lv.SelectedItem is AITriggerType)
+            if (lv.SelectedItem != null && lv.SelectedItem is AITriggerType t)
             {
-                AITriggerType t = (AITriggerType)lv.SelectedItem;
                 if (t.ShowCompareResult && t.SwitchType && t.CompareType != null)
                     atgrid.Initialize(t.CompareType as AITriggerType);
                 else
+                { 
                     atgrid.Initialize(t);
+                    PushLayout(lv);
+                }
             }
         }
 
@@ -934,6 +937,38 @@ namespace RA2AI_Editor
         {
             Popup p = sender as Popup;
             p.PlacementTarget.Focus();
+        }
+
+        private void PushLayout(ListView lv)
+        {
+            if (lv.Tag is LayoutTagClass tag)
+            {
+                LayoutTagClass.CurrentLayoutType = lv.SelectedItem as OType;
+                if (tag.ShouldPushStack && LayoutTagClass.LastLayoutType != null && LayoutTagClass.CurrentLayoutType != null)
+                { 
+                    Local.NavigationCommandStack.Push(new LayoutCommandClass(LayoutTagClass.LastLayoutType, LayoutTagClass.CurrentLayoutType)); 
+                }
+                if (!tag.ShouldPushStack)
+                {
+                    tag.ShouldPushStack = true;
+                }
+
+                LayoutTagClass.LastLayoutType = LayoutTagClass.CurrentLayoutType;
+            }
+        }
+
+        private class LayoutTagClass
+        {
+            public LayoutTagClass()
+            {
+                ShouldPushStack = true;
+                CurrentLayoutType = null;
+                LastLayoutType = null;
+            }
+
+            public bool ShouldPushStack;
+            public static OType CurrentLayoutType;
+            public static OType LastLayoutType;
         }
 
         private object SavedObject = null;

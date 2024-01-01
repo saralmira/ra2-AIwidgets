@@ -544,6 +544,12 @@
   <ItemGroup>
     <Resource Include="ai.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\backward_d.png" />
+    <Resource Include="Images\backward_e.png" />
+    <Resource Include="Images\forward_d.png" />
+    <Resource Include="Images\forward_e.png" />
+  </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

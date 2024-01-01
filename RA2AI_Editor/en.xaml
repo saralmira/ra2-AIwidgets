@@ -289,6 +289,8 @@
     <sys:String x:Key="STR_REPLACEINFO">{0} substitutions were made.</sys:String>
     <sys:String x:Key="STR_SPLITBYCOUNT">Split team</sys:String>
     <sys:String x:Key="STR_SEC">sec</sys:String>
+    <sys:String x:Key="STR_FORWARD">Go forward</sys:String>
+    <sys:String x:Key="STR_BACKWARD">Go backward</sys:String>
 
     <sys:String x:Key="TREENODE_SAME">Similar</sys:String>
     <sys:String x:Key="TREENODE_DIFF">Different</sys:String>

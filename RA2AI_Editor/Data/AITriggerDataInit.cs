@@ -1,9 +1,12 @@
 ﻿using AIcore;
 using AIcore.TLists;
 using AIcore.Types;
+using Library;
 using RA2AI_Editor.UserControls;
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography;
+using Section = Library.IniClass.Section;
 
 namespace RA2AI_Editor.Data
 {
@@ -63,7 +66,7 @@ namespace RA2AI_Editor.Data
                     return;
                 del_hint = false;
             }
-            GlobalCommandStack.Push(new DeleteTriggerCommand(tag, ai.aITriggerTypes));
+            GlobalCommandStack.Push(new DeleteTriggerCommand(tag, ai.aITriggerTypes, ai.ini));
         }
 
         public override void Delete(AITriggerType aITriggerType, bool nohint = false)
@@ -80,7 +83,7 @@ namespace RA2AI_Editor.Data
                     return;
                 del_hint = false;
             }
-            GlobalCommandStack.Push(new DeleteTriggerCommand(aITriggerType, ai.aITriggerTypes));
+            GlobalCommandStack.Push(new DeleteTriggerCommand(aITriggerType, ai.aITriggerTypes, ai.ini));
         }
 
         public void Recover(AITriggerType aITriggerType)
@@ -170,15 +173,39 @@ namespace RA2AI_Editor.Data
 
         public class DeleteTriggerCommand : DeleteTypeCommandClass<AITriggerTypes, AITriggerType>
         {
-            public DeleteTriggerCommand(AITriggerType del, AITriggerTypes aITriggerTypes) : base(del, aITriggerTypes)
+            public DeleteTriggerCommand(AITriggerType del, AITriggerTypes aITriggerTypes, IniClass ini) : base(del, aITriggerTypes)
             {
                 Name = Local.Dictionary("CMD_DELAT");
+                this.ini = ini;
+                this.tag = AITriggerType.GetExtTag(del._tag);
+                this.content = ini.GetSection(tag);
             }
 
-            public DeleteTriggerCommand(string deltag, AITriggerTypes aITriggerTypes) : base(deltag, aITriggerTypes)
+            public DeleteTriggerCommand(string deltag, AITriggerTypes aITriggerTypes, IniClass ini) : base(deltag, aITriggerTypes)
             {
                 Name = Local.Dictionary("CMD_DELAT");
+                this.ini = ini;
+                this.tag = AITriggerType.GetExtTag(deltag);
+                this.content = ini.GetSection(tag);
             }
+
+            public override void Do()
+            {
+                base.Do();
+
+                ini.DeleteSection(content);
+            }
+
+            public override void Undo()
+            {
+                base.Undo();
+
+                ini.AddSection(tag, content);
+            }
+
+            readonly IniClass ini;
+            readonly string tag;
+            readonly Section content;
         }
     }
 }

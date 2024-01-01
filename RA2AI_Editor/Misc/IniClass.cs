@@ -267,14 +267,57 @@ namespace Library
             }
         }
 
-        public Section ReadSection(string section)
+        public Section GetSection(string section)
         {
             int index = sections.FindLastIndex(s => s == section);
             if (index >= 0)
             {
                 return sectioninf[index];
             }
-            return new Section() { keys = new List<string>(), values = new List<string>() };
+            return null;
+        }
+
+        public void AddSection(string section, Section content, bool forcewrite = false)
+        {
+            if (content == null)
+                return;
+            int index = sections.FindLastIndex(s => s == section);
+            if (index < 0)
+            {
+                sections.Add(section);
+                sectioninf.Add(content);
+            }
+            else if (forcewrite)
+            {
+                sectioninf[index] = content;
+            }
+        }
+
+        public Section DeleteSection(Section section)
+        {
+            if (section == null)
+                return null;
+            int index = sectioninf.FindLastIndex(s => s == section);
+            if (index >= 0)
+            {
+                sections.RemoveAt(index);
+                sectioninf.RemoveAt(index);
+                return section;
+            }
+            return null;
+        }
+
+        public Section DeleteSection(string section)
+        {
+            int index = sections.FindLastIndex(s => s == section);
+            if (index >= 0)
+            {
+                Section ret = sectioninf[index];
+                sections.RemoveAt(index);
+                sectioninf.RemoveAt(index);
+                return ret;
+            }
+            return null;
         }
 
         /// <summary>
@@ -322,7 +365,7 @@ namespace Library
             return path;
         }
 
-        public struct Section
+        public class Section
         {
             //public string section;
             public List<string> keys;

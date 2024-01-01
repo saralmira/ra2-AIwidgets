@@ -41,5 +41,6 @@ namespace RA2AI_Editor
         }
 
         public static CommandStack GlobalCommandStack = new CommandStack();
+        public static CommandStack NavigationCommandStack = new CommandStack(16);
     }
 }

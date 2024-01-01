@@ -291,6 +291,8 @@
     <sys:String x:Key="STR_REPLACEINFO">完成了 {0} 处替换。</sys:String>
     <sys:String x:Key="STR_SPLITBYCOUNT">小队切分</sys:String>
     <sys:String x:Key="STR_SEC">秒</sys:String>
+    <sys:String x:Key="STR_FORWARD">前进</sys:String>
+    <sys:String x:Key="STR_BACKWARD">后退</sys:String>
 
     <sys:String x:Key="TREENODE_SAME">相同项</sys:String>
     <sys:String x:Key="TREENODE_DIFF">不同项</sys:String>
