@@ -944,7 +944,7 @@ namespace RA2AI_Editor
             if (lv.Tag is LayoutTagClass tag)
             {
                 LayoutTagClass.CurrentLayoutType = lv.SelectedItem as OType;
-                if (tag.ShouldPushStack && LayoutTagClass.LastLayoutType != null && LayoutTagClass.CurrentLayoutType != null)
+                if (tag.ShouldPushStack && LayoutTagClass.LastLayoutType != null && LayoutTagClass.CurrentLayoutType != null && LayoutTagClass.LastLayoutType != LayoutTagClass.CurrentLayoutType)
                 { 
                     Local.NavigationCommandStack.Push(new LayoutCommandClass(LayoutTagClass.LastLayoutType, LayoutTagClass.CurrentLayoutType)); 
                 }
