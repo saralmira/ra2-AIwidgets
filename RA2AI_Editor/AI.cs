@@ -23,7 +23,7 @@ namespace AIcore
 
             if (!fakemode)
             {
-                IsMapFile = IsMapExtension(Path.GetExtension(ini.GetPath()));
+                InitializeParam();
                 Init_Hints();
 
                 TagPost = ini.ReadValueWithoutNotes("MarkSection", "TagPost");
@@ -137,6 +137,7 @@ namespace AIcore
             teamTypes.SaveIni(false);
             SaveAIMark();
             ini.SaveAs(path);
+            InitializeParam(path);
         }
 
         public void ReleaseAI(string path)
@@ -144,6 +145,7 @@ namespace AIcore
             SaveAI(FilePath);
             ini.CopyAs(path);
             AI release = new AI(path, true);
+            release.IsMapFile = IsMapFile;
             release.ini.WriteValue("MarkSection", null, null);
             release.aITriggerTypes.SaveIni(true);
             release.taskForces.SaveIni(true);
@@ -202,6 +204,11 @@ namespace AIcore
                     return true;
             }
             return false;
+        }
+
+        private void InitializeParam(string path = null)
+        {
+            IsMapFile = IsMapExtension(Path.GetExtension(string.IsNullOrEmpty(path) ? ini.GetPath() : path));
         }
 
         public TaskForce GetTaskForce(string tag)
