@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Library
 {
@@ -275,6 +277,23 @@ namespace Library
                 return sectioninf[index];
             }
             return null;
+        }
+
+        public Dictionary<string, string> GetPairs(string section)
+        {
+            var ret = new Dictionary<string, string>();
+            int index = sections.FindLastIndex(s => s == section);
+            if (index >= 0)
+            {
+                Section s = sectioninf[index];
+                for (int i = 0; i < s.keys.Count; ++i)
+                {
+                    if (!s.isnote[i])
+                        ret.Add(s.keys[i], s.values[i]);
+                }
+            }
+            
+            return ret;
         }
 
         public void AddSection(string section, Section content, bool forcewrite = false)

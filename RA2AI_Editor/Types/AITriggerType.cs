@@ -390,6 +390,10 @@ namespace AIcore.Types
             str += B(type.HardMode);
 
             ini.WriteValue("AITriggerTypes", type._tag, str);
+            if (ai.IsMapFile)
+            {
+                ini.WriteValue(AI.AITriggerTypesEnable, type._tag, "yes");
+            }
 
             // ext
             string ext_tag = GetExtTag(type._tag);

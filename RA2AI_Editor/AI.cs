@@ -53,6 +53,7 @@ namespace AIcore
             for (int i = 0; i < teamtypes_info.Count; ++i)
                 Scripts.ParamTeams.Add(new ScriptItem.Parameter() { Param = i.ToString(), Description = teamtypes_info[i].PName });
 
+            originalAITriggerTypes = ini.GetPairs(AITriggerTypesEnable);
         }
 
         private void Init_Hints()
@@ -152,8 +153,6 @@ namespace AIcore
             release.scriptTypes.SaveIni(true);
             release.teamTypes.SaveIni(true);
             release.ini.Save();
-            releaseTaskForces.Clear();
-            releaseTeamTypes.Clear();
         }
 
         private Game.GameTypeClass GetLastGameType()
@@ -333,5 +332,8 @@ namespace AIcore
 
         public Dictionary<TaskForce, (TaskForce, TaskForce, TaskForce)> releaseTaskForces = new Dictionary<TaskForce, (TaskForce, TaskForce, TaskForce)>();
         public Dictionary<TeamType, (TeamType, TeamType, TeamType)> releaseTeamTypes = new Dictionary<TeamType, (TeamType, TeamType, TeamType)>();
+
+        public static string AITriggerTypesEnable = "AITriggerTypesEnable";
+        public readonly Dictionary<string, string> originalAITriggerTypes = new Dictionary<string, string>();
     }
 }

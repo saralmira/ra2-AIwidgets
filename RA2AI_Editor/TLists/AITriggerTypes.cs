@@ -28,7 +28,16 @@ namespace AIcore.TLists
         public void SaveIni(bool release = false)
         {
             ai.ini.WriteValue("AITriggerTypes", null, null);
-            if (release) ResetTag();
+            if (release)
+            { 
+                ResetTag();
+                if (ai.IsMapFile)
+                {
+                    ai.ini.WriteValue(AI.AITriggerTypesEnable, null, null);
+                    foreach (var k in ai.originalAITriggerTypes)
+                        ai.ini.WriteValue(AI.AITriggerTypesEnable, k.Key, k.Value);
+                }
+            }
             for (int i = 0; i < aITriggerTypes.Count; ++i)
             {
                 aITriggerTypes[i].Output(ini, release);
