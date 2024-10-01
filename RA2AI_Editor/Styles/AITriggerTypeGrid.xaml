@@ -257,6 +257,7 @@
                             <Border BorderBrush="#EFE4B0" BorderThickness="1" Margin="3 0 0 0" Background="#20A0A040">
                                 <StackPanel x:Name="stackpanel_formap">
                                     <StackPanel.Resources>
+                                        <convers:TriggerToVisible0 x:Key="TriggerToVisible0"/>
                                         <convers:TriggerToVisible1 x:Key="TriggerToVisible1"/>
                                         <convers:TriggerToVisible2 x:Key="TriggerToVisible2"/>
                                         <convers:TriggerToVisible3 x:Key="TriggerToVisible3"/>
@@ -314,6 +315,69 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Foreground="#111111" Text="{DynamicResource TAG_TechCount}" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
                                             <TextBox Text="{Binding Path=CompareCount,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049" PreviewMouseWheel="MouseWheel_Index"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="TYPE_2" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionType2,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="OPERAND_2" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionOperand2,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="TYPE_3" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionType3,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="OPERAND_3" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionOperand3,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="TYPE_4" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionType4,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Style="{StaticResource GridBorderStyleForMap}" Visibility="{Binding TriggerType,Mode=OneWay,Converter={StaticResource TriggerToVisible0}}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Foreground="#111111" Text="OPERAND_4" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left" Margin="5 2 0 2"/>
+                                            <TextBox Text="{Binding Path=ConditionOperand4,Mode=TwoWay}" Grid.Column="1" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="5 2 5 2" BorderBrush="#A0DAC049"/>
                                         </Grid>
                                     </Border>
                                 </StackPanel>

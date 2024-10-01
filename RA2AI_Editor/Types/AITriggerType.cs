@@ -783,6 +783,13 @@ namespace AIcore.Types
         public AITriggerConditionComparator Condition3 = new AITriggerConditionComparator { ComparatorType = 0, ComparatorOperand = 0 };
         public AITriggerConditionComparator Condition4 = new AITriggerConditionComparator { ComparatorType = 0, ComparatorOperand = 0 };
 
+        public int ConditionType2 { get { return Condition2.ComparatorType; } set { Condition2.ComparatorType = value; PropertyChange(nameof(ConditionType2)); } }
+        public int ConditionOperand2 { get { return Condition2.ComparatorOperand; } set { Condition2.ComparatorOperand = value; PropertyChange(nameof(ConditionOperand2)); } }
+        public int ConditionType3 { get { return Condition3.ComparatorType; } set { Condition3.ComparatorType = value; PropertyChange(nameof(ConditionType3)); } }
+        public int ConditionOperand3 { get { return Condition3.ComparatorOperand; } set { Condition3.ComparatorOperand = value; PropertyChange(nameof(ConditionOperand3)); } }
+        public int ConditionType4 { get { return Condition4.ComparatorType; } set { Condition4.ComparatorType = value; PropertyChange(nameof(ConditionType4)); } }
+        public int ConditionOperand4 { get { return Condition4.ComparatorOperand; } set { Condition4.ComparatorOperand = value; PropertyChange(nameof(ConditionOperand4)); } }
+
         public override void Output(IniClass ini, bool release = false)
         {
             throw new NotImplementedException();

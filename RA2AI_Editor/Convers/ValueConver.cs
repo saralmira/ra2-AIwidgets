@@ -473,6 +473,33 @@ namespace RA2AI_Editor.Convers
         }
     }
 
+    public class TriggerToVisible0 : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            TriggerType t = (TriggerType)value;
+            switch (t.Value)
+            {
+                case TriggerTypeEnum.EnermyCondition:
+                case TriggerTypeEnum.SelfCondition:
+                case TriggerTypeEnum.EnermyPower:
+                case TriggerTypeEnum.EnermyLackofPower:
+                case TriggerTypeEnum.EnermyBonusCondition:
+                case TriggerTypeEnum.IronCurtainReady:
+                case TriggerTypeEnum.ChronoSphereReady:
+                case TriggerTypeEnum.NeutralCondition:
+                    return Visibility.Collapsed;
+                default:
+                    return Visibility.Visible;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class TriggerToVisible1 : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
