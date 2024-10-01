@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
@@ -53,11 +54,6 @@ namespace AIcore.Types
                 STeamType1 = values[1].Trim();
                 SHouse = values[2].Trim();
                 TechLevel = GetIntValue(values[3].Trim(), 0);
-                //TriggerType = TriggerTypes.GetTriggerType(GetIntValue(values[4].Trim(), -1));
-                //STriggerUnit = values[5].Trim();
-                //string longstr = values[6].Trim();
-                //CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
-                //SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
                 Parse(values, 4);
                 BaseWeight = Convert.ToUInt32(GetDoubleValue(values[7].Trim(), 50));
                 MinWeight = Convert.ToUInt32(GetDoubleValue(values[8].Trim(), 10));
@@ -122,6 +118,11 @@ namespace AIcore.Types
                 STriggerUnit = this.STriggerUnit,
                 CompareCount = this.CompareCount,
                 EComparison = this.SelectedComparison.CompareTypes,
+
+                Condition2 = this.Condition2,
+                Condition3 = this.Condition3,
+                Condition4 = this.Condition4,
+
                 BaseWeight = this.BaseWeight,
                 MinWeight = this.MinWeight,
                 MaxWeight = this.MaxWeight,
@@ -249,6 +250,9 @@ namespace AIcore.Types
                 ext.TriggerType = cond.TriggerType;
                 ext.STriggerUnit = cond.STriggerUnit;
                 ext.CompareCount = cond.CompareCount;
+                ext.Condition2 = cond.Condition2;
+                ext.Condition3 = cond.Condition3;
+                ext.Condition4 = cond.Condition4;
                 ext.SelectedComparison = cond.SelectedComparison;
                 type.BaseWeight = initial_weight;
                 ret.Add(ext);
@@ -372,10 +376,6 @@ namespace AIcore.Types
             str += type.TeamType1.PTag + ",";
             str += type.House.NameOrAll + ",";
             str += type.TechLevel + ",";
-            //str += type.TriggerType.SValue + ",";
-            //str += (type.STriggerUnit.Length > 0 ? type.STriggerUnit : type._TriggerUnit.NameOrNone) + ",";
-            //str += UInt32BytesToString(BitConverter.GetBytes(type.CompareCount)).PadLeft(8, '0');
-            //str += Convert.ToString((byte)type.SelectedComparison.CompareTypes, 16).PadLeft(2, '0') + "000000000000000000000000000000000000000000000000000000,";
             str += type.ConditionToString() + ",";
             str += Convert.ToString(type.BaseWeight) + ".000000,";
             str += Convert.ToString(type.MinWeight) + ".000000,";
@@ -773,6 +773,16 @@ namespace AIcore.Types
             }
         }
 
+        public struct AITriggerConditionComparator
+        {
+            public int ComparatorType;
+            public int ComparatorOperand;
+        };
+
+        public AITriggerConditionComparator Condition2 = new AITriggerConditionComparator { ComparatorType = 0, ComparatorOperand = 0 };
+        public AITriggerConditionComparator Condition3 = new AITriggerConditionComparator { ComparatorType = 0, ComparatorOperand = 0 };
+        public AITriggerConditionComparator Condition4 = new AITriggerConditionComparator { ComparatorType = 0, ComparatorOperand = 0 };
+
         public override void Output(IniClass ini, bool release = false)
         {
             throw new NotImplementedException();
@@ -820,7 +830,13 @@ namespace AIcore.Types
             str += TriggerType.SValue + ",";
             str += (STriggerUnit.Length > 0 ? STriggerUnit : _TriggerUnit.NameOrNone) + ",";
             str += UInt32BytesToString(BitConverter.GetBytes(CompareCount)).PadLeft(8, '0');
-            str += Convert.ToString((byte)SelectedComparison.CompareTypes, 16).PadLeft(2, '0') + "000000000000000000000000000000000000000000000000000000";
+            str += UInt32BytesToString(BitConverter.GetBytes((int)SelectedComparison.CompareTypes)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition2.ComparatorType)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition2.ComparatorOperand)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition3.ComparatorType)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition3.ComparatorOperand)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition4.ComparatorType)).PadLeft(8, '0');
+            str += UInt32BytesToString(BitConverter.GetBytes(Condition4.ComparatorOperand)).PadLeft(8, '0');
             return str;
         }
 
@@ -832,7 +848,13 @@ namespace AIcore.Types
                 STriggerUnit = strs[startindex + 1].Trim();
                 string longstr = strs[startindex + 2].Trim();
                 CompareCount = BitConverter.ToUInt32(StringToUInt32Bytes(longstr.Substring(0, 8)), 0);
-                SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)GetIntValue(longstr.Substring(9, 1), (int)CompareTypes.GreaterOrEqualThan));
+                SelectedComparison = TriggerTypes.GetCompareInfo((CompareTypes)BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(8, 8)), 0));
+                Condition2.ComparatorType = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(16, 8)), 0);
+                Condition2.ComparatorOperand = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(24, 8)), 0);
+                Condition3.ComparatorType = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(32, 8)), 0);
+                Condition3.ComparatorOperand = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(40, 8)), 0);
+                Condition4.ComparatorType = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(48, 8)), 0);
+                Condition4.ComparatorOperand = BitConverter.ToInt32(StringToUInt32Bytes(longstr.Substring(56, 8)), 0);
             }
         }
 
@@ -844,6 +866,9 @@ namespace AIcore.Types
                 ITriggerType = (int)this.TriggerType.Value,
                 STriggerUnit = this.STriggerUnit,
                 CompareCount = this.CompareCount,
+                Condition2 = this.Condition2,
+                Condition3 = this.Condition3,
+                Condition4 = this.Condition4,
                 EComparison = this.SelectedComparison.CompareTypes
             };
         }

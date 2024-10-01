@@ -478,11 +478,18 @@ namespace RA2AI_Editor.Convers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             TriggerType t = (TriggerType)value;
-            if (t.Value == TriggerTypeEnum.EnermyCondition || t.Value == TriggerTypeEnum.SelfCondition 
-                || t.Value == TriggerTypeEnum.NeutralCondition)
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed;
+            switch (t.Value)
+            {
+                case TriggerTypeEnum.None:
+                case TriggerTypeEnum.EnermyPower:
+                case TriggerTypeEnum.EnermyLackofPower:
+                case TriggerTypeEnum.EnermyBonusCondition:
+                case TriggerTypeEnum.IronCurtainReady:
+                case TriggerTypeEnum.ChronoSphereReady:
+                    return Visibility.Collapsed;
+                default:
+                    return Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -496,11 +503,17 @@ namespace RA2AI_Editor.Convers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             TriggerType t = (TriggerType)value;
-            if (t.Value == TriggerTypeEnum.EnermyCondition || t.Value == TriggerTypeEnum.SelfCondition
-                || t.Value == TriggerTypeEnum.NeutralCondition || t.Value == TriggerTypeEnum.EnermyBonusCondition)
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed;
+            switch (t.Value)
+            {
+                case TriggerTypeEnum.None:
+                case TriggerTypeEnum.EnermyPower:
+                case TriggerTypeEnum.EnermyLackofPower:
+                case TriggerTypeEnum.IronCurtainReady:
+                case TriggerTypeEnum.ChronoSphereReady:
+                    return Visibility.Collapsed;
+                default:
+                    return Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -514,11 +527,18 @@ namespace RA2AI_Editor.Convers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             TriggerType t = (TriggerType)value;
-            if (t.Value == TriggerTypeEnum.EnermyCondition || t.Value == TriggerTypeEnum.SelfCondition
-                || t.Value == TriggerTypeEnum.NeutralCondition)
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed;
+            switch (t.Value)
+            {
+                case TriggerTypeEnum.None:
+                case TriggerTypeEnum.EnermyPower:
+                case TriggerTypeEnum.EnermyLackofPower:
+                case TriggerTypeEnum.EnermyBonusCondition:
+                case TriggerTypeEnum.IronCurtainReady:
+                case TriggerTypeEnum.ChronoSphereReady:
+                    return Visibility.Collapsed;
+                default:
+                    return Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
